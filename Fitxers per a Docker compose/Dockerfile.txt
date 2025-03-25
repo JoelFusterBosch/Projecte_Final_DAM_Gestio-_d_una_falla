@@ -1,0 +1,35 @@
+# Usa la imagen base de Odoo
+FROM odoo:16.0
+
+# Usar usuario root para las operaciones de instalación
+USER root
+
+# Instala dependencias necesarias, incluyendo LibreOffice
+#RUN apt-get update && apt-get install -y wget gnupg2 libnss3-tools libnspr4 libnss3 default-jre libreoffice
+
+# # Descarga e instala AutoFirma
+# RUN wget https://raw.githubusercontent.com/juatafe/odooAutofirma/master/AutoFirma_1_8_2.deb -O AutoFirma_1_8_2.deb && \
+#     dpkg -i AutoFirma_1_8_2.deb && \
+#     apt-get install -f -y && \
+#     rm AutoFirma_1_8_2.deb
+
+# # Ajusta el PATH si es necesario (opcional)
+# ENV PATH="/opt/AutoFirma:$PATH"
+
+# Instala una versión específica de `markupsafe` que sea compatible con Odoo
+RUN pip uninstall jinja2 markupsafe
+RUN pip uninstall markupsafe -y
+RUN pip install jinja2==3.1.2 markupsafe==2.1.1
+
+
+# Copia los archivos del proyecto al contenedor
+COPY . /mnt/extra-addons
+
+# Copia el script de migración
+COPY ./dev_addons/familia/migrations/10.0.1.0/post-migration.py /mnt/extra-addons/familia/migrations/10.0.1.0/post-migration.py
+
+# Cambiar al usuario odoo para la ejecución normal
+USER odoo
+
+# Establece el directorio de trabajo
+WORKDIR /mnt/extra-addons
