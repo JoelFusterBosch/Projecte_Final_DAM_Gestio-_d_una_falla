@@ -1,0 +1,13 @@
+<odoo>
+    <data noupdate="1">
+
+        <!-- ✅ Si el diari ja existeix, només l'actualitzem -->
+        <record id="account_journal_bancfalla2" model="account.journal" forcecreate="0">
+            <field name="name">BancFalla</field>
+            <field name="code">BFALL</field>  <!-- 🔹 Codi únic -->
+            <field name="type">bank</field>  <!-- 🔹 Tipus de diari (bank, cash, etc.) -->
+            <field name="company_id" ref="base.main_company"/>  <!-- 🔹 Assignar la companyia -->
+        </record>
+
+    </data>
+</odoo>

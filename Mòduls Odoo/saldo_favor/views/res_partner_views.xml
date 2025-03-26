@@ -1,0 +1,25 @@
+<odoo>
+    <!-- Vista personalizada para mostrar los clientes con su saldo a favor -->
+    <record id="view_partner_tree_saldo_favor" model="ir.ui.view">
+        <field name="name">res.partner.tree.saldo.favor</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" string="Cliente"/>
+                <field name="saldo_a_favor" string="Saldo a Favor"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de formulario personalizada (ya incluida en tu setup original) -->
+    <record id="view_partner_form_inherit" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="saldo_a_favor"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

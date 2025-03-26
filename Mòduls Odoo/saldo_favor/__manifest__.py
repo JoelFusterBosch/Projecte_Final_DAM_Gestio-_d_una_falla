@@ -1,0 +1,21 @@
+{
+    'name': 'Saldo a Favor',
+    'version': '16.0.1.0.0',
+    'category': 'Sales',
+    'summary': 'Gestiona saldos a favor de clientes.',
+    'description': 'Este módulo permite gestionar saldos a favor de clientes en Odoo 16 Community Edition.',
+    'images': ['static/description/icon.png'],
+    'depends': ['sale', 'account'],
+    'data': [
+        'views/saldo_favor_security.xml',
+        'security/ir.model.access.csv',
+        'views/res_partner_views.xml',
+        'views/sale_order_views.xml',
+        'views/account_move_views.xml',
+        'views/saldo_favor_wizard_views.xml',
+        'views/saldo_favor_receipt_views.xml',
+        'views/saldo_favor_menu.xml',
+    ],
+    'installable': True,
+    'application': False,
+}

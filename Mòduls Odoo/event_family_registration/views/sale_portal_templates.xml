@@ -1,0 +1,9 @@
+<template id="portal_sale_order" inherit_id="sale.portal_sale_order" name="Portal Sale Order with Reject Button">
+    <xpath expr="//div[@class='o_portal_sale_order']" position="inside">
+        <t t-if="sale_order.state in ['draft', 'sent']">
+            <a type="button" class="btn btn-danger mt-3" t-on-click="sale_order.action_reject_quotation">
+                Rechazar Presupuesto
+            </a>
+        </t>
+    </xpath>
+</template>

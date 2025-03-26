@@ -1,0 +1,15 @@
+production:    
+    connection:
+        url: https://dominiodoo.es
+        port: 443
+        db: nom_bd
+        user: usuari
+        password: **********47d1e3ac55**********
+
+development:    
+    connection:
+        url: http://localhost
+        port: 8069
+        db: nom_bd
+        user: usuari
+        password: **********47d1e3ac55**********

@@ -1,0 +1,10 @@
+<odoo>
+    <!-- Menú principal para Familia -->
+    <menuitem id="familia_root_menu" name="Familias" sequence="10"/>
+
+    <!-- Submenú para listar Familias -->
+    <menuitem id="menu_familia" name="Familias" parent="familia_root_menu" action="action_familia"/>
+
+    <!-- Submenú para listar Miembros de la Familia -->
+    <menuitem id="menu_miembros_familia" name="Miembros de la Familia" parent="familia_root_menu" action="action_miembros_familia"/>
+</odoo>

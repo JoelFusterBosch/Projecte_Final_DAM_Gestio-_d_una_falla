@@ -1,0 +1,48 @@
+<odoo>
+    <!-- Vista en Árbol para Familias -->
+    <record id="view_familia_tree" model="ir.ui.view">
+        <field name="name">familia.tree</field>
+        <field name="model">familia</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>  <!-- Mostrar el nombre de la familia -->
+                <field name="saldo_total"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista en Formulario para Familias -->
+    <record id="view_familia_form" model="ir.ui.view">
+        <field name="name">familia.form</field>
+        <field name="model">familia</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>  <!-- Campo para editar el nombre de la familia -->
+                        <field name="saldo_total" readonly="True"/>
+                    </group>
+                    <notebook>
+                        <page string="Miembros">
+                            <field name="miembros_ids">
+                                <tree editable="bottom">
+                                    <field name="partner_id"/>
+                                    <field name="limite_gasto"/>
+                                    <field name="es_administrador"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción para listar Familias -->
+    <record id="action_familia" model="ir.actions.act_window">
+        <field name="name">Familias</field>
+        <field name="res_model">familia</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_familia_tree"/>
+    </record>
+</odoo>

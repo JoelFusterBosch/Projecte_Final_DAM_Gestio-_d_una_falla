@@ -1,0 +1,23 @@
+<odoo>
+    <!-- Grupo para gestionar familias -->
+    <record id="group_familia_manager" model="res.groups">
+        <field name="name">Familia Manager</field>
+        <field name="category_id" ref="base.module_category_sales"/>
+    </record>
+
+    <!-- Reglas de acceso para el modelo 'familia' -->
+    <record id="familia_familia_rule" model="ir.rule">
+        <field name="name">Familia: ver todas</field>
+        <field name="model_id" ref="familia.model_familia"/>
+        <field name="groups" eval="[(4, ref('group_familia_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <!-- Reglas de acceso para el modelo 'familia.miembro' -->
+    <record id="familia_miembro_rule" model="ir.rule">
+        <field name="name">Miembro de Familia: ver todos</field>
+        <field name="model_id" ref="familia.model_familia_miembro"/>
+        <field name="groups" eval="[(4, ref('group_familia_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+</odoo>

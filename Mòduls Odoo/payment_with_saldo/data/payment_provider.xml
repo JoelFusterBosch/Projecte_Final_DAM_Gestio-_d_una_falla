@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+
+        <record id="payment_provider_saldo" model="payment.provider">
+            <field name="name">Pago con saldo</field>
+            <field name="code">custom</field>  <!-- ✅ Usamos 'custom' en lugar de 'saldo' -->
+            <field name="state">enabled</field>
+            <field name="fees_active">False</field>
+            <field name="color">5</field>
+            <field name="custom_mode">wire_transfer</field> <!-- ✅ Necesario para que funcione con 'custom' -->
+        </record>
+
+    </data>
+</odoo>

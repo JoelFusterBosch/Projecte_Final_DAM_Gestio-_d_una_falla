@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_event_event_family_manager,event.event,model_event_event,base.group_user,1,1,1,0
+access_event_event_family_system,event.event,model_event_event,base.group_system,1,1,1,0
+access_event_registration_family,event.registration,model_event_registration,base.group_user,1,1,1,1
+access_event_registration_family_system,event.registration,model_event_registration,base.group_system,1,1,1,1
+access_event_event_ticket_family,event.event.ticket,model_event_event_ticket,base.group_user,1,1,1,0
+access_event_event_ticket_family_system,event.event.ticket,model_event_event_ticket,base.group_system,1,1,1,0
+access_ir_sequence_group_system,ir.sequence,base.model_ir_sequence,base.group_system,1,1,1,0
+access_ir_sequence_group_user,ir.sequence,base.model_ir_sequence,base.group_user,1,1,1,0
+access_ir_sequence_public_user,ir.sequence,base.model_ir_sequence,base.group_public,1,1,0,0
+access_sale_order_user,sale.order,model_sale_order,base.group_user,1,1,1,1

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_familia_manager,familia.manager,familia.model_familia,group_familia_manager,1,1,1,1
+access_miembro_familia_manager,miembro_familia.manager,familia.model_familia_miembro,group_familia_manager,1,1,1,1
+access_miembro_familia_admin,miembro_familia.admin,familia.model_familia_miembro,base.group_system,1,1,1,1

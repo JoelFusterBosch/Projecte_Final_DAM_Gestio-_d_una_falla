@@ -1,0 +1,42 @@
+<odoo>
+    <template id="payment_checkout_template" name="Payment Checkout" inherit_id="payment.checkout">
+        <xpath expr="//form[hasclass('o_payment_form')]" position="replace">
+            <form name="o_payment_checkout" class="o_payment_form mt-3 clearfix" 
+                  action="/shop/payment/validate" method="post"
+                  t-att-data-order-id="order.id if order else ''"
+                  t-att-data-reference-prefix="reference_prefix"
+                  t-att-data-amount="amount"
+                  t-att-data-currency-id="currency and currency.id"
+                  t-att-data-partner-id="partner_id"
+                  t-att-data-access-token="access_token"
+                  t-att-data-transaction-route="transaction_route"
+                  t-att-data-landing-route="landing_route"
+                  t-att-data-allow-token-selection="True">
+
+                <!-- Input ocult per a passar el payment_option_id directament com "20" -->
+                <!-- <input type="hidden" name="payment_option_id" value="20"/>-->
+                <input type="hidden" name="payment_option_id" t-att-value="default_payment_option_id or 'saldo'"/>
+
+                
+                <t t-if="order and order.id">
+                <input type="hidden" name="order_id" t-att-value="order.id"/>
+                </t>
+
+
+                <!-- Opció única de pagament amb saldo -->
+                <div class="o_payment_option">
+                    <label>
+                        <input type="checkbox" id="payment_saldo" name="o_payment_checkbox" value="20" checked="checked"/>
+                        <strong>Pagament amb saldo</strong>
+                    </label>
+                </div>
+
+                <!-- Botó de pagament -->
+                <t t-call="payment.footer">
+                    <t t-set="label">Pagar</t>
+                    <t t-set="icon_class" t-value="'fa-lock'"/>
+                </t>
+            </form>
+        </xpath>
+    </template>
+</odoo>

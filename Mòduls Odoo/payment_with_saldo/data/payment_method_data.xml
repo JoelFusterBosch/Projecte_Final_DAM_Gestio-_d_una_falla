@@ -1,0 +1,9 @@
+<odoo>
+    <data noupdate="1">
+        <record id="payment_method_saldo" model="account.payment.method">
+            <field name="name">{'ca_ES': 'Pagament amb saldo', 'en_US': 'Pago con saldo'}</field>
+            <field name="code">saldo</field>
+            <field name="payment_type">inbound</field>  <!-- Per a pagaments rebuts -->
+        </record>
+    </data>
+</odoo>

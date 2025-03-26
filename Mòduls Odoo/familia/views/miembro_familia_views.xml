@@ -1,0 +1,42 @@
+<odoo>
+    <!-- Vista en Árbol para Miembros de la Familia -->
+    <record id="view_miembro_familia_tree" model="ir.ui.view">
+        <field name="name">miembro.familia.tree</field>
+        <field name="model">familia.miembro</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="partner_id"/>
+                <field name="familia_id"/>
+                <field name="limite_gasto"/>
+                <field name="es_administrador"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista en Formulario para Miembros de la Familia -->
+    <record id="view_miembro_familia_form" model="ir.ui.view">
+        <field name="name">miembro.familia.form</field>
+        <field name="model">familia.miembro</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="familia_id"/>
+                        <field name="limite_gasto"/>
+                        <!-- <field name="clave" password="True"/> -->
+                        <field name="es_administrador"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción para listar Miembros de la Familia -->
+    <record id="action_miembros_familia" model="ir.actions.act_window">
+        <field name="name">Miembros de la Familia</field>
+        <field name="res_model">familia.miembro</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_miembro_familia_tree"/>
+    </record>
+</odoo>
