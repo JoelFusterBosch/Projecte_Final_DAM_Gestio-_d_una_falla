@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+
+        <!-- ✅ Crear el método de pago "Pago con saldo" -->
+        <record id="payment_method_saldo" model="account.payment.method">
+            <field name="name">Pago con saldo</field>
+            <field name="code">saldo</field>
+            <field name="payment_type">inbound</field> <!-- inbound = pago entrante -->
+        </record>
+
+        <!-- ✅ Crear la línea de método de pago con la relación correcta -->
+        <record id="payment_method_line_saldo" model="account.payment.method.line">
+            <field name="name">Pago con saldo</field>
+            <field name="payment_method_id" ref="payment_method_saldo"/>
+            <field name="provider_id" ref="payment_provider_saldo"/>  <!-- 🔹 Asegurar que esto persista -->
+        </record>
+
+    </data>
+</odoo>

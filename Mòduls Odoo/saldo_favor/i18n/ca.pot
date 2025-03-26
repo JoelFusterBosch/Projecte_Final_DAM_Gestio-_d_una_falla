@@ -1,0 +1,158 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* saldo_favor
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0-20240730\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-09 16:09+0000\n"
+"PO-Revision-Date: 2024-08-09 16:09+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: saldo_favor
+#: model:ir.model.fields,field_description:saldo_favor.field_sale_order__aplicar_saldo_a_favor
+msgid "Aplicar Saldo a Favor"
+msgstr ""
+
+#. module: saldo_favor
+#: model_terms:ir.ui.view,arch_db:saldo_favor.view_saldo_favor_wizard_form
+msgid "Cancelar"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_receipt__partner_id
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_wizard__partner_id
+#: model_terms:ir.ui.view,arch_db:saldo_favor.view_partner_tree_saldo_favor
+msgid "Cliente"
+msgstr ""
+
+#. module: saldo_favor
+#: model_terms:ir.ui.view,arch_db:saldo_favor.view_saldo_favor_wizard_form
+msgid "Confirmar"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model,name:saldo_favor.model_res_partner
+msgid "Contact"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.ui.menu,name:saldo_favor.menu_saldo_favor_root
+msgid "Control de Saldo"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_receipt__create_uid
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_wizard__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_receipt__create_date
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_wizard__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_receipt__display_name
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_wizard__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_receipt__date
+msgid "Fecha"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_receipt__id
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_wizard__id
+msgid "ID"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.actions.act_window,name:saldo_favor.action_saldo_favor_wizard
+#: model:ir.ui.menu,name:saldo_favor.menu_saldo_favor_wizard
+msgid "Ingresar Saldo"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model,name:saldo_favor.model_saldo_favor_wizard
+#: model_terms:ir.ui.view,arch_db:saldo_favor.view_saldo_favor_wizard_form
+msgid "Ingreso de Saldo a Favor"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.actions.act_window,name:saldo_favor.action_saldo_favor_receipt
+#: model:ir.ui.menu,name:saldo_favor.menu_saldo_favor_receipts
+msgid "Ingresos Realizados"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model,name:saldo_favor.model_account_move
+msgid "Journal Entry"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_receipt____last_update
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_wizard____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_receipt__write_uid
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_wizard__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_receipt__write_date
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_wizard__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.actions.act_window,name:saldo_favor.action_saldo_favor_list
+#: model:ir.ui.menu,name:saldo_favor.menu_saldo_favor_list
+msgid "Lista de Clientes y Saldos"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_receipt__amount
+#: model:ir.model.fields,field_description:saldo_favor.field_saldo_favor_wizard__amount
+msgid "Monto"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model,name:saldo_favor.model_saldo_favor_receipt
+#: model_terms:ir.ui.view,arch_db:saldo_favor.view_saldo_favor_receipt_form
+msgid "Recibo de Saldo a Favor"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model.fields,field_description:saldo_favor.field_res_partner__saldo_a_favor
+#: model:ir.model.fields,field_description:saldo_favor.field_res_users__saldo_a_favor
+#: model_terms:ir.ui.view,arch_db:saldo_favor.view_partner_tree_saldo_favor
+msgid "Saldo a Favor"
+msgstr ""
+
+#. module: saldo_favor
+#: model:res.groups,name:saldo_favor.group_saldo_favor_manager
+msgid "Saldo a Favor Manager"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model.fields,field_description:saldo_favor.field_sale_order__saldo_a_favor_cliente
+msgid "Saldo a Favor del Cliente"
+msgstr ""
+
+#. module: saldo_favor
+#: model:ir.model,name:saldo_favor.model_sale_order
+msgid "Sales Order"
+msgstr ""

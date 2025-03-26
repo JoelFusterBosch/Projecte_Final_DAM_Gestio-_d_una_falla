@@ -1,0 +1,10 @@
+<odoo>
+    <template id="saldo_insufficient" name="Saldo Insuficiente">
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Saldo Insuficiente</h4>
+            <p>Lo sentimos, no tienes suficiente saldo para completar este pago.</p>
+            <hr/>
+            <a href="/shop" class="btn btn-primary">Volver a la tienda</a>
+        </div>
+    </template>
+</odoo>

@@ -1,0 +1,29 @@
+<odoo>
+    <!-- Modificamos la vista de árbol para no permitir la creación de nuevos recibos -->
+    <record id="view_saldo_favor_receipt_tree" model="ir.ui.view">
+        <field name="name">saldo.favor.receipt.tree</field>
+        <field name="model">saldo.favor.receipt</field>
+        <field name="arch" type="xml">
+            <tree create="false"> <!-- Deshabilitar creación de nuevos registros -->
+                <field name="partner_id"/>
+                <field name="amount"/>
+                <field name="date"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Modificamos la vista de formulario para no permitir la creación ni edición de recibos -->
+    <record id="view_saldo_favor_receipt_form" model="ir.ui.view">
+        <field name="name">saldo.favor.receipt.form</field>
+        <field name="model">saldo.favor.receipt</field>
+        <field name="arch" type="xml">
+            <form string="Recibo de Saldo a Favor" create="false" edit="false" delete="false">
+                <group>
+                    <field name="partner_id"/>
+                    <field name="amount"/>
+                    <field name="date"/>
+                </group>
+            </form>
+        </field>
+    </record>
+</odoo>

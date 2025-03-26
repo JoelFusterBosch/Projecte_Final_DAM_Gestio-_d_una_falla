@@ -1,0 +1,17 @@
+<odoo>
+    <record id="view_event_registration_tree_inherit_family" model="ir.ui.view">
+        <field name="name">event.registration.tree.inherit.family</field>
+        <field name="model">event.registration</field>
+        <field name="inherit_id" ref="event.view_event_registration_tree"/>
+        <field name="arch" type="xml">
+            <!-- Modificar para usar 'ticket_id' en lugar de 'event_ticket_id' -->
+            <xpath expr="//tree/field[@name='event_ticket_id']" position="replace">
+                <field name="ticket_id" string="Tipo de Ticket"/>
+            </xpath>
+            <xpath expr="//tree/field[@name='ticket_id']" position="after">
+                <field name="ticket_qty" string="Cantidad de Tickets"/>
+                <field name="price_total" string="Precio Total"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,8 @@
+<odoo>
+    <template id="payment_success" name="Payment Success">
+        <div class="oe_structure">
+            <h2>Pago completado con éxito</h2>
+            <p>Gracias por usar el método de pago con saldo.</p>
+        </div>
+    </template>
+</odoo>

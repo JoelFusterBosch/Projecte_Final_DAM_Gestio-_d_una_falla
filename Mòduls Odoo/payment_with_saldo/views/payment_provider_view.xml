@@ -1,0 +1,8 @@
+<odoo>
+    <record id="payment_provider_saldo" model="payment.provider">
+        <field name="name">Pago con saldo</field>
+        <field name="state">enabled</field>
+        <field name="fees_active">False</field>
+        <field name="color">5</field>
+    </record>
+</odoo>

@@ -1,0 +1,40 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Grupo de Usuarios para Gestión de Saldo a Favor -->
+        <record id="group_saldo_favor_manager" model="res.groups">
+            <field name="name">Saldo a Favor Manager</field>
+            <field name="category_id" ref="base.module_category_sales"/>
+        </record>
+
+        <!-- Permisos de Acceso para el Grupo -->
+        <record id="access_res_partner_saldo_manager" model="ir.model.access">
+            <field name="name">res.partner.saldo.manager</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="group_id" ref="saldo_favor.group_saldo_favor_manager"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <record id="access_sale_order_saldo_manager" model="ir.model.access">
+            <field name="name">sale.order.saldo.manager</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="group_id" ref="saldo_favor.group_saldo_favor_manager"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <record id="access_account_move_saldo_manager" model="ir.model.access">
+            <field name="name">account.move.saldo.manager</field>
+            <field name="model_id" ref="account.model_account_move"/>
+            <field name="group_id" ref="saldo_favor.group_saldo_favor_manager"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,37 @@
+<odoo>
+    <!-- Acción para mostrar la lista de clientes con su saldo -->
+    <record id="action_saldo_favor_list" model="ir.actions.act_window">
+        <field name="name">Lista de Clientes y Saldos</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('saldo_a_favor', '>', 0)]</field>
+        <field name="view_id" ref="view_partner_tree_saldo_favor"/> <!-- Apunta a la vista personalizada -->
+    </record>
+
+    <!-- Cambiamos el nombre del menú principal -->
+    <menuitem id="menu_saldo_favor_root" name="Control de Saldo" sequence="10" action="action_saldo_favor_list"/>
+
+    <!-- Menú para la lista de clientes con su saldo -->
+    <menuitem id="menu_saldo_favor_list" name="Lista de Clientes y Saldos" parent="menu_saldo_favor_root" action="action_saldo_favor_list" sequence="15"/>
+
+    <!-- Acción para abrir el wizard de ingreso de saldo -->
+    <record id="action_saldo_favor_wizard" model="ir.actions.act_window">
+        <field name="name">Ingresar Saldo</field>
+        <field name="res_model">saldo.favor.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menú para el wizard de ingreso de saldo -->
+    <menuitem id="menu_saldo_favor_wizard" name="Ingresar Saldo" parent="menu_saldo_favor_root" action="action_saldo_favor_wizard" sequence="10"/>
+
+    <!-- Acción para la vista de recibos de saldo -->
+    <record id="action_saldo_favor_receipt" model="ir.actions.act_window">
+        <field name="name">Ingresos Realizados</field>
+        <field name="res_model">saldo.favor.receipt</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Menú para los ingresos realizados -->
+    <menuitem id="menu_saldo_favor_receipts" name="Ingresos Realizados" parent="menu_saldo_favor_root" action="action_saldo_favor_receipt" sequence="20"/>
+</odoo>

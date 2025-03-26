@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_event_ticket_form_inherit_max_faller" model="ir.ui.view">
+        <field name="name">event.event.ticket.form.inherit.max.faller</field>
+        <field name="model">event.event.ticket</field>
+        <field name="inherit_id" ref="event.event_event_ticket_view_tree_from_event"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='product_id']" position="after">
+                <field name="max_faller" string="Màxim Fallers"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

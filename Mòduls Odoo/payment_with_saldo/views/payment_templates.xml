@@ -1,0 +1,15 @@
+<odoo>
+    <template id="payment_saldo_button" inherit_id="website_sale.payment">
+        <xpath expr="//div[@id='payment_method']" position="inside">
+            <t t-if="order">
+                <form action="/payment/saldo/checkout" method="post">
+                    <input type="hidden" name="order_id" t-att-value="order.id"/>
+                    <button type="submit" class="btn btn-primary">Pagar con Saldo</button>
+                </form>
+            </t>
+            <t t-else="">
+                <p>Error: El pedido no está disponible.</p>
+            </t>
+        </xpath>
+    </template>
+</odoo>

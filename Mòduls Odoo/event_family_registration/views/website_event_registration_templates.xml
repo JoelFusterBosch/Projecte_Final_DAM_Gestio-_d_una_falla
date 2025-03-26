@@ -1,0 +1,34 @@
+<odoo>
+    <!-- Heredar la plantilla del botón de registro -->
+    <template id="custom_event_registration_button" inherit_id="website_event.registration_template">
+        <!-- Modificar el botón de registro existente -->
+        <xpath expr="//button[contains(@class, 'a-submit')]" position="replace">
+            <button type="button" class="btn btn-primary register-btn"
+                    t-att-data-partner-id="request.env.user.id"
+                    t-att-data-event-id="event.id">Registrar</button>
+        </xpath>
+    </template>
+
+    <!-- Heredar la plantilla del formulario de registro -->
+    <template id="custom_event_registration_form" inherit_id="website_event.registration_template">
+        <!-- Modificar la selección de tickets existente -->
+        <xpath expr="//*[@id='o_wevent_tickets_collapse']//div[contains(@class, 'o_wevent_ticket_selector')]" position="replace">
+            <!-- Aquí reemplazamos la estructura de tickets existente para evitar duplicaciones -->
+            <div id="ticket_selection" style="padding: 10px;">
+                <!-- Iterar sobre los tickets disponibles -->
+                <t t-foreach="event.ticket_ids" t-as="ticket">
+                    <div class="form-group row" style="margin-bottom: 10px;">
+                        <label class="col-10 col-form-label" for="ticket_#{ticket.id}">
+                            <t t-esc="ticket.name"/> - <t t-esc="'%.2f €' % ticket.price"/>
+                        </label>
+                        <div class="col-2">
+                            <input type="number" class="form-control form-control-sm ticket-quantity"
+                                   t-att-id="'ticket_' + str(ticket.id) if ticket.id else ''"
+                                   t-att-data-ticket-id="ticket.id" value="0" min="0"/>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>
