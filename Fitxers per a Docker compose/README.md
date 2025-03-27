@@ -1,13 +1,13 @@
 # Guia per a instal·lar "Docker Compose" Ubuntu Server 22.04.4
-Faig aquesta guia per a que pugau instal·lar el `Docker Compose` sense ninguna complicació a través d'aquest README.
+Faig aquesta guia perquè pugueu instal·lar el `Docker Compose` sense cap complicació a través d'este README.
 ## 1.Conectar ssh tant en Windows com en Linux(Ubuntu):
 
-### 1.1.Actualitzar els paquets:
-Abans de fer res actualtizarem tots els paquets per si algo ix mal:
+### 1.1. Actualitzar els paquets:
+Abans de fer res actualitzarem tots els paquets per si algo ix mal:
 - ```plaintext
     sudo apt update && sudo apt upgrade -y
     ```
-- ### 1.2.Instal·lar ssh 
+- ### 1.2. Instal·lar ssh 
  - Windows (PowerShell)
     ```plaintext
     Get-Service -Name ssh-agent
@@ -16,7 +16,7 @@ Abans de fer res actualtizarem tots els paquets per si algo ix mal:
     ```plaintext
     sudo apt install ssh
     ```
-### 1.3.Saber de l'estat de ssh
+### 1.3. Saber de l'estat de ssh
  - Windows (PowerShell)
     ```plaintext
     Get-Service -Name ssh-agent
@@ -25,7 +25,7 @@ Abans de fer res actualtizarem tots els paquets per si algo ix mal:
     ```plaintext
     sudo sytemctl status ssh
     ```
-### 1.4.Activar-lo tant de forma manual tant com de forma automàtica
+### 1.4. Activar-lo tant de forma manual tant com de forma automàtica
 #### 1.4.1 Activar-lo de forma manual
  - Windows (PowerShell)
     ```plaintext
@@ -44,7 +44,7 @@ Abans de fer res actualtizarem tots els paquets per si algo ix mal:
     ```plaintext
     sudo systemctl enable --now ssh
     ```
-## 2.Instal·lació de Docker
+## 2. Instal·lació de Docker
 ### 2.1 Instal·lació de Docker i els seus complements
 Instal·lar Docker:
  - ```plaintext
@@ -54,7 +54,7 @@ Instal·lar els complements:
  - ```plaintext
     sudo apt install docker-compose-plugin
     ```
-Ara necessitarem agregar el repositori oficial de Docker per a que funcione bé el Docker Compose
+Ara necessitarem agregar el repositori oficial de Docker perquè funcione bé el Docker Compose.
  - ```plaintext
     sudo apt remove docker docker-engine docker.io containerd runc
     ```
@@ -85,7 +85,7 @@ Ara instal·larem "Docker Compose"
     sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     ```
 ### 2.2 Preparació per a executar el fitxer "docker-compose.yaml"
-Primer que tot necesitarem scp (Secure Copy), un comand que ens permeteix enviar fitxers d'un ordinador a l'altre, ixí es com s'instal·la:
+Primer que tot necessitarem scp (Secure Copy), un comand que ens permet enviar fitxers d'un ordinador a l'altre, així és com s'instal·la:
  - Windows (PowerShell)
     ```plaintext
     Add-WindowsCapability -Online -Name OpenSSH.Client~~~~0.0.1.0
@@ -103,20 +103,20 @@ Ara que ja ho tenim tot instal·lat procedirem a copiar els mòduls a la màquin
     ```plaintext
     scp /ruta/del/arxiu/docker-compose.yaml usuariServidor@ipServidor:/home/usuariServidor/
     ```
-Ara necessitem tindre una carpeta anomenada `dev_addons` dins de la màquina virtual i posar els mòduls dins d'aquesta per a que a l'hora d'executar el "docker-compose.yaml" no ens done un error.
+Ara necessitem tindre una carpeta anomenada `dev_addons` dins de la màquina virtual i posar els mòduls dins d'esta perquè a l'hora d'executar el "docker-compose.yaml" no ens done un error.
  - ```plaintext
    mv nomDirectori /home/usuari/dev_addons
    ```
-Ara necessitem cambiar la extensió del fitxer `Dockerfile.txt` a `Dockerfile` per a que no ens done error.
+Ara necessitem canviar l'extensió del fitxer `Dockerfile.txt` a `Dockerfile` perquè no ens done error.
  - ```plaintext
    mv Dockerfile.txt Dockerfile
    ```
 ### 2.3 Execució del "docker-compose.yaml"
-**(Opcional)** Pots fer que el teu usuari siga del grup Docker per a no tindre que gastar "sudo" cada vegada:
+**(Opcional)** Pots fer que el teu usuari siga del grup Docker per a no haver de gastar "sudo" cada vegada:
  - ```plaintext
    sudo usermod -aG docker UsuariServidor
    ```
-Recorda cambiar `UsuariServidor` per el nom del teu usuari de la màquina virtual.
+Recorda canviar `UsuariServidor` pel nom del teu usuari de la màquina virtual.
  - ```plaintext
    su UsuariServidor
    ```
@@ -125,11 +125,20 @@ Abans d'executar res necessitem activar el docker:
  - ```plaintext
    sudo systemctl start docker
    ```
-I si vols que s'inicie de forma automàtica quan encenges l'equip executa el següent:
+I si vols que s'inicie de forma automàtica quan encengues l'equip executa el següent:
  - ```plaintext
    sudo systemctl enable docker 
    ```
-I per últim execute el `docker-compose.yaml`:
+I per últim executa el `docker-compose.yaml`:
  - ```plaintext
    sudo docker compose up -d --build
    ```
+I si ix tot bé ja tindràs l'Odoo en Docker Compose, l'únic que hauras de fer és:
+ - ```plaintext
+   sudo docker ps
+   ```
+Per a veure si esta executant, si no veus el teu contenidor o simplement en `status` està `stopped` i no `up` executa el següent comand:
+ - ```plaintext
+   sudo docker start <nom del contenidor>
+   ```
+Sols canvia `nom del contenidor` pel nom o id del contenidor de docker que el pots veure igualment amb `docker ps` en el apartat de `Container id` o `name`.

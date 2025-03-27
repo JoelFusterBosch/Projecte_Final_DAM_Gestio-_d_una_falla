@@ -4,7 +4,7 @@
     'category': 'Accounting',
     'summary': 'Method of payment that checks client saldo before payment',
     'description': 'Adds a payment method that only processes the payment if the client has enough saldo.',
-    'depends': ['payment', 'account', 'saldo_favor', 'familia'],
+    'depends': ['payment', 'account', 'saldo_favor', 'familia', 'sale_order'],
     'data': [
     'security/ir.model.access.csv',
     'views/account_payment_view.xml',
