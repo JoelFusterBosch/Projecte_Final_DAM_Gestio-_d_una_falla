@@ -1,78 +1,78 @@
-# Módulo de Odoo: Gestión de Familias
+# Mòdul d'Odoo: Gestió de Famílies
 
 <p align="center">
-  <img src="static/description/icon.png" alt="Icono del Módulo">
+  <img src="static/description/icon.png" alt="Icona del Módulo Família" width="400">
 </p>
 
-## Descripción
+## Descripció
 
-El módulo **Familia** para Odoo 16, desarrollado por **JB Talens**, permite gestionar clientes como unidades familiares, facilitando la administración de sus saldos y relaciones. Este módulo es ideal para negocios que manejan grupos de clientes como familias y requieren un control centralizado de los saldos familiares.
+El mòdul **Família** per a Odoo 16, desenvolupat per **JB Talens**, permet gestionar clients com a unitats familiars, facilitant l'administració dels seus saldos i relacions. Este mòdul és ideal per a negocis que manegen grups de clients com famílies i requerixen un control centralitzat dels saldos familiars.
 
-### Características principales
+### Característiques principals
 
-- **Gestión de Familias**: Agrupa a varios clientes como miembros de una familia, permitiendo la gestión conjunta de sus saldos.
-- **Control de Saldo Total**: El saldo total de la familia se gestiona automáticamente, sumando el saldo de cada miembro al añadirse y ajustando el saldo al eliminar un miembro.
-- **Restricciones de Membresía**: Un cliente solo puede pertenecer a una familia a la vez, garantizando la coherencia en la gestión de saldos.
-- **Interfaz de Usuario Personalizada**: Incluye vistas y menús específicos para facilitar la gestión de familias y miembros dentro de Odoo.
-- **Seguridad**: Configuración de seguridad específica para gestionar el acceso y los permisos dentro del módulo.
+- **Gestió de Famílies**: Agrupa a diversos clients com a membres d'una família, permitent la gestió conjunta dels seus saldos.
+- **Control de Saldo Total**: El saldo total de la família es gestiona automàticament, sumant el saldo de cada membre a l'afegir-se i ajustant el saldo a l'eliminar un membre.
+- **Restriccions de Membresia**: Un client sols pot pertànyer a una família a la vegada, garantint la coherència en la gestió de saldos.
+- **Interfície d'Usuari Personalitzada**: Inclou vistes i menús específics per a facilitar la gestió de famílies i membres dins d'Odoo.
+- **Seguretat**: Configuració de seguretat específica per a gestionar l'accés i els permisos dins del mòdul.
 
-## Requisitos Previos
+## Requisits Previs
 
 - **Odoo 16.0 o superior**
-- **Módulos de CRM y Ventas**: Los módulos de CRM y ventas deben estar instalados.
-- **Módulo saldo_favor**: Módulo personalizado para gestionar los saldos a favor de los clientes. Puedes encontrarlo en [saldo_favor](https://github.com/juatafe/saldo_favor).
+- **Mòduls de CRM y Vendes**: Els mòduls de CRM i vendes han d'estar instal·lats.
+- **Mòdul Saldo a Favor**: Mòdul personalitzat per a gestionar els saldos a favor dels clients. Pots trobar-lo en [saldo_favor](https://github.com/JoelFusterBosch/Projecte_Final_DAM_Gesti-_d_una_falla/tree/main/M%C3%B2duls%20Odoo/saldo_favor /ruta/a/odoo/addons/saldo_favor).
 
-## Instalación
+## Instal·lació
 
-Para instalar el módulo **Familia**, sigue estos pasos:
+Per a instal·lar el mòdul **Família**, seguix estos passos:
 
-1. **Clonar el repositorio**:
+1. **Clonar el repositori**:
    ```bash
-   git clone https://github.com/juatafe/familia.git
+   git clone https://github.com/JoelFusterBosch/Projecte_Final_DAM_Gesti-_d_una_falla/tree/main/M%C3%B2duls%20Odoo/saldo_favor /ruta/a/odoo/addons/familia
 
 
-### Copiar el módulo en la carpeta de módulos de Odoo:
+### Copiar el mòdul en la carpeta de mòduls d'Odoo:
 
 ```bash
-cp -R familia /ruta/a/odoo/addons/
+cp -R familia /ruta/a/odoo/dev_addons/
 
 ```
 
-## Actualizar la lista de aplicaciones
+## Actualitzar la llista de aplicacions
 
-Ve a la interfaz de Odoo > `Apps` > `Actualizar la lista de módulos`.
+Ves a la interfície d'Odoo > `Apps` > `Actualitzar la llista de mòduls`.
 
-## Instalar el módulo
+## Instal·lar el mòdul
 
-Busca "Familia" en la lista de aplicaciones disponibles y haz clic en `Instalar`.
+Busca "Família" en la llista d'aplicacions disponibles i fes clic en `Instal·lar`.
 
-## Uso
+## Ús
 
-### Configuración Inicial
+### Configuració Inicial
 
-- **Crear Familias**: Accede al menú `Familias` y crea nuevas familias.
-- **Añadir Miembros**: Agrega miembros existentes (clientes) a las familias creadas.
-- **Gestionar Saldos**: El saldo total de la familia se actualizará automáticamente al añadir nuevos miembros.
+- **Crear Famílies**: Accedeix al menú `Famílies` i crea noves famílies.
+- **Afegir Membres**: Afegix membres existents (clients) a les famílies creades.
+- **Gestionar Saldos**: El saldo total de la família s'actualitzara automàticament a l'afegir nous membres.
 
-### Gestión de Familias
+### Gestió de Famílies
 
-- **Ver Familias**: Consulta la lista de familias y sus detalles, incluidos los saldos y los miembros asociados.
-- **Eliminar Miembros**: Al eliminar un miembro, su saldo se restablecerá a cero y se desvinculará de la familia.
+- **Vore Famílies**: Consulta la llista de famílies i els seus detalls, inclosos els saldos i els membres associats.
+- **Eliminar Membres**: A l'eliminar un membre, el seu saldo es restablira a zero i es desvinculara de la família.
 
-## Seguridad
+## Seguretat
 
-Este módulo incluye reglas de seguridad personalizadas definidas en:
+Este mòdul inclou regles de seguretat personalitzades definides en:
 
 - `security/familia_security.xml`
 - `security/ir.model.access.csv`
 
-Estas reglas controlan el acceso a las diferentes vistas y operaciones dentro del módulo, asegurando que solo los usuarios autorizados puedan gestionar familias y miembros.
+Estes regles controlen l'accés a les diferents vistes i operacions dins del mòdul, assegurant que sols els usuaris autoritzats puguen gestionar famílies i membres.
 
-En el módulo **Familia** de Odoo, se definen reglas de acceso y grupos de usuarios que controlan qué acciones pueden realizar ciertos usuarios en los modelos específicos del módulo. A continuación se explica cómo se configuran estos elementos.
+En el mòdul **Família** d'Odoo, es definixen regles d'accés i grups d'usuaris que controlen que accions poden realitzar certs usuaris en els models específics del mòdul. A continuació s'explica com es configuren estos elements.
 
-### Grupos de Usuarios
+### Grups d'Usuaris
 
-Los grupos de usuarios en Odoo se utilizan para organizar y asignar permisos a los usuarios. En el módulo **Familia**, se ha creado un grupo específico llamado **Familia Manager**:
+Els grups d'usuaris en Odoo s'utilitzen per a organitzar i assignar permisos als usuaris. En el mòdul **Família**, s'ha creat un grup específic anomenat **Família Manager**:
 
 ```xml
 <record id="group_familia_manager" model="res.groups">
@@ -81,19 +81,19 @@ Los grupos de usuarios en Odoo se utilizan para organizar y asignar permisos a l
 </record>
 
 ```
-### Grupo de Usuarios: Familia Manager
+### Grups d'Usuaris: Família Manager
 
-- **id**: `group_familia_manager` — Identificador único del grupo.
-- **name**: `Familia Manager` — Nombre del grupo.
-- **category_id**: `base.module_category_sales` — Categoría del grupo dentro de Odoo, en este caso se clasifica bajo la categoría de Ventas.
+- **id**: `group_familia_manager` — Identificador únic del grup.
+- **name**: `Familia Manager` — Nom del grup.
+- **category_id**: `base.module_category_sales` — Categoria del grup dins d'Odoo, en este cas es classifica baix la categoria de Vendes.
 
-Este grupo se utilizará para asignar permisos específicos sobre los modelos del módulo **Familia**.
+Este grup s'utilitzara per a assignar permisos específics sobre els models del mòdul **Família**.
 
-### Reglas de Acceso
+### Regles d'Accés
 
-Las reglas de acceso en Odoo determinan qué registros puede ver, crear, modificar o eliminar un usuario en un modelo específico. Aquí se muestran las reglas de acceso definidas para el módulo **Familia**.
+Les regles d'accés en Odoo determinen que registres es poden veure, crear, modificar o eliminar un usuari en un model específic. Ací es mostren les regles d'accés definides per al mòdul **Família**.
 
-#### Regla de Acceso para el Modelo `familia`
+#### Regla d'Accés per al Model `familia`
 
 
 ```xml
@@ -104,15 +104,15 @@ Las reglas de acceso en Odoo determinan qué registros puede ver, crear, modific
     <field name="domain_force">[(1, '=', 1)]</field>
 </record>
 ```
-- **id**: `familia_familia_rule` — Identificador único de la regla.
-- **name**: `Familia: ver todas` — Nombre de la regla de acceso.
-- **model_id**: `familia.model_familia` — Especifica que la regla se aplica al modelo `familia`.
-- **groups**: `group_familia_manager` — Define que esta regla se aplica al grupo `Familia Manager`.
-- **domain_force**: `[(1, '=', 1)]` — Permite el acceso a todos los registros del modelo `familia`.
+- **id**: `familia_familia_rule` — Identificador únic de la regla.
+- **name**: `Familia: ver todas` — Nom de la regla d'accés.
+- **model_id**: `familia.model_familia` — Específica que la regla s'aplica al model `familia`.
+- **groups**: `group_familia_manager` — Defineix que esta regla s'aplica al grup `Familia Manager`.
+- **domain_force**: `[(1, '=', 1)]` — Permet l'accés a tots els registres del model `familia`.
 
-Esta regla asegura que los usuarios del grupo **Familia Manager** puedan ver todos los registros del modelo `familia`.
+Esta regla assegura que els usuaris del grup **Família Manager** puguen veure tots els registres del model `familia`.
 
-#### Regla de Acceso para el Modelo `familia.miembro`
+#### Regla d'Accés per al Model `familia.miembro`
 
 ```xml
 <record id="familia_miembro_rule" model="ir.rule">
@@ -123,17 +123,17 @@ Esta regla asegura que los usuarios del grupo **Familia Manager** puedan ver tod
 </record>
 ```
 
-- **id**: `familia_miembro_rule` — Identificador único de la regla.
-- **name**: `Miembro de Familia: ver todos` — Nombre de la regla de acceso.
-- **model_id**: `familia.model_familia_miembro` — Especifica que la regla se aplica al modelo `familia.miembro`.
-- **groups**: `group_familia_manager` — Define que esta regla se aplica al grupo `Familia Manager`.
-- **domain_force**: `[(1, '=', 1)]` — Permite el acceso a todos los registros del modelo `familia.miembro`.
+- **id**: `familia_miembro_rule` — Identificador únic de la regla.
+- **name**: `Miembro de Familia: ver todos` — Nom de la regla d'accés.
+- **model_id**: `familia.model_familia_miembro` — Específica que la regla s'aplica al model `familia.miembro`.
+- **groups**: `group_familia_manager` — Definix que esta regla s'aplica al grup `Familia Manager`.
+- **domain_force**: `[(1, '=', 1)]` — Permet l'accés a tots els registres del model `familia.miembro`.
 
-Esta regla asegura que los usuarios del grupo **Familia Manager** puedan ver todos los registros del modelo `familia.miembro`.
+Esta regla assegura que els usuaris del grup **Familia Manager** puguen veure tots els registres del model `familia.miembro`.
 
-### Accesos Definidos en el Archivo `ir.model.access.csv`
+### Accessos Definits en el Fitxer `ir.model.access.csv`
 
-Además de las reglas de acceso, se definen permisos detallados en el archivo `ir.model.access.csv`:
+A més de les regles d'accés, es definixen permisos detallats en el fitxer `ir.model.access.csv`:
 
 ```
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
@@ -142,59 +142,98 @@ access_miembro_familia_manager,miembro_familia.manager,familia.model_familia_mie
 access_miembro_familia_admin,miembro_familia.admin,familia.model_familia_miembro,base.group_system,1,1,1,1
 
 ```
-- **access_familia_manager**: Permite al grupo `Familia Manager` leer, escribir, crear y eliminar registros en el modelo `familia`.
-- **access_miembro_familia_manager**: Permite al grupo `Familia Manager` leer, escribir, crear y eliminar registros en el modelo `familia.miembro`.
-- **access_miembro_familia_admin**: Permite al grupo de administración (`base.group_system`) realizar todas las operaciones en el modelo `familia.miembro`.
+- **access_familia_manager**: Permitix al grup `Familia Manager` llegir, escriure, crear i eliminar registres en el model `familia`.
+- **access_miembro_familia_manager**: Permet al grup `Familia Manager` llegir, escriure, crear i eliminar registres en el model `familia.miembro`.
+- **access_miembro_familia_admin**: Permet al grup d'administració (`base.group_system`) fer totes les operacions en el model `familia.miembro`.
 
-## Requisitos de Permisos
+## Requisits de Permisos
 
-Para gestionar el módulo **Familia** correctamente, es necesario que el usuario administrador esté incluido en el grupo **Familia Manager**. Este grupo tiene permisos específicos que permiten la administración completa de las funcionalidades del módulo.
+Per a gestionar el mòdul **Familia** correctament, és necessari que l'usuari administrador estiga inclòs en el grup **Familia Manager**. Este grup té permisos específics que permitixen l'administració completa de les funcionalitats del mòdul.
 
-### Incluir al Usuario Administrador en el Grupo Familia Manager
+### Incloure a l'Usuari Administrador en el Grup Familia Manager
 
-1. **Accede a la Configuración de Usuarios**:
-   - Ve a la interfaz de Odoo.
-   - Navega a `Configuración` > `Usuarios y Compañías` > `Usuarios`.
+1. **Accedix a la Configuració d'Usuaris**:
+   - Ves a la interfície d'Odoo.
+   - Navega a `Configuració` > `Usuaris i Companyies` > `Usuaris`.
 
-2. **Selecciona el Usuario Administrador**:
-   - Busca y selecciona el usuario `Administrador` o el usuario que desees añadir al grupo.
+2. **Selecciona a l'Usuari Administrador**:
+   - Busca i selecciona al usuari `Administrador` o a l'usuari que desitges afegir al grup.
 
-3. **Añadir el Usuario al Grupo Familia Manager**:
-   - Dentro de la configuración del usuario, desplázate a la sección de `Grupos`.
-   - Asegúrate de que el grupo **Familia Manager** esté seleccionado. Si no está, selecciónalo para añadir al usuario a este grupo.
+3. **Afegir a l'Usuari al Grup Familia Manager**:
+   - Dins de la configuració de l'usuari, desplaçat a la secció de `Grups`.
+   - Assegurat que el grup **Familia Manager** estiga seleccionat. Si no està, selecciona'l per a afegir a l'usuari a este grup.
 
-### Importancia del Grupo Familia Manager
+### Importància del Grup Familia Manager
 
-El grupo **Familia Manager** es crucial para el funcionamiento del módulo **Familia** porque otorga permisos para:
+El grup **Familia Manager** és crucial per al funcionament del mòdul **Família** perquè atorga permisos per a:
 
-- **Leer**: Visualizar registros de familias y miembros.
-- **Escribir**: Modificar registros existentes.
-- **Crear**: Añadir nuevos registros de familias y miembros.
-- **Eliminar**: Borrar registros de familias y miembros.
+- **Llegir**: Visualitzar registres de famílies i membres.
+- **Escriure**: Modificar registres existents.
+- **Crear**: Afegir nous registres de famílies i membres.
+- **Eliminar**: Borrar registres de famílies i membres.
 
-Solo los usuarios que formen parte de este grupo tendrán acceso completo a las funcionalidades administrativas del módulo **Familia**. Asegúrate de que el usuario administrador esté correctamente asignado a este grupo para evitar problemas de permisos.
+Sols els usuaris que formen part d'este grup tindran accés complet a les funcionalitats administratives del mòdul **Família**. Asegurat que l'usuari administrador estiga correctament assignat a este grup per a evitar problemes de permisos.
+
+```bash
+# Clone the repository into your addons directory
+git https://github.com/JoelFusterBosch/Projecte_Final_DAM_Gesti-_d_una_falla/tree/main/M%C3%B2duls%20Odoo/familia /ruta/a/odoo/addons/familia
 
 
 
-## Datos del Módulo
 
-- **Nombre**: Familia
-- **Versión**: 1.0
-- **Resumen**: Gestiona clientes como familias y miembros de la familia.
+familia/
+├── __init__.py
+├── __manifest__.py
+├── models/
+│   ├── __init__.py
+│   ├── familia.py
+│   ├── miembro_familia.py
+│   ├── res_partner_familia.py
+├── migrations/
+│   └── 10.0.1.0/
+│       ├── post-migration.xml
+├── views/
+│   ├── familia_menu.xml
+│   ├── familia_views.xml
+│   ├── miembro_familia_views.xml
+
+├── security/
+│   ├── familia_security.xml
+│   └── ir.model.access.csv
+├── static/
+│   └── description/
+│       ├── icon.png
+├── i18n/
+│   └── ca.po
+├── README.md
+└── LICENSE
+=======
+```
+
+```bash
+# Clone the repository into your addons directory
+git clone https://github.com/tu_usuario/tu_repositorio.git /ruta/a/odoo/addons/familia
+```
+
+## Dades del Mòdul
+
+- **Nom**: Familia
+- **Versió**: 1.0
+- **Resum**: Gestiona clients com families i membres de la família.
 - **Autor**: JB Talens
-- **Categoría**: Sales
-- **Imágenes**: 
-- **Dependencias**: `base`, `contacts`, `saldo_favor`
-- **Datos incluidos**:
+- **Categoria**: Sales
+- **Imagens**: 
+- **Dependencies**: `base`, `contacts`, `saldo_favor`
+- **Dades incluïdes**:
   - `security/familia_security.xml`
   - `security/ir.model.access.csv`
   - `views/familia_views.xml`
   - `views/miembro_familia_views.xml`
   - `views/familia_menu.xml`
-- **Instalable**: True
-- **Aplicación**: True
-- **Auto Instalación**: False
+- **Instal·lable**: True
+- **Aplicació**: True
+- **Auto Instal·lació**: False
 
-## Contribuciones
+## Contribucions
 
-Las contribuciones son bienvenidas. Si tienes ideas para mejoras, sugerencias o encuentras errores, por favor, abre un `issue` o envía un `pull request` en GitHub.
+Les contribucions són benvingudes. Si tens idees per a millores, suggerències o trobes errors, per favor, obri un `issue` o envia un `pull request` en GitHub.

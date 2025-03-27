@@ -1,47 +1,49 @@
-# Control de Saldo - Módulo Odoo
+# Control de Saldo - Mòdul d'Odoo
+<p align= "center">
+   <img src="static/description/icon.png" alt="Logotip de Control de Saldo" width="400"/>
+</p>
 
-## Descripción
-El módulo **Control de Saldo** permite a los usuarios gestionar los saldos a favor de los clientes dentro del sistema Odoo. Este módulo añade funcionalidades para ingresar, visualizar, y gestionar los saldos disponibles sin tener el módulo de **contabilidad** no dispobible en la versión Community.
-<img src="static/description/icon.png" alt="Logo de Control de Saldo" width="150"/>
+## Descripció
+El mòdul **Control de Saldo** permet als usuaris gestionar els saldos a favor dels clients dins del sistema d'Odoo. Este mòdul afegix funcionalitats per a ingressar, visualitzar, i gestionar els saldos disponibles sense tindre el mòdul de **Comptabilitat** no disponible en la versió Community.<br>
 
 
-## Características Clave
-- Ingreso de saldo a favor de clientes.
-- Visualización de saldos de clientes en una lista dedicada.
-- Generación de recibos de saldo a favor.
-- Gestión y control de saldos directamente desde la vista de clientes.
+## Característiques Clau
+- Ingrés de saldo a favor dels clients.
+- Visualització de saldos dels clients en una llista dedicada.
+- Generació de rebuts de saldo a favor.
+- Gestió i control de saldos directament des de la vista dels clients.
 
-## Requisitos Previos
+## Requisits Previs
 - **Odoo 16.0** o superior.
-- Los módulos de **CRM** y **ventas** deben estar instalados.
+- Els mòduls de **CRM** i **Vendes** han d'estar instal·lats.
 
-## Instalación
-1. Copia el módulo en la carpeta `addons` de tu instalación de Odoo.
-2. Reinicia el servidor Odoo.
-3. Activa el módulo desde la interfaz de administración de módulos en Odoo.
+## Instal·lació
+1. Copia el mòdul en la carpeta `dev_addons` de la teua instal·lació d'Odoo.
+2. Reinicia el servidor d'Odoo.
+3. Activa el mòdul des de la interfície d'administració de mòduls en Odoo.
 
-## Configuración del Idioma Valenciano
+## Configuració del Idioma Valencià
 
-Para utilizar el módulo **Control de Saldo** en Valenciano (Catalán), sigue estos pasos:
+Per a utilitzar el mòdul **Control de Saldo** en Valencià (Català), seguix estos passos:
 
-1. **Activar el Idioma Valenciano en Odoo:**
-   - Ve a **Configuración** > **Traducciones** > **Idiomas**.
-   - Haz clic en **Activar un Idioma**.
-   - Selecciona **Catalán / Valenciano** (`ca_ES`) y haz clic en **Activar**.
+1. **Activar l'Idioma Valencià en Odoo:**
+   - Ves a **Configuració** > **Traduccions** > **Idiomes**.
+   - Fes clic en **Activar un Idioma**.
+   - Selecciona **Català / Valencià** (`ca_ES`) i fes clic en **Activar**.
 
-2. **Cambiar el Idioma del Usuario:**
-   - Ve a **Configuración** > **Usuarios y Compañías** > **Usuarios**.
-   - Selecciona tu usuario y cambia el **Idioma** a **Catalán / Valenciano**.
+2. **Canviar l'Idioma de l'Usuari:**
+   - Ves a **Configuració** > **Usuaris i Companyies** > **Usuaris**.
+   - Selecciona el teu usuari i canvia l'**Idioma** a **Català / Valencià**.
 
-3. **Verificar las Traducciones:**
-   - Navega por el módulo y asegúrate de que las traducciones se muestran correctamente.
+3. **Verificar les Traduccions:**
+   - Navega pel mòdul i assegurat que les traduccions es mostren correctament.
 
-El módulo ahora debería estar completamente funcional en Valenciano.
+El mòdul ara hauria d'estar completament funcional en Valencià.
 
 
 ```bash
 # Clone the repository into your addons directory
-git clone https://github.com/juatafe/saldo_favor.git /ruta/a/odoo/addons/saldo_favor
+git https://github.com/JoelFusterBosch/Projecte_Final_DAM_Gesti-_d_una_falla/tree/main/M%C3%B2duls%20Odoo/saldo_favor /ruta/a/odoo/addons/saldo_favor
 
 
 
@@ -61,6 +63,7 @@ saldo_favor/
 │   ├── res_partner_views.xml
 │   ├── saldo_favor_menu.xml
 │   ├── saldo_favor_receipt_views.xml
+│   ├── saldo_favor_security.xml
 │   ├── saldo_favor_transaction_views.xml
 │   ├── saldo_favor_wizard_views.xml
 │   └── sale_order_views.xml
@@ -75,12 +78,40 @@ saldo_favor/
 ├── README.md
 └── LICENSE
 =======
+```
 
 ```bash
 # Clone the repository into your addons directory
 git clone https://github.com/tu_usuario/tu_repositorio.git /ruta/a/odoo/addons/saldo_favor
+```
+
+## Dades del Mòdul
+
+- **Nom**: Familia
+- **Versió**: 1.0
+- **Resum**: Este mòdul permet gestionar saldos a favor de clients en Odoo 16 Community Edition.
+- **Autor**: JB Talens
+- **Categoria**: Sales
+- **Imagens**: 
+- **Dependencies**: `CRM`, `Vendes`, 
+- **Dades incluïdes**:
+  - `security/ir.model.access.csv`
+  - `views/account_move_views.xml`
+  - `views/saldo_favor_menu.xml`
+  - `views/saldo_favor_receipt_views.xml`
+  - `views/saldo_favor_security.xml`
+  - `views/saldo_favor_transaction_views.xml`
+  - `views/saldo_favor_wizard_views.xml`
+  - `views/sale_order_views.xml` 
+- **Instal·lable**: True
+- **Aplicació**: False
+- **Auto Instal·lació**: False
+
+## Contribucions
+
+Les contribucions són benvingudes. Si tens idees per a millores, suggerències o trobes errors, per favor, obri un `issue` o envia un `pull request` en GitHub.
 
 
 
-# A mejorar:
-- Tras ingresar Saldo no se actualiza la entra de cliente, los clientes que no tienen saldo no aparecen en la vista. 
+# A millorar:
+- Al ingresar Saldo no s'actualitza l'entrada del client, els clients que no tenen saldo no apareixen en la vista. 
