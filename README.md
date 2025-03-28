@@ -1,2 +1,2 @@
-# Projecte_Final_DAM_Gesti-_d_una_falla
+# Projecte_Final_DAM_Gestió-_d_una_falla
 # Principi del projecte

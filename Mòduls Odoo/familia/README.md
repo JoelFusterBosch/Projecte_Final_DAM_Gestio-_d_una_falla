@@ -20,7 +20,7 @@ El mòdul **Família** per a Odoo 16, desenvolupat per **JB Talens**, permet ges
 
 - **Odoo 16.0 o superior**
 - **Mòduls de CRM y Vendes**: Els mòduls de CRM i vendes han d'estar instal·lats.
-- **Mòdul Saldo a Favor**: Mòdul personalitzat per a gestionar els saldos a favor dels clients. Pots trobar-lo en [saldo_favor](https://github.com/JoelFusterBosch/Projecte_Final_DAM_Gesti-_d_una_falla/tree/main/M%C3%B2duls%20Odoo/saldo_favor /ruta/a/odoo/addons/saldo_favor).
+- **Mòdul Saldo a Favor**: Mòdul personalitzat per a gestionar els saldos a favor dels clients. Pots trobar-lo en [saldo_favor](https://github.com/JoelFusterBosch/Projecte_Final_DAM_Gestio-_d_una_falla/tree/main/M%C3%B2duls%20Odoo/saldo_favor /ruta/a/odoo/addons/saldo_favor).
 
 ## Instal·lació
 

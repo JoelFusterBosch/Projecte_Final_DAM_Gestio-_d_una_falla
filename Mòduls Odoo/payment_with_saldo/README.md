@@ -9,11 +9,11 @@ Mòdul per poder fer pagaments amb saldo.
 ## Requisits Previs
 - **Odoo 16.0** o superior.
 - Els mòdulos de **CRM**, **Vendes** i **Comerç electrònic** han d'estar instal·lats.
-- Mòdul personalitzat per a gestionar els saldos a favor dels clients. Pots trobar-lo en [saldo_favor](https://github.com/JoelFusterBosch/Projecte_Final_DAM_Gesti-_d_una_falla/tree/main/M%C3%B2duls%20Odoo/saldo_favor /ruta/a/odoo/addons/saldo_favor).
+- Mòdul personalitzat per a gestionar els saldos a favor dels clients. Pots trobar-lo en [saldo_favor](https://github.com/JoelFusterBosch/Projecte_Final_DAM_Gestio-_d_una_falla/tree/main/M%C3%B2duls%20Odoo/saldo_favor /ruta/a/odoo/addons/saldo_favor).
 
 ```bash
 # Clone the repository into your addons directory
-git https://github.com/JoelFusterBosch/Projecte_Final_DAM_Gesti-_d_una_falla/tree/main/M%C3%B2duls%20Odoo/payment_with_saldo /ruta/a/odoo/addons/payment_with_saldo
+git https://github.com/JoelFusterBosch/Projecte_Final_DAM_Gestio-_d_una_falla/tree/main/M%C3%B2duls%20Odoo/payment_with_saldo /ruta/a/odoo/addons/payment_with_saldo
 
 payment_with_saldo/
 ├── __init__.py
