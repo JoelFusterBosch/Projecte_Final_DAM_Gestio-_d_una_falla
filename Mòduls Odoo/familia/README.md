@@ -44,13 +44,13 @@ Ves a la interfície d'Odoo > `Apps` > `Actualitzar la llista de mòduls`.
 
 ## Instal·lar el mòdul
 
-Busca "Família" en la llista d'aplicacions disponibles i fes clic en `Instal·lar`.
+Busca "Familia" en la llista d'aplicacions disponibles i fes clic en `Instal·lar`.
 
 ## Ús
 
 ### Configuració Inicial
 
-- **Crear Famílies**: Accedeix al menú `Famílies` i crea noves famílies.
+- **Crear Famílies**: Accedix al menú `Famílies` i crea noves famílies.
 - **Afegir Membres**: Afegix membres existents (clients) a les famílies creades.
 - **Gestionar Saldos**: El saldo total de la família s'actualitzara automàticament a l'afegir nous membres.
 
@@ -91,7 +91,7 @@ Este grup s'utilitzara per a assignar permisos específics sobre els models del 
 
 ### Regles d'Accés
 
-Les regles d'accés en Odoo determinen que registres es poden veure, crear, modificar o eliminar un usuari en un model específic. Ací es mostren les regles d'accés definides per al mòdul **Família**.
+Les regles d'accés en Odoo determinen que registres es poden veure, crear, modificar o eliminar d'un usuari en un model específic. Ací es mostren les regles d'accés definides per al mòdul **Família**.
 
 #### Regla d'Accés per al Model `familia`
 
@@ -142,7 +142,7 @@ access_miembro_familia_manager,miembro_familia.manager,familia.model_familia_mie
 access_miembro_familia_admin,miembro_familia.admin,familia.model_familia_miembro,base.group_system,1,1,1,1
 
 ```
-- **access_familia_manager**: Permitix al grup `Familia Manager` llegir, escriure, crear i eliminar registres en el model `familia`.
+- **access_familia_manager**: Permet al grup `Familia Manager` llegir, escriure, crear i eliminar registres en el model `familia`.
 - **access_miembro_familia_manager**: Permet al grup `Familia Manager` llegir, escriure, crear i eliminar registres en el model `familia.miembro`.
 - **access_miembro_familia_admin**: Permet al grup d'administració (`base.group_system`) fer totes les operacions en el model `familia.miembro`.
 
@@ -172,7 +172,7 @@ El grup **Familia Manager** és crucial per al funcionament del mòdul **Famíli
 - **Crear**: Afegir nous registres de famílies i membres.
 - **Eliminar**: Borrar registres de famílies i membres.
 
-Sols els usuaris que formen part d'este grup tindran accés complet a les funcionalitats administratives del mòdul **Família**. Asegurat que l'usuari administrador estiga correctament assignat a este grup per a evitar problemes de permisos.
+Sols els usuaris que formen part d'este grup tindran accés complet a les funcionalitats administratives del mòdul **Família**. Assegurat que l'usuari administrador estiga correctament assignat a este grup per a evitar problemes de permisos.
 
 ```bash
 # Clone the repository into your addons directory

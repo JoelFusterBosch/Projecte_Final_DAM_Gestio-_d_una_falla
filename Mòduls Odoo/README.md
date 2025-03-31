@@ -4,7 +4,7 @@ Primer que tot el que s'ha de fer és encendre el docker si no el teniu encés:
 - ```plaintext
    sudo systemctl start docker
    ```
-I si vols que s'inicie de forma automàtica quan encenges l'equip executa el següent:
+I si vols que s'inicie de forma automàtica quan encengues l'equip executa el següent:
  - ```plaintext
    sudo systemctl enable docker 
    ```
@@ -17,7 +17,7 @@ Heu de canviar `IPServidorUbuntu` per la ip que apareix en el vostre servidor d'
    ip a
    ```
 I `NumPort` pel port que s'assigna al `docker-compose.yaml` que en este cas és el 8069.
-Ara, quan entreu a l'Odoo el que necessitem fer és instal·lar els mòduls principals els quals són el de Vendes i CRM, <br>
+Ara, quan entreu a l'Odoo el que necessitem fer és instal·lar els mòduls principals els quals són el de Vendes i CRM: <br>
 <img src="../static/description/Configuració_Odoo/saldo_favor/Instalació_CRM.png" alt="Mòdul de CRM" width="250"/><br>
 <img src="../static/description/Configuració_Odoo/saldo_favor/Instalació_vendes.png" alt="Mòdul de Vendes" width="250"/><br>
 i per a habilitar els mòduls personalitzats el que heu de fer és:
@@ -62,12 +62,12 @@ En la icona del quadret <img src="../static/description/Configuració_Odoo/Activ
 <img src="../static/description/Configuració_Odoo/Activar_mode_desenvolupador/menu_icona.png"><br>
 Li premes a Configuració i baixes on veges eines de desenvolupador a la frase `Mode de desenvolupador`: 
 <img src="../static/description/Configuració_Odoo/Activar_mode_desenvolupador/Eines_per_a_desenvolupadors.png"><br>
-I amb això ja es deuria veure tant les aplicacions com els mòduls personalitzats d'Odoo, però important, instal·la'ls en el següent ordre, perquè sinó podria tirar un error que no has instal·lat eixe mòdul personalitzat.
+I amb això ja s'hauria de veure tant les aplicacions com els mòduls personalitzats d'Odoo, però important, instal·la'ls en el següent ordre, perquè si no podria llançar un error que no has instal·lat aquell mòdul personalitzat.
 ### Mòdul de Saldo_favor
-Primer instal·lat `Saldo a favor` com que gran part dels mòduls personalitzats hereten d'este últim, passa el mateix amb el mòdul personalitzat `familia`, però primer instal·lat els mòduls de `CRM` i `vendes`, segurament ja els tindràs instal·lats, però si no els tens instal·late'ls perque `Saldo_favor` els requerix per a funcionar.<br>
+Primer instal·lat `Saldo a favor` com que gran part dels mòduls personalitzats hereten d'este últim, passa el mateix amb el mòdul personalitzat `familia`, però primer instal·lat els mòduls de `CRM` i `vendes`, segurament ja els tindràs instal·lats, però si no els tens, instal·la-te'ls perquè `Saldo_favor` els requerix per a funcionar.<br>
 <img src="../static/description/Configuració_Odoo/saldo_favor/Instalació_CRM.png" alt="Mòdul pde CRM" width="250"/><br>
 <img src="../static/description/Configuració_Odoo/saldo_favor/Instalació_vendes.png" alt="Mòdul de vendes" width="250"/><br>
-i amb això ja podràs instal·lar el mòdul de `Saldo_favor`.<br>
+I amb això ja podràs instal·lar el mòdul de `Saldo_favor`.<br>
 <img src="../static/description/Configuració_Odoo/saldo_favor/Instalació_saldo_favor.png" alt="Mòdul personalitzat de Saldo_favor" width="250"/><br>
 ### Mòdul de Família
 Per a `família` has de tindre els mòduls `base`, `contactes`, `vendes` i el mòdul personalitzat de `saldo_favor`<br>
@@ -86,7 +86,7 @@ Per a `Event_family_registration` has de tindre els mòduls de `events`, `vendes
 I amb això ja podríem instal·lar `Event_family_registration`.<br>
 <img src="../static/description/Configuració_Odoo/event_family_registration/Instalació_event_family_registration.png" alt="Mòdul de Event_family_registration" width="250"/><br>
 ### Mòdul de Payment_with_saldo
-Per a instal·lar `Payment_with_Saldo` el que has de fer és instal·lar el mòdul de `comerç electrònic`, `facturació`, `pagament` i els dos mòduls personalitzats de `saldo_favor` i `família` com que sinó et donara un error en la instal·lació.<br>
+Per a instal·lar `Payment_with_Saldo` el que has de fer és instal·lar el mòdul de `comerç electrònic`, `facturació`, `pagament` i els dos mòduls personalitzats de `saldo_favor` i `família` com que si no et donara un error en la instal·lació.<br>
 <img src="../static/description/Configuració_Odoo/payment_with_saldo/Instalació_comerç_electrònic.png" alt="Mòdul de Pagament de comerç electrònic" width="250"/>
 <img src="../static/description/Configuració_Odoo/payment_with_saldo/Instalació_facturació.png" alt="Mòdul de Facturació " width="250"/>
 <img src="../static/description/Configuració_Odoo/payment_with_saldo/Instalació_pagament.png" alt="Mòdul de Pagament" width="250"/><br>

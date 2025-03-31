@@ -8,7 +8,7 @@ Mòdul per tal de registrar-se als diferents events.
 
 ## Requisits Previs
 - **Odoo 16.0** o superior.
-- Els mòduls de **CRM** i **Vendes**, **Events**, **Website_event** han d'estar instal·lats.
+- Els mòduls de **CRM**, **Vendes**, **Events**, **Website_event** han d'estar instal·lats.
 - Mòdul personalitzat per a gestionar clients com a unitats familiars, facilitant l'administració dels seus saldos i relacions. Pots trobar-lo en [familia](https://github.com/JoelFusterBosch/Projecte_Final_DAM_Gestio-_d_una_falla/tree/main/M%C3%B2duls%20Odoo/familia /ruta/a/odoo/addons/familia).
 
 ```bash
