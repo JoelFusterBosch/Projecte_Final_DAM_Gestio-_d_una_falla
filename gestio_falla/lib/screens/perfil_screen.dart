@@ -4,13 +4,13 @@ class PerfilScreen extends StatefulWidget {
   const PerfilScreen({super.key});
 
   @override
-  _PerfilScreenState createState() => _PerfilScreenState();
+  State<PerfilScreen> createState() => PerfilScreenState();
 }
 
-class _PerfilScreenState extends State<PerfilScreen> {
+class PerfilScreenState extends State<PerfilScreen> {
   String userName = "Joel";
-  String familia = "Familia de Joel";
-  String rol="Cap de familia";
+  String familia = "Família de Joel";
+  String rol="Cap de família";
 
   @override
   Widget build(BuildContext context) {
@@ -73,15 +73,15 @@ class _PerfilScreenState extends State<PerfilScreen> {
           content: Text("¿Estas segur de voler tancar sessió?"),
           actions: <Widget>[
             TextButton(
-              child: Text("Cancelar"),
+              child: Text("Acceptar"),
               onPressed: () {
-                Navigator.of(context).pop(false); // Torna fals al cerrar
+                Navigator.of(context).pop(true); // Torna vertader al tancar
               },
             ),
             TextButton(
-              child: Text("Aceptar"),
+              child: Text("Cancelar"),
               onPressed: () {
-                Navigator.of(context).pop(true); // Torna vertader al cerrar
+                Navigator.of(context).pop(false); // Torna fals al tancar
               },
             ),
           ],

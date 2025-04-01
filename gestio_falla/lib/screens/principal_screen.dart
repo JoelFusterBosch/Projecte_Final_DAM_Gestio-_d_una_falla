@@ -7,10 +7,10 @@ class PrincipalScreen extends StatefulWidget {
   const PrincipalScreen({super.key});
 
   @override
-  State<PrincipalScreen> createState() => _PrincipalScreenState();
+  State<PrincipalScreen> createState() => PrincipalScreenState();
 }
 
-class _PrincipalScreenState extends State<PrincipalScreen> {
+class PrincipalScreenState extends State<PrincipalScreen> {
   late int indexPantallaActual;
 
   @override
@@ -51,8 +51,8 @@ class _PrincipalScreenState extends State<PrincipalScreen> {
       ),
       body: <Widget>[
               const EventsScreen(),
-              const LlegirNfcScreen(),
-              PerfilScreen(),
+              const LlegirNFCScreen(),
+              const PerfilScreen(),
               ][indexPantallaActual],
     );
   } 
