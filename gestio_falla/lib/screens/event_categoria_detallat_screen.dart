@@ -11,18 +11,23 @@ class EventCategoriaDetallatScreen extends StatefulWidget{
 }
 class EventCategoriaDetallatScreenState extends State<EventCategoriaDetallatScreen>{
   late Future<List<Event>> _futureEvents;
-
+  final endpoint = "";
 
   @override
   void initState() {
     super.initState();
-
+    /*
+    var prodRepository =
+        EventRepositoryImpl(EventDatasource('http://192.168.152.26:8069/api'));
+    _futureEvents =
+        prodRepository.obtenirProductsByCategory(endpoint, widget.categoria);
+        */
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Productes de ${widget.categoria}")),
+      appBar: AppBar(title: Text("Events de categoria ${widget.categoria}")),
       body: FutureBuilder<List<Event>>(
         future: _futureEvents,
         builder: (context, snapshot) {
@@ -51,8 +56,7 @@ class EventCategoriaDetallatScreenState extends State<EventCategoriaDetallatScre
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          EventDetallatScreen()
+                      builder: (context) => EventDetallatScreen()
                     ),
                   );
                 },

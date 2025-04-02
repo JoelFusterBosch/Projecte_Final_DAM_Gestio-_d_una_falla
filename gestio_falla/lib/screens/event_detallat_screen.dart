@@ -9,15 +9,16 @@ class EventDetallatScreen extends StatefulWidget{
 class EventDetallatScreenState extends State<EventDetallatScreen>{
   String event="Cremà de la falla Portal";
   bool maxFallers=false;
-  int tickets=0;
+  int tickets=1;
   int ticketsRestants=9;
   double preu=1.20;
-  double preuTotal=0;
+  late double preuTotal;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    preuTotal=preu;
   }
   
   @override
@@ -44,7 +45,7 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
                   Text("Quants tickets vols?"),
                   IconButton(
                     icon: Icon(Icons.remove, color: Colors.red),
-                    onPressed: tickets==0 ?null :decrementarNumTickets,
+                    onPressed: tickets==1 ?null :decrementarNumTickets,
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -64,7 +65,7 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
                   ),
                 ],
               ),
-              Text("Preu total: $preu€"),
+              Text("Preu total: $preuTotal€"),
               ElevatedButton(onPressed:(){
                 pagar(context);
                 }, 
@@ -87,13 +88,13 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
               TextButton(
                 child: Text("Sí"),
                 onPressed: () {
-                  Navigator.of(context).pop(true); // Torna vertader al cerrar
+                  Navigator.of(context).pop(true); // Torna vertader al tancar
                 },
               ),
               TextButton(
                 child: Text("No"),
                 onPressed: () {
-                  Navigator.of(context).pop(false); // Torna fals al cerrar
+                  Navigator.of(context).pop(false); // Torna fals al tancar
                 },
               ),
             ],
@@ -105,6 +106,10 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Has acceptat l'acció")),
           );
+          setState(() {
+            tickets=1;
+            preuTotal=tickets*preu;
+          });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Has cancelat l'acció")),
@@ -117,7 +122,7 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
     setState(() {
       tickets++;
       ticketsRestants--;
-      preuTotal=(tickets*preu);
+      preuTotal=tickets*preu;
       if(ticketsRestants==0){
         maxFallers=true;
       } 
@@ -128,9 +133,9 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
     setState(() {
       tickets--;
       ticketsRestants++;
-      preuTotal=(tickets*preu);
+      preuTotal=tickets*preu;
       if(ticketsRestants!=0){
-        maxFallers=true;
+        maxFallers=false;
       } 
     });
   }

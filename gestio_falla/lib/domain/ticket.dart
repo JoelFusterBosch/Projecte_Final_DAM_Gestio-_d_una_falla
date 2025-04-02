@@ -7,4 +7,12 @@ class Ticket {
   Bool? maxim;
   Event? event;
   Ticket({required this.id, this.maxim, this.event});
+
+  factory Ticket.fromJSON(Map<String, dynamic>json){
+    return Ticket(
+      id: json['id'],
+      maxim: json['maxim'],
+      event: json['event'],
+      );
+  }
 }

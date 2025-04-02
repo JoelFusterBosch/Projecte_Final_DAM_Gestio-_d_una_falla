@@ -30,7 +30,11 @@ class LlegirNFCScreenState extends State<LlegirNFCScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Lector NFC")),
+      appBar: AppBar(
+        title: Text("Llegir NFC"),
+        centerTitle: true,
+        backgroundColor: Colors.orange
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

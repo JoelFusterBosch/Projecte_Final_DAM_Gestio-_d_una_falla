@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/screens/afegir_membre.dart';
+import 'package:gestio_falla/screens/crear_familia.dart';
+import 'package:gestio_falla/screens/editar_perfil.dart';
 
 class PerfilScreen extends StatefulWidget {
   const PerfilScreen({super.key});
@@ -10,7 +13,7 @@ class PerfilScreen extends StatefulWidget {
 class PerfilScreenState extends State<PerfilScreen> {
   String userName = "Joel";
   String familia = "Família de Joel";
-  String rol="Cap de família";
+  String rol="Cap de familia";
 
   @override
   Widget build(BuildContext context) {
@@ -40,19 +43,24 @@ class PerfilScreenState extends State<PerfilScreen> {
                 style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
               SizedBox(height: 20),
-              ElevatedButton(onPressed: rol=="Cap de familia" ? (){AgregarMembre();}:null, child: Text("Agregar membre")),
-              ElevatedButton(onPressed: CrearFamilia, child: Text("Crear familia")),
+              ElevatedButton(onPressed: rol=="Cap de familia" ? (){afgMembre();}:null, child: Text("Agregar membre")),
+              ElevatedButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>CrearFamilia()));
+              }, child: Text("Crear familia")),
               ElevatedButton.icon(
                 onPressed: () {
-                  AlertDialog(title: Text("Funció no implementada"),);
-                },
+                Navigator.push(
+                  context, 
+                  MaterialPageRoute(builder: (context) => EditarPerfil())
+                );
+              },
                 icon: Icon(Icons.edit),
                 label: Text("Editar Perfil"),
               ),
               SizedBox(height: 10),
               OutlinedButton.icon(
                 onPressed: () {
-                  mostrarAlerta(context);
+                 mostrarAlerta(context);
                 },
                 icon: Icon(Icons.logout, color: Colors.red),
                 label: Text("Tancar sessió"),
@@ -100,10 +108,9 @@ class PerfilScreenState extends State<PerfilScreen> {
       }
     });
   }
-  void AgregarMembre(){
-
-  }
-  void CrearFamilia(){
-
+  void afgMembre(){
+    if(rol=="Cap de familia"){
+      Navigator.push(context,MaterialPageRoute(builder: (context)=> AfegirMembre()));
+    }
   }
 }

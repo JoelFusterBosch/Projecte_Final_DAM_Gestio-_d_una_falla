@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/event.dart';
+import 'package:gestio_falla/repository/events_repository.dart';
+import 'package:gestio_falla/screens/event_categoria_screen.dart';
+import 'package:gestio_falla/screens/event_detallat_screen.dart';
 
 
 class EventsScreen extends StatefulWidget{
@@ -9,6 +12,7 @@ class EventsScreen extends StatefulWidget{
   State<EventsScreen> createState() => EventsScreenState();
 }
 class EventsScreenState extends State<EventsScreen>{
+  //late Future<List<Event>> _futureEvents;
   List<Event> totsElsEvents=[];
   List<Event> eventsFiltrats=[];
   int eventSeleccionat=0; 
@@ -16,6 +20,7 @@ class EventsScreenState extends State<EventsScreen>{
   @override
   void initState() {
     super.initState();
+    
 
   }
   void eventsFiltratsBusqueda() {
@@ -47,32 +52,47 @@ class EventsScreenState extends State<EventsScreen>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Column(
-      children: [
-        Scaffold(
+    return Scaffold(
           appBar: AppBar(
           title: Text("Events"),
           centerTitle: true,
           backgroundColor: Colors.orange
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              labelText: 'Buscar events',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              prefixIcon: const Icon(Icons.search),
-            ),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      labelText: 'Buscar events',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      prefixIcon: const Icon(Icons.search),
+                    ),
+                  ),
+                ),
+                ElevatedButton(onPressed: (){
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) => EventDetallatScreen())
+                  );
+                },
+                child: Text("Event detallat")
+                ),
+                ElevatedButton(onPressed: (){
+                  Navigator.push(context, 
+                  MaterialPageRoute(builder: (context) => EventCategoriaScreen())
+                  );
+                },
+                child: Text("Categories d'events")
+                ),
+       
+            ],
           ),
         ),
-
-        
-      ],
-    );
+      );
   }
-
 }
