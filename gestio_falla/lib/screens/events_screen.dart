@@ -20,8 +20,18 @@ class EventsScreenState extends State<EventsScreen>{
   @override
   void initState() {
     super.initState();
-    
+    /*
+    var EventRepository =
+        EventRepositoryImpl(ProdDatasource('http://10.0.2.2:8090/api'));
+    _futureEvents = EventRepository.obtenirEvents(endpoint);
 
+    _futureEvents.then((eventss) {
+      setState(() {
+        totsElsEvents = events;
+        eventsFiltrats = List.from(totsElsEvents);
+      });
+    });
+  */
   }
   void eventsFiltratsBusqueda() {
       setState(() {
@@ -89,7 +99,77 @@ class EventsScreenState extends State<EventsScreen>{
                 },
                 child: Text("Categories d'events")
                 ),
-       
+                /*
+                Expanded(child: eventSeleccionat==1 
+                  ?EventCategoriaScreen() 
+                  :FutureBuilder(future: _futureEvents, builder: (context,snapshot){
+                    if(snapshot.connectionState == ConnectionState.waiting){
+                      return const Center(child: CircularProgressIndicator(),);
+                    } else if(snapshot.hasError){
+                      return Center(child: Text("Error ${snapshot.error}"),);
+                    } else if(!snapshot.hasData || snapshot.data!.isEmpty){
+                      return const Center(child: Text("No n'hi han events disponibles"),);
+                    }
+                    List<Event> events = snapshot.data!;
+                    return GridView.builder(
+                      padding: const EdgeInsets.all(16.0),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: 0.8,
+                        ),
+                      itemCount: events.length, 
+                      itemBuilder: (context,index){
+                        final event=events[index];
+                        return GestureDetector(
+                          onTap: (){
+                            Navigator.push(
+                              context, 
+                              MaterialPageRoute(builder: (context)=> EventDetallatScreen())
+                            );
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            elevation: 4,
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15)
+                                    ),
+                                  )
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      Text(event.nom,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold
+                                        )
+                                      ),
+                                      Text(event.preu.toString(),
+                                      style: const TextStyle(
+                                        overflow:TextOverflow.ellipsis
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+              */
             ],
           ),
         ),

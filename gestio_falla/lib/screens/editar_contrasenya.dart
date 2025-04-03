@@ -14,13 +14,15 @@ class EditarContrasenyaState extends State<EditarContrasenya>{
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text("Canviar usuari"),
+        title: Text("Canviar Contrasenya"),
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text("Antiga contrasenya"),
             TextFormField(
               keyboardType: TextInputType.text,
               obscureText: true,
@@ -37,7 +39,7 @@ class EditarContrasenyaState extends State<EditarContrasenya>{
                     return null;
                   },
             ),
-            
+            Text("Nova contrasenya"),
             TextFormField(
               keyboardType: TextInputType.text,
               obscureText: true,
@@ -54,6 +56,7 @@ class EditarContrasenyaState extends State<EditarContrasenya>{
                     return null;
                   },
             ),
+            Text("Confirmar contrasenya"),
             TextFormField(
               keyboardType: TextInputType.text,
               obscureText: true,

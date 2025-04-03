@@ -9,6 +9,7 @@ class LlegirNFCScreen extends StatefulWidget{
 }
 class LlegirNFCScreenState extends State<LlegirNFCScreen> {
   String _nfcData = "Escanea una etiqueta NFC";
+  String codiNFC="8430001000017";
 
   void _startNFC() async {
     bool isAvailable = await NfcManager.instance.isAvailable();
@@ -18,20 +19,39 @@ class LlegirNFCScreenState extends State<LlegirNFCScreen> {
       });
       return;
     }
-
+    void _writeNFC() async{
+      bool isAvailable = await NfcManager.instance.isAvailable();
+      if(!isAvailable){
+        setState(() {
+          Text("NFC no disponible");
+        });
+      }
+      return;
+    }
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-      setState(() {
-        _nfcData = tag.data.toString();
-      });
-      await NfcManager.instance.stopSession();
+      var ndef = Ndef.from(tag);
+      if (ndef == null || !ndef.isWritable) {
+        setState(() {
+          _nfcData = "Etiqueta no compatible";
+        });
+        NfcManager.instance.stopSession();
+        return;
+      }
+
+      NdefMessage message = NdefMessage([
+        NdefRecord.createText(codiNFC),
+      ]);
+
+      
     });
   }
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Llegir NFC"),
+        title: Text("Llegir i escriure NFC"),
         centerTitle: true,
         backgroundColor: Colors.orange
       ),

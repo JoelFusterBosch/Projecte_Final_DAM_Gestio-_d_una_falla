@@ -18,7 +18,9 @@ class AfegirMembreState extends State<AfegirMembre>{
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text("Nom del membre"),
             TextFormField(
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
@@ -34,6 +36,7 @@ class AfegirMembreState extends State<AfegirMembre>{
                     return null;
                }
             ),
+            Text("Confirmar"),
             TextFormField(
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
@@ -49,6 +52,7 @@ class AfegirMembreState extends State<AfegirMembre>{
                     return null;
                   },
             ),
+            Text("Contrasenya"),
             TextFormField(
               keyboardType: TextInputType.text,
               obscureText: true,

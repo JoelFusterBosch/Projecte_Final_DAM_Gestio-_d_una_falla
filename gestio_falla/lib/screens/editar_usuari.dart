@@ -18,14 +18,16 @@ class EditarUsuariState extends State<EditarUsuari>{
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text("Nom antic de l'usuari"),
             TextFormField(
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20)
                 ),
-                labelText: 'Nom antic del usuari' 
+                labelText: "Nom antic de l'usuari" 
               ),
                validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -34,6 +36,7 @@ class EditarUsuariState extends State<EditarUsuari>{
                     return null;
                }
             ),
+            Text("Nou nom d'usuari"),
             TextFormField(
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
@@ -49,6 +52,7 @@ class EditarUsuariState extends State<EditarUsuari>{
                     return null;
                   },
             ),
+            Text("Contrasenya"),
             TextFormField(
               keyboardType: TextInputType.text,
               obscureText: true,

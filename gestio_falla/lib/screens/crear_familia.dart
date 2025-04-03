@@ -18,6 +18,7 @@ class CrearFamiliaState extends State<CrearFamilia>{
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextFormField(
               keyboardType: TextInputType.text,
