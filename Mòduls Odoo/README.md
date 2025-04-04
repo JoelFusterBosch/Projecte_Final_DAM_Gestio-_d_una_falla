@@ -18,7 +18,7 @@ Heu de canviar `IPServidorUbuntu` per la ip que apareix en el vostre servidor d'
    ```
 I `NumPort` pel port que s'assigna al `docker-compose.yaml` que en este cas és el 8069.
 Ara, quan entreu a l'Odoo el que necessitem fer és instal·lar els mòduls principals els quals són el de Vendes i CRM: <br>
-<img src="../static/description/Configuració_Odoo/saldo_favor/Instalació_CRM.png" alt="Mòdul de CRM" width="250"/><br>
+<img src="../static/description/Configuració_Odoo/saldo_favor/Instalació_CRM.png" alt="Mòdul de CRM" width="250"/>
 <img src="../static/description/Configuració_Odoo/saldo_favor/Instalació_vendes.png" alt="Mòdul de Vendes" width="250"/><br>
 i per a habilitar els mòduls personalitzats el que heu de fer és:
 ## Afegir els fitxers de configuració
@@ -65,7 +65,7 @@ Li premes a Configuració i baixes on veges eines de desenvolupador a la frase `
 I amb això ja s'hauria de veure tant les aplicacions com els mòduls personalitzats d'Odoo, però important, instal·la'ls en el següent ordre, perquè si no podria llançar un error que no has instal·lat aquell mòdul personalitzat.
 ### Mòdul de Saldo_favor
 Primer instal·lat `Saldo a favor` com que gran part dels mòduls personalitzats hereten d'este últim, passa el mateix amb el mòdul personalitzat `familia`, però primer instal·lat els mòduls de `CRM` i `vendes`, segurament ja els tindràs instal·lats, però si no els tens, instal·la-te'ls perquè `Saldo_favor` els requerix per a funcionar.<br>
-<img src="../static/description/Configuració_Odoo/saldo_favor/Instalació_CRM.png" alt="Mòdul pde CRM" width="250"/><br>
+<img src="../static/description/Configuració_Odoo/saldo_favor/Instalació_CRM.png" alt="Mòdul pde CRM" width="250"/>
 <img src="../static/description/Configuració_Odoo/saldo_favor/Instalació_vendes.png" alt="Mòdul de vendes" width="250"/><br>
 I amb això ja podràs instal·lar el mòdul de `Saldo_favor`.<br>
 <img src="../static/description/Configuració_Odoo/saldo_favor/Instalació_saldo_favor.png" alt="Mòdul personalitzat de Saldo_favor" width="250"/><br>
@@ -92,3 +92,22 @@ Per a instal·lar `Payment_with_Saldo` el que has de fer és instal·lar el mòd
 <img src="../static/description/Configuració_Odoo/payment_with_saldo/Instalació_pagament.png" alt="Mòdul de Pagament" width="250"/><br>
 I amb això ja pots instal·lar el mòdul de `Payment_with_Saldo`.<br>
 <img src="../static/description/Configuració_Odoo/payment_with_saldo/Instalació_Payment_with_saldo.png" alt="Mòdul de Payment_with_saldo" width="250"/><br>
+## Afegir usuaris amb codi de barres
+### Afegir usuaris 
+Per a afegir usuaris en Odoo el que hem de fer és tindre el mòdul de contactes instal·lat.<br> 
+<img src="../static/description/Configuració_Odoo/Usuaris en codi de barres/Instalació_contactes.png" alt="Mòdul de Contactes" width="250"><br>
+Ara fixat en la següent icona <img src="../static/description/Configuració_Odoo/Usuaris en codi de barres/icona.png">, li fas clic i vas a l'apartat que diu `Contactes` i quan li apretes veuràs el següent:
+<img src="../static/description/Configuració_Odoo/Usuaris en codi de barres/Pantalla_contactes.png"><br>
+Ara en esta pantalla li apretes al botó que diu `Nou` <img src="../static/description/Configuració_Odoo/Usuaris en codi de barres/boto_afegir_contacte.png"> i s'obrira el següent:
+<img src="../static/description/Configuració_Odoo/Usuaris en codi de barres/Pantalla_creació_contacte.png">
+Posa-li la informació que cregues rellevant i li apretes a la icona del nuvol en la fletxa cap amunt per a guardar la informació <img src="../static/description/Configuració_Odoo/Usuaris en codi de barres/icona_guradar.png">. 
+### Afegir usuaris en codi de barres 
+Per a afegir el codi de barres als usuaris has de tindre instal·lat els mòduls de `empleats`, el de `codi de barres` i per últim el de `punt de venda`.<br>
+<img src="../static/description/Configuració_Odoo/Usuaris en codi de barres/Instalació_empleats.png" alt="Mòdul de empleats" width="250">
+<img src="../static/description/Configuració_Odoo/Usuaris en codi de barres/Instalació_punt_venda.png" alt="Mòdul de Punt de venda" width="250">
+<img src="../static/description/Configuració_Odoo/Usuaris en codi de barres/Instalació_codi_de_barres.png" alt="Mòdul de Codi de barres" width="250"><br> 
+Ara seguim els mateixos passos que l'apartat anterior, i quan baixem a l'hora d'estar creant un contacte podrem veure el següent:
+<img src="../static/description/Configuració_Odoo/Usuaris en codi de barres/Barra_inferior_contacte.png"><br>
+Ara li apretem al que diu `Venda i compra` i ens apareixerà el següent:
+<img src="../static/description/Configuració_Odoo/Usuaris en codi de barres/Informació_venda_i_compra.png"><br>
+I on posa `Codi de barres` li pots posar la seqüència de números d'eixa barra de codi i ja tindries a un usuari en codi de barres en Odoo.

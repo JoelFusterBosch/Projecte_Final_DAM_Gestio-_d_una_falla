@@ -5,10 +5,10 @@ class LlegirNFCScreen extends StatefulWidget{
   const LlegirNFCScreen({super.key});
 
   @override
-  LlegirNFCScreenState createState() => LlegirNFCScreenState();
+  State<LlegirNFCScreen> createState() => LlegirNFCScreenState();
 }
 class LlegirNFCScreenState extends State<LlegirNFCScreen> {
-  String _nfcData = "Escanea una etiqueta NFC";
+  String _nfcData = "Escaneja una etiqueta NFC";
   String codiNFC="8430001000017";
 
   void _startNFC() async {
@@ -19,15 +19,24 @@ class LlegirNFCScreenState extends State<LlegirNFCScreen> {
       });
       return;
     }
-    void _writeNFC() async{
-      bool isAvailable = await NfcManager.instance.isAvailable();
-      if(!isAvailable){
-        setState(() {
-          Text("NFC no disponible");
-        });
-      }
+
+    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
+      setState(() {
+        _nfcData = tag.data.toString();
+      });
+      await NfcManager.instance.stopSession();
+    });
+  }
+
+  void _writeNFC() async {
+    bool isAvailable = await NfcManager.instance.isAvailable();
+    if (!isAvailable) {
+      setState(() {
+        _nfcData = "NFC no disponible";
+      });
       return;
     }
+
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       var ndef = Ndef.from(tag);
       if (ndef == null || !ndef.isWritable) {
@@ -42,10 +51,20 @@ class LlegirNFCScreenState extends State<LlegirNFCScreen> {
         NdefRecord.createText(codiNFC),
       ]);
 
-      
+      try {
+        await ndef.write(message);
+        setState(() {
+          _nfcData = "Etiqueta escrita correctament";
+        });
+        NfcManager.instance.stopSession();
+      } catch (e) {
+        setState(() {
+          _nfcData = "Error en escriure";
+        });
+        NfcManager.instance.stopSession(errorMessage: "Error en escriure dades");
+      }
     });
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +84,11 @@ class LlegirNFCScreenState extends State<LlegirNFCScreen> {
               onPressed: _startNFC,
               child: Text("Escanear NFC"),
             ),
+            SizedBox(height: 20,),
+            ElevatedButton(
+              onPressed: _writeNFC,
+               child: Text("Escriure NFC"),
+            )
           ],
         ),
       ),
