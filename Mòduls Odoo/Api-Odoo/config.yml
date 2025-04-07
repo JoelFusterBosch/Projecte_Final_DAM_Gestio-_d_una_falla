@@ -1,15 +1,15 @@
 production:    
     connection:
-        url: http://192.168.152.26 # Canvia això per la ip de la màquina virtual o localhost si ho fas en la màquina virtual
+        url: http://localhost o http://IPMàquinaVirual # Canvia això per la ip de la màquina virtual o localhost si ho fas en la màquina virtual
         port: 8069 # Canvia això si tens un port diferent
-        db: Projecte_Falla # Canvia això per el nom de la base de dades
-        user: odoo@odoo.com # Canvia això per el correu que tingues en el usuari
-        password: 92fb8a6a70a1cee0c7041327249f5ddfc9cf7317 # Canvia això per la API que et genera Odoo
+        db: nom_db # Canvia això pel nom de la base de dades
+        user: usuari # Canvia això pel correu que tingues en l'usuari
+        password: **********47d1e3ac55********** # Canvia això per l'API que et genera Odoo
 
 development:    
     connection:
-        url: http://192.168.152.26 # Canvia això per la ip de la màquina virtual o localhost si ho fas en la màquina virtual
+        url: http://localhost o http://192.168.152.26 # Canvia això per la ip de la màquina virtual o localhost si ho fas en la màquina virtual
         port: 8069 # Canvia això si tens un port diferent
-        db: Projecte_Falla # Canvia això per el nom de la base de dades
-        user: odoo@odoo.com # Canvia això per el correu que tingues en el usuari
-        password: 92fb8a6a70a1cee0c7041327249f5ddfc9cf7317 # Canvia això per la API que et genera Odoo
+        db: nom_db # Canvia això pel nom de la base de dades
+        user: usuari # Canvia això pel correu que tingues en l'usuari
+        password: **********47d1e3ac55********** # Canvia això per l'API que et genera Odoo

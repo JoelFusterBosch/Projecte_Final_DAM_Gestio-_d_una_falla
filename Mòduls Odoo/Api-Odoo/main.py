@@ -21,14 +21,20 @@ def read_app_props(env: str) -> dict:
 
 def get_xmlrpc_url(url: str, port: int) -> str:
     """Construeix la URL base per a XML-RPC"""
-    return f"{url}:{port}/xmlrpc/"
+    return f"{url}:{port}/xmlrpc/2"
 
 def get_ws_rpcclient(props: dict):
-    """Obté el client XML-RPC per a la connexió"""
+    """Obtiene el cliente XML-RPC para la conexión"""
+    connProps = props.get('connection')
+    host = connProps.get('host')
+    port = connProps.get('port')
     connProps = props.get('connection')
     url = get_xmlrpc_url(connProps.get('url'), connProps.get('port'))
-    return xmlrpc.client.ServerProxy(url, allow_none=True, context=ssl._create_unverified_context())
 
+    return{
+       'common': xmlrpc.client.ServerProxy(f'{url}/common', allow_none=True, context=ssl._create_unverified_context()),
+       'object': xmlrpc.client.ServerProxy(f'{url}/object', allow_none=True, context=ssl._create_unverified_context()),
+   }
 def getuid(props: dict) -> int:
     """Obté l'UID de l'usuari"""
     connProps = props.get('connection')
@@ -36,12 +42,13 @@ def getuid(props: dict) -> int:
     user = connProps.get('user')
     pwd = connProps.get('password')
     wsClient = get_ws_rpcclient(props)
-    return wsClient.common.login(db, user, pwd)
+    print(wsClient)
+    return wsClient['common'].authenticate(db, user, pwd, {})
 
 def getversion(props: dict) -> dict:
     """Obté la versió d'Odoo"""
     wsClient = get_ws_rpcclient(props)
-    return wsClient.version()
+    return wsClient['common'].version()
 
 def request_props(props: dict, tablename: str, operation: str, conditionsArr: list = [], params: dict = {}):
     """Realitza una sol·licitud genèrica a l'API d'Odoo"""
@@ -50,7 +57,7 @@ def request_props(props: dict, tablename: str, operation: str, conditionsArr: li
     uid = getuid(props)
     pwd = connProps.get('password')
     wsClient = get_ws_rpcclient(props)
-    return wsClient.execute_kw(db, uid, pwd, tablename, operation, conditionsArr, params)
+    return wsClient['object'].execute_kw(db, uid, pwd, tablename, operation, conditionsArr, params)
 
 # ------------------------------------------------------
 # Test per a verificar funcionalitat
@@ -58,7 +65,7 @@ def request_props(props: dict, tablename: str, operation: str, conditionsArr: li
 
 def main_test():
     """Executa proves per a verificar la connexió i operacions bàsiques"""
-    env = "production"  # Canviar a 'development' per a entorns locals
+    env = "development"  # Canviar a 'production' per a entorns en producció
     props = read_app_props(env)
 
     print("UID:", getuid(props))

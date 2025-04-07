@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
-class LlegirNFCScreen extends StatefulWidget{
-  const LlegirNFCScreen({super.key});
+class LlegirIEscriureNfcScreen extends StatefulWidget{
+  const LlegirIEscriureNfcScreen({super.key});
 
   @override
-  State<LlegirNFCScreen> createState() => LlegirNFCScreenState();
+  State<LlegirIEscriureNfcScreen> createState() => LlegirIEscriureNfcScreenState();
 }
-class LlegirNFCScreenState extends State<LlegirNFCScreen> {
+class LlegirIEscriureNfcScreenState extends State<LlegirIEscriureNfcScreen> {
   String _nfcData = "Escaneja una etiqueta NFC";
   String codiNFC="8430001000017";
 
@@ -19,7 +19,9 @@ class LlegirNFCScreenState extends State<LlegirNFCScreen> {
       });
       return;
     }
-
+    setState(() {
+      _nfcData = "Acosta una etiqueta perfavor";
+    });
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       setState(() {
         _nfcData = tag.data.toString();
@@ -36,7 +38,9 @@ class LlegirNFCScreenState extends State<LlegirNFCScreen> {
       });
       return;
     }
-
+    setState(() {
+      _nfcData = "Acosta una etiqueta perfavor";
+    });
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       var ndef = Ndef.from(tag);
       if (ndef == null || !ndef.isWritable) {
@@ -82,7 +86,7 @@ class LlegirNFCScreenState extends State<LlegirNFCScreen> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _startNFC,
-              child: Text("Escanear NFC"),
+              child: Text("Escanejar NFC"),
             ),
             SizedBox(height: 20,),
             ElevatedButton(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/screens/events_screen.dart';
-import 'package:gestio_falla/screens/llegir_nfc_screen.dart';
+import 'package:gestio_falla/screens/llegir_i_escriure_nfc_screen.dart';
 import 'package:gestio_falla/screens/perfil_screen.dart';
 
 class PrincipalScreen extends StatefulWidget {
@@ -24,7 +24,7 @@ class PrincipalScreenState extends State<PrincipalScreen> {
     return Scaffold(
       appBar: AppBar(title:[
         const Text('Events'),
-        const Text('Llegir NFC'),
+        const Text('Llegir i Escriure NFC'),
         const Text('Perfil'),
         ][indexPantallaActual] ),
       bottomNavigationBar: NavigationBar(
@@ -51,7 +51,7 @@ class PrincipalScreenState extends State<PrincipalScreen> {
       ),
       body: <Widget>[
               const EventsScreen(),
-              const LlegirNFCScreen(),
+              const LlegirIEscriureNfcScreen(),
               const PerfilScreen(),
               ][indexPantallaActual],
     );
