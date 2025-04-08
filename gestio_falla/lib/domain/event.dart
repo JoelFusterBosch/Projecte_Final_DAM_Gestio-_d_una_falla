@@ -1,11 +1,11 @@
 import 'package:gestio_falla/domain/ticket.dart';
 
 class Event {
-  double id;
+  double? id;
   String nom;
   double? preu;
   Ticket? ticket;
-  Event({required this.id,required this.nom,this.preu,this.ticket});
+  Event({this.id,required this.nom,this.preu,this.ticket});
 
   factory Event.fromJSON(Map<String, dynamic> json){
     return Event(

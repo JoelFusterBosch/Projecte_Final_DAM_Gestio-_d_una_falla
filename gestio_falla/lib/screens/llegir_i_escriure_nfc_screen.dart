@@ -9,7 +9,7 @@ class LlegirIEscriureNfcScreen extends StatefulWidget{
 }
 class LlegirIEscriureNfcScreenState extends State<LlegirIEscriureNfcScreen> {
   String _nfcData = "Escaneja una etiqueta NFC";
-  String codiNFC="8430001000017";
+  String codiNFC="Hola Mundo";
 
   void _startNFC() async {
     bool isAvailable = await NfcManager.instance.isAvailable();
@@ -20,7 +20,7 @@ class LlegirIEscriureNfcScreenState extends State<LlegirIEscriureNfcScreen> {
       return;
     }
     setState(() {
-      _nfcData = "Acosta una etiqueta perfavor";
+      _nfcData = "Acosta una etiqueta NFC perfavor";
     });
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       setState(() {
@@ -39,7 +39,7 @@ class LlegirIEscriureNfcScreenState extends State<LlegirIEscriureNfcScreen> {
       return;
     }
     setState(() {
-      _nfcData = "Acosta una etiqueta perfavor";
+      _nfcData = "Acosta una etiqueta NFC perfavor";
     });
     NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
       var ndef = Ndef.from(tag);

@@ -19,6 +19,8 @@ class RegistrarUsuariState extends State<RegistrarUsuari>{
     'Septembre', 'Octubre', 'Novembre', 'Decembre'
   ];
   final List<String> anys = List.generate(100, (index) => (2024 - index).toString());
+  String rol="Usuari";
+  final List<String> rols=['Usuari','Cobrador','Administrador'];
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -115,13 +117,28 @@ class RegistrarUsuariState extends State<RegistrarUsuari>{
                 return null;
               },
             ),
+            DropdownButton<String>(
+                  value: rol,
+                  onChanged: (String? newValue){
+                    setState(() {
+                      rol=newValue!;
+                    });
+                  },
+                  items: rols.map<DropdownMenuItem<String>>((String value){
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
             ElevatedButton(onPressed: (){
               Navigator.push(
                 context, 
                 MaterialPageRoute(builder: (context)=>LoginScreen()),
               );
             }, 
-            child: Text("Registrar-se"))
+            child: Text("Registrar-se")
+            ),
           ],
         ),
       ),
