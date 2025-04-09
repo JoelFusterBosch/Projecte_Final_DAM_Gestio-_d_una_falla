@@ -14,7 +14,7 @@ class PrincipalScreen extends StatefulWidget {
 
 class PrincipalScreenState extends State<PrincipalScreen> {
   late int indexPantallaActual;
-  String rol="";
+  late String rol;
   late List<Widget> pantalles;
   late List<NavigationDestination> navegacio;
   late List<Widget> titolsAppBar;
@@ -23,7 +23,7 @@ class PrincipalScreenState extends State<PrincipalScreen> {
   void initState() {
     super.initState();
     indexPantallaActual=0;
-    rol = "Faller";
+    rol = "Cobrador";
     ConfigurarVistaPerRol();
   }
 

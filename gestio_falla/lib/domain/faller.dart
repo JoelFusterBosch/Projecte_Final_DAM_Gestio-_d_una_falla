@@ -1,18 +1,18 @@
 
 import 'package:gestio_falla/domain/familia.dart';
 
-class Membre {
-  double id;
+class Faller {
+  double? id;
   String nom;
   bool? teLimit;
   double? limit;
   bool? esCap;
   double? saldo;
   Familia? familia;
-  Membre({required this.id,required this.nom,this.teLimit,this.limit,this.esCap,this.saldo,this.familia});
+  Faller({this.id,required this.nom,this.teLimit,this.limit,this.esCap,this.saldo,this.familia});
 
-  factory Membre.fromJSON(Map<String,dynamic>json){
-    return Membre(
+  factory Faller.fromJSON(Map<String,dynamic>json){
+    return Faller(
       id: json['id'], 
       nom: json['nom'],
       teLimit: json['teLimit'],

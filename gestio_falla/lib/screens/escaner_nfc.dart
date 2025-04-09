@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/event.dart';
+import 'package:gestio_falla/domain/faller.dart';
 import 'package:gestio_falla/screens/descompta_cadira_screen.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
@@ -10,7 +12,39 @@ class EscanerNfc extends StatefulWidget{
 
 }
 class EscanerNfcState extends State<EscanerNfc>{
-  String _nfcData = "Escaneja una etiqueta NFC";
+  late String _nfcData;
+  List pantalles=[];
+  late Event event;
+  late Faller membre;
+  late int dia;
+  late String mes;
+  late int any;
+  late String horaInici;
+  late String horaFi;
+  late int indexPantallaActual;
+  late String nomEvent;
+  late bool esFaller;
+  late int cadiresPerAlFaller;
+  late String nomFaller;
+  @override
+  void initState(){
+    super.initState();
+    _nfcData="Escaneja una etiqueta NFC";
+    membre=Faller(nom: "Joel");
+    event=Event(nom: "Paella");
+    dia=16;
+    mes="de març";
+    any=2025;
+    horaInici="12:30";
+    horaFi="15:30";
+    indexPantallaActual=0;
+    nomEvent= event.nom;
+    esFaller=true;
+    cadiresPerAlFaller=1;
+    nomFaller=membre.nom;
+    event1();
+  }
+  
   
   @override
   Widget build(BuildContext context) {
@@ -19,14 +53,7 @@ class EscanerNfcState extends State<EscanerNfc>{
       centerTitle: true,
       backgroundColor: Colors.orange,
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Text(_nfcData),
-            ElevatedButton(onPressed: _startNFC, child: Text("Escaner"))
-          ],
-        ),
-      ),
+      body: pantalles[indexPantallaActual]
     );
   }
   void _startNFC() async {
@@ -81,15 +108,87 @@ class EscanerNfcState extends State<EscanerNfc>{
     await NfcManager.instance.stopSession();
   });
   }
-  void _startN2FC() async {
-  bool isAvailable = await NfcManager.instance.isAvailable();
-  if (!isAvailable) {
+  void event1() {
     setState(() {
-      _nfcData = "NFC no disponible";
+      if (nomEvent == "Paella" && dia == 16 && mes == "de març" && any == 2025 && horaInici == "12:30" && horaFi == "15:30") {
+        if (esFaller) {
+          if (nomFaller == "Joel") {
+            if (cadiresPerAlFaller >= 1) {
+              pantalles = [
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(nomEvent),
+                      Text("Data: $dia $mes $any"),
+                      Text("Durada: $horaInici-$horaFi"),
+                      Text(_nfcData),
+                      ElevatedButton(onPressed: _startNFC, child: Text("Escaner")),
+                    ],
+                  ),
+                )
+              ];
+            } else {
+              pantalles = [
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "L'usuari $nomFaller no té cadires assignades!",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      Text("Cadires assignades: $cadiresPerAlFaller")
+                    ],
+                  ),
+                )
+              ];
+            }
+          } else {
+            pantalles = [
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "L'usuari $nomFaller no és correcte",
+                      style: TextStyle(color: Colors.red),
+                    )
+                  ],
+                ),
+              )
+            ];
+          }
+        } else {
+          pantalles = [
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "L'usuari $nomFaller no és un faller",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ],
+              ),
+            )
+          ];
+        }
+      } else {
+        pantalles = [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Hui no n'hi han events per a demanar cadires",
+                  style: TextStyle(color: Colors.red),
+                ),
+              ],
+            ),
+          )
+        ];
+      }
     });
-    return;
   }
-
-  
-}
 }
