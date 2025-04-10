@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/infrastructure/services/notificacions_service.dart';
 
 class DescomptaCadira extends StatefulWidget{
   const DescomptaCadira({super.key});
@@ -8,26 +9,31 @@ class DescomptaCadira extends StatefulWidget{
 }
 class DescomptaCadiraState extends State<DescomptaCadira>{
   String event="Paella";
+  late int cadires;
+  int cadiresAssignades=1;
+  int cadiresRestants=10;
   bool maxCadires=false;
-  int cadires=1;
-  int cadiresRestants=9;
   double preu=1;
   late double preuTotal;
   bool pagat=false;
   bool cancelat=false;
+  String usuari="Joel";
+  
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     preuTotal=preu;
+    cadires=cadiresAssignades;
+    cadiresRestants-=cadires;
   }
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Pantalla d'events"),
+        title: Text("Pantalla per a reservar cadires"),
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
@@ -47,7 +53,7 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
                   Text("Quants tickets vols?"),
                   IconButton(
                     icon: Icon(Icons.remove, color: Colors.red),
-                    onPressed: cadires==1 ?null :decrementarNumTickets,
+                    onPressed: cadiresRestants>=0 ? decrementarNumTickets : null,
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -69,14 +75,19 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
               ),
               Text("Preu total: $preuTotal€"),
               ElevatedButton(onPressed:(){
-                pagar(context);
+                cadiresRestants>=0&&maxCadires==false? pagar(context) : null;
                 }, 
                 child: Text("Pagar")
               ),
+              Text(maxCadires?"Ja no queden cadires per a eixe event":"",
+                style: TextStyle(
+                  color: maxCadires?Colors.red:Colors.white
+                ),
+              ),
               Text(pagat ?"Joel":cancelat?"Cancelat":""),
               Text(pagat ?"Pagat exitosament":cancelat?"Acció cancelada":"",
-                style:
-                  TextStyle( color: pagat?Colors.green:cancelat?Colors.red:Colors.white
+                style:TextStyle( 
+                  color: pagat?Colors.green:cancelat?Colors.red:Colors.white
                 ),
               ),
             ],
@@ -114,16 +125,26 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Has acceptat l'acció")),
           );
-          notificacio();
           setState(() {
             if(cadires==1){
               cadiresRestants--;
             }
-            cadires=1;
+            if (cadiresRestants==0){
+              cadires=0;
+              maxCadires=true;   
+              Text("",
+                style: TextStyle(
+                  color:Colors.red 
+                ),
+              ); 
+            }else{
+              cadires=1;
+            }
             preuTotal=cadires*preu;
             pagat=true;
             cancelat=false;
           });
+          NotificationService.showNotification(title: 'Cadires', body: 'Cadires al usuari $usuari reservades correctament');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Has cancelat l'acció")),
@@ -144,9 +165,7 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
       cadires++;
       cadiresRestants--;
       preuTotal=cadires*preu;
-      if(cadiresRestants==0){
-        maxCadires=true;
-      } 
+      
     });
     
   }
@@ -155,12 +174,7 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
       cadires--;
       cadiresRestants++;
       preuTotal=cadires*preu;
-      if(cadiresRestants!=0){
-        maxCadires=false;
-      } 
+      
     });
-  }
-  void notificacio(){
-    
   }
 }

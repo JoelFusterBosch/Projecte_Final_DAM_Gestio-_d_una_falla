@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/screens/afegir_membre.dart';
-import 'package:gestio_falla/screens/crear_familia.dart';
-import 'package:gestio_falla/screens/editar_perfil.dart';
+import 'package:gestio_falla/presentation/screens/afegir_membre.dart';
+import 'package:gestio_falla/presentation/screens/crear_familia.dart';
+import 'package:gestio_falla/presentation/screens/editar_perfil.dart';
 
 class PerfilScreen extends StatefulWidget {
   const PerfilScreen({super.key});

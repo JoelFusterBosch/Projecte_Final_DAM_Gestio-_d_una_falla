@@ -1,6 +1,6 @@
 import 'dart:ffi';
 
-import 'package:gestio_falla/domain/event.dart';
+import 'package:gestio_falla/domain/entities/event.dart';
 
 class Ticket {
   double id;

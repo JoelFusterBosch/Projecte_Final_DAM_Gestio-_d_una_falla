@@ -1,4 +1,4 @@
-import 'package:gestio_falla/domain/ticket.dart';
+import 'package:gestio_falla/domain/entities/ticket.dart';
 
 class Event {
   double? id;

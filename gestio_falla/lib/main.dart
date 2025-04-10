@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/screens/principal_screen.dart';
+import 'package:gestio_falla/presentation/screens/principal_screen.dart';
+
 
 void main(){
   runApp(const MyApp());

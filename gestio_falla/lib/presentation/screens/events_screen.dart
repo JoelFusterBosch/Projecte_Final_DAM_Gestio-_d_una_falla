@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/domain/event.dart';
-import 'package:gestio_falla/screens/event_categoria_screen.dart';
-import 'package:gestio_falla/screens/event_detallat_screen.dart';
+import 'package:gestio_falla/domain/entities/event.dart';
+import 'package:gestio_falla/presentation/screens/event_categoria_screen.dart';
+import 'package:gestio_falla/presentation/screens/event_detallat_screen.dart';
 
 
 class EventsScreen extends StatefulWidget{
@@ -20,7 +20,7 @@ class EventsScreenState extends State<EventsScreen>{
   @override
   void initState() {
     super.initState();
-
+    
   }
   void eventsFiltratsBusqueda() {
       setState(() {
@@ -93,6 +93,8 @@ class EventsScreenState extends State<EventsScreen>{
                   ],
                 ),
                 Text(usuari),
+                
+                
             ],
           ),
         ),

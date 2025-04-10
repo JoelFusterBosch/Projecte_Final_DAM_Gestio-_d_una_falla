@@ -1,5 +1,5 @@
-import 'package:gestio_falla/domain/event.dart';
-import 'package:gestio_falla/services/events_service.dart';
+import 'package:gestio_falla/domain/entities/event.dart';
+import 'package:gestio_falla/infrastructure/services/events_service.dart';
 
 class EventsRepository {
   static Future<List<Event>> obtenirEvents({

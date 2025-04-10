@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/screens/event_categoria_detallat_screen.dart';
+import 'package:gestio_falla/presentation/screens/event_categoria_detallat_screen.dart';
 
 class EventCategoriaScreen extends StatelessWidget{
   EventCategoriaScreen({super.key});

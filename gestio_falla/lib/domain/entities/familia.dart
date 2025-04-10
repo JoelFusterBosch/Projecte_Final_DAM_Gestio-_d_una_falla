@@ -1,5 +1,5 @@
 import 'dart:ffi';
-import 'package:gestio_falla/domain/faller.dart';
+import 'package:gestio_falla/domain/entities/faller.dart';
 
 class Familia {
   double id;

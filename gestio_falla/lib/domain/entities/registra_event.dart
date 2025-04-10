@@ -1,5 +1,5 @@
-import 'package:gestio_falla/domain/event.dart';
-import 'package:gestio_falla/domain/ticket.dart';
+import 'package:gestio_falla/domain/entities/event.dart';
+import 'package:gestio_falla/domain/entities/ticket.dart';
 
 class RegistraEvent {
   int qTickets;

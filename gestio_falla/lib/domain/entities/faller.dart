@@ -1,5 +1,5 @@
 
-import 'package:gestio_falla/domain/familia.dart';
+import 'package:gestio_falla/domain/entities/familia.dart';
 
 class Faller {
   double? id;

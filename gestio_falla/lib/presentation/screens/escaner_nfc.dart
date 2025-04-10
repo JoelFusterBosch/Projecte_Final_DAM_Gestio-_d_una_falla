@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/domain/event.dart';
-import 'package:gestio_falla/domain/faller.dart';
-import 'package:gestio_falla/screens/descompta_cadira_screen.dart';
+import 'package:gestio_falla/domain/entities/event.dart';
+import 'package:gestio_falla/domain/entities/faller.dart';
+import 'package:gestio_falla/presentation/screens/descompta_cadira_screen.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 
 class EscanerNfc extends StatefulWidget{
   const EscanerNfc({super.key});
+  
 
   @override
   State<EscanerNfc> createState() => EscanerNfcState();
@@ -15,7 +16,7 @@ class EscanerNfcState extends State<EscanerNfc>{
   late String _nfcData;
   List pantalles=[];
   late Event event;
-  late Faller membre;
+  late Faller faller;
   late int dia;
   late String mes;
   late int any;
@@ -26,11 +27,12 @@ class EscanerNfcState extends State<EscanerNfc>{
   late bool esFaller;
   late int cadiresPerAlFaller;
   late String nomFaller;
+  late bool eventCorrecte;
   @override
   void initState(){
     super.initState();
     _nfcData="Escaneja una etiqueta NFC";
-    membre=Faller(nom: "Joel");
+    faller=Faller(nom: "Joel");
     event=Event(nom: "Paella");
     dia=16;
     mes="de març";
@@ -41,7 +43,8 @@ class EscanerNfcState extends State<EscanerNfc>{
     nomEvent= event.nom;
     esFaller=true;
     cadiresPerAlFaller=1;
-    nomFaller=membre.nom;
+    nomFaller=faller.nom;
+    eventCorrecte=false;
     event1();
   }
   
@@ -53,7 +56,18 @@ class EscanerNfcState extends State<EscanerNfc>{
       centerTitle: true,
       backgroundColor: Colors.orange,
       ),
-      body: pantalles[indexPantallaActual]
+      body: Center(child: Padding(
+          padding: EdgeInsets.all(20.0),
+          child:Column(
+            mainAxisAlignment:MainAxisAlignment.center,
+            children: [
+              pantalles[indexPantallaActual],
+              Text(eventCorrecte? _nfcData:""),
+              ElevatedButton(onPressed:eventCorrecte? _startNFC:null, child: Text("Escaner")),
+            ]
+          )
+        ) 
+      )
     );
   }
   void _startNFC() async {
@@ -98,13 +112,11 @@ class EscanerNfcState extends State<EscanerNfc>{
 
     // Comprovem si el valor NFC coincideix amb el que volem
     if (value == '8430001000017') {
-      // Aquí pots realitzar l'acció que desitges
       setState(() {
         _nfcData = "Acció realitzada per valor NFC: $value";
       });
       Navigator.push(context, MaterialPageRoute(builder: (context)=> DescomptaCadira()));
     }
-
     await NfcManager.instance.stopSession();
   });
   }
@@ -114,6 +126,7 @@ class EscanerNfcState extends State<EscanerNfc>{
         if (esFaller) {
           if (nomFaller == "Joel") {
             if (cadiresPerAlFaller >= 1) {
+              eventCorrecte=true;
               pantalles = [
                 Center(
                   child: Column(
@@ -122,8 +135,6 @@ class EscanerNfcState extends State<EscanerNfc>{
                       Text(nomEvent),
                       Text("Data: $dia $mes $any"),
                       Text("Durada: $horaInici-$horaFi"),
-                      Text(_nfcData),
-                      ElevatedButton(onPressed: _startNFC, child: Text("Escaner")),
                     ],
                   ),
                 )

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/screens/escaner_nfc.dart';
-import 'package:gestio_falla/screens/events_screen.dart';
-import 'package:gestio_falla/screens/llegir_i_escriure_nfc_screen.dart';
-import 'package:gestio_falla/screens/login_screen.dart';
-import 'package:gestio_falla/screens/perfil_screen.dart';
+import 'package:gestio_falla/presentation/screens/escaner_nfc.dart';
+import 'package:gestio_falla/presentation/screens/events_screen.dart';
+import 'package:gestio_falla/presentation/screens/llegir_i_escriure_nfc_screen.dart';
+import 'package:gestio_falla/presentation/screens/login_screen.dart';
+import 'package:gestio_falla/presentation/screens/perfil_screen.dart';
 
 class PrincipalScreen extends StatefulWidget {
   const PrincipalScreen({super.key});

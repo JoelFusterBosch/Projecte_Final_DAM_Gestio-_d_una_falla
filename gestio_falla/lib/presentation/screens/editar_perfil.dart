@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/screens/editar_contrasenya.dart';
-import 'package:gestio_falla/screens/editar_usuari.dart';
+import 'package:gestio_falla/presentation/screens/editar_contrasenya.dart';
+import 'package:gestio_falla/presentation/screens/editar_usuari.dart';
 
 class EditarPerfil extends StatefulWidget{
   const EditarPerfil({super.key});

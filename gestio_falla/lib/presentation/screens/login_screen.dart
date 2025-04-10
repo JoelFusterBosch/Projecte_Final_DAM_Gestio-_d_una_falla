@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/screens/registrar_usuari.dart';
+import 'package:gestio_falla/presentation/screens/registrar_usuari.dart';
 
 class LoginScreen extends StatefulWidget{
   const LoginScreen({super.key});
