@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
+import 'package:gestio_falla/domain/repository/nfc_repository.dart';
+import 'package:gestio_falla/infrastructure/data_source/nfc_datasource.dart';
+import 'package:gestio_falla/infrastructure/repository/nfc_repository_impl.dart';
 import 'package:gestio_falla/presentation/screens/descompta_cadira_screen.dart';
-import 'package:nfc_manager/nfc_manager.dart';
 
 class EscanerNfc extends StatefulWidget{
   const EscanerNfc({super.key});
-  
 
   @override
   State<EscanerNfc> createState() => EscanerNfcState();
@@ -28,6 +29,8 @@ class EscanerNfcState extends State<EscanerNfc>{
   late int cadiresPerAlFaller;
   late String nomFaller;
   late bool eventCorrecte;
+  late final NfcRepository nfcRepository;
+  
   @override
   void initState(){
     super.initState();
@@ -45,6 +48,7 @@ class EscanerNfcState extends State<EscanerNfc>{
     cadiresPerAlFaller=1;
     nomFaller=faller.nom;
     eventCorrecte=false;
+    nfcRepository = NfcRepositoryImpl(NfcDataSource());
     event1();
   }
   
@@ -71,55 +75,37 @@ class EscanerNfcState extends State<EscanerNfc>{
     );
   }
   void _startNFC() async {
-    bool isAvailable = await NfcManager.instance.isAvailable();
-    if (!isAvailable) {
-      setState(() {
-        _nfcData = "NFC no disponible";
-      });
-      return;
-    }
     setState(() {
       _nfcData = "Acosta una etiqueta NFC perfavor";
     });
-    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
-    // Llegim el contingut NDEF de l'etiqueta NFC
-    Ndef? ndef = Ndef.from(tag);
-    if (ndef == null) {
+
+    final resultat = await nfcRepository.llegirNfc(
+      valorEsperat: '8430001000017',
+      onCoincidencia: () {
+        setState(() {
+          _nfcData = "Acció realitzada per valor NFC: 8430001000017";
+        });
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const DescomptaCadira()),
+        );
+      },
+      onError: () {
+        setState(() {
+          _nfcData = "Error en llegir etiqueta NFC";
+        });
+      },
+    );
+
+    // Mostra resultat llegit si no coincideix
+    if (resultat != null && resultat != '8430001000017') {
       setState(() {
-        _nfcData = "Etiqueta NFC no compatible";
+        _nfcData = "Valor llegit: $resultat no coincideix";
       });
-      return;
     }
-
-    // Obtenim el missatge NDEF
-    NdefMessage message = await ndef.read();
-    String value = "";
-
-    // Busquem el primer registre NDEF i agafem el seu contingut com a text
-    for (NdefRecord record in message.records) {
-      if (record.typeNameFormat == NdefTypeNameFormat.nfcWellknown) {
-        if (record.payload.isNotEmpty) {
-          value = String.fromCharCodes(record.payload.sublist(3)); // Extraiem el text
-          break;
-        }
-      }
-    }
-
-    // Mostrem el valor llegit
-    setState(() {
-      _nfcData = "Valor llegit: $value";
-    });
-
-    // Comprovem si el valor NFC coincideix amb el que volem
-    if (value == '8430001000017') {
-      setState(() {
-        _nfcData = "Acció realitzada per valor NFC: $value";
-      });
-      Navigator.push(context, MaterialPageRoute(builder: (context)=> DescomptaCadira()));
-    }
-    await NfcManager.instance.stopSession();
-  });
   }
+
   void event1() {
     setState(() {
       if (nomEvent == "Paella" && dia == 16 && mes == "de març" && any == 2025 && horaInici == "12:30" && horaFi == "15:30") {

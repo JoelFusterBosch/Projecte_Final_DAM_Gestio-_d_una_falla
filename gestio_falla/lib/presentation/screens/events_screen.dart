@@ -11,7 +11,6 @@ class EventsScreen extends StatefulWidget{
   State<EventsScreen> createState() => EventsScreenState();
 }
 class EventsScreenState extends State<EventsScreen>{
-  //late Future<List<Event>> _futureEvents;
   String usuari="Joel";
   List<Event> totsElsEvents=[];
   List<Event> eventsFiltrats=[];

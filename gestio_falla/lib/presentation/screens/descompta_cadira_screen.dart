@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/infrastructure/services/notificacions_service.dart';
+import 'package:gestio_falla/infrastructure/data_source/notificacions_datasource.dart';
+import 'package:gestio_falla/infrastructure/repository/notificacions_repository_impl.dart';
 
 class DescomptaCadira extends StatefulWidget{
   const DescomptaCadira({super.key});
@@ -18,6 +19,7 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
   bool pagat=false;
   bool cancelat=false;
   String usuari="Joel";
+  late final NotificacionsRepositoryImpl notificacionsRepositoryImpl;
   
 
   @override
@@ -27,6 +29,7 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
     preuTotal=preu;
     cadires=cadiresAssignades;
     cadiresRestants-=cadires;
+    notificacionsRepositoryImpl= NotificacionsRepositoryImpl(NotificacionsDatasource());
   }
   
   @override
@@ -53,7 +56,7 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
                   Text("Quants tickets vols?"),
                   IconButton(
                     icon: Icon(Icons.remove, color: Colors.red),
-                    onPressed: cadiresRestants>=0 ? decrementarNumTickets : null,
+                    onPressed: cadires>1 ? decrementarNumTickets : null,
                   ),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -144,7 +147,7 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
             pagat=true;
             cancelat=false;
           });
-          NotificationService.showNotification(title: 'Cadires', body: 'Cadires al usuari $usuari reservades correctament');
+          notificacio();
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Has cancelat l'acció")),
@@ -155,11 +158,15 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
             cadires=1;
             pagat=false;
             cancelat=true;
+            preuTotal=cadires*preu;
           });
         }
       }
     );
   }
+
+  Future<void> notificacio() => notificacionsRepositoryImpl.showNotification(title: 'Cadires', body: 'Cadires al usuari $usuari reservades correctament');
+  
   void augmentarNumTickets(){
     setState(() {
       cadires++;

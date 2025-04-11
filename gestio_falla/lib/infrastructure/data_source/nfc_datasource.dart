@@ -1,14 +1,13 @@
 import 'dart:async';
-import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
-import 'package:flutter/material.dart';
+
 import 'package:nfc_manager/nfc_manager.dart';
 
-class NfcService {
-  static Future<String?> llegirNFC({
-    required BuildContext context,
+class NfcDataSource {
+  NfcDataSource();
+  Future<String?> llegirNFC({
     required String valorEsperat,
     void Function()? onCoincidencia,
-    void Function()? onError
+    void Function()? onError,
   })async{
     bool isAvailable=await NfcManager.instance.isAvailable();
     if(!isAvailable){
@@ -35,18 +34,18 @@ class NfcService {
         completer.complete(valorEsperat);
         NfcManager.instance.stopSession();
         if (valorLlegit==valorEsperat){
-          onCoincidencia.call();
+          onCoincidencia?.call();
         }
       }catch(e){
         completer.complete("Error a l'hora de llegir el NFC");
-        onError.call();
+        onError?.call();
         NfcManager.instance.stopSession(errorMessage: "Error");
       }
     });
     return completer.future;
   }
   
-  static Future<String> escriureNFC(String valorAEscriure) async {
+  Future<String> escriureNFC(String valorAEscriure) async {
     bool isAvailable= await NfcManager.instance.isAvailable();
     if(!isAvailable){
       return "NFC no disponible en aquest dispositiu";
@@ -67,7 +66,7 @@ class NfcService {
         resultat="Etiqueta escrita amb èxit";
         return;
       }catch(e){
-        resultat="Error en escriure la etiqueta";
+        resultat="Error en escriure l'etiqueta";
         return;
       }
     });

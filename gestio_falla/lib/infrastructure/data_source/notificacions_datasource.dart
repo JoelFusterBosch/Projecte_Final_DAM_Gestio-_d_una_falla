@@ -1,12 +1,12 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class NotificationService {
+class NotificacionsDatasource {
   static final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
 
   // Inicialització de notificacions
-  static Future<void> init() async {
+  Future<void> init() async {
     const AndroidInitializationSettings androidInit =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
@@ -17,7 +17,7 @@ class NotificationService {
   }
 
   // Funció per a mostrar una notificació
-  static Future<void> showNotification({
+   Future<void> showNotification({
     required String title,
     required String body,
     String? channelId,
