@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/infrastructure/data_source/Api-Odoo_datasource.dart';
+import 'package:gestio_falla/presentation/screens/admin.dart';
 import 'package:gestio_falla/presentation/screens/escaner_nfc.dart';
 import 'package:gestio_falla/presentation/screens/events_screen.dart';
 import 'package:gestio_falla/presentation/screens/llegir_i_escriure_nfc_screen.dart';
@@ -23,7 +25,7 @@ class PrincipalScreenState extends State<PrincipalScreen> {
   void initState() {
     super.initState();
     indexPantallaActual=0;
-    rol = "Cobrador";
+    rol = "Administrador";
     ConfigurarVistaPerRol();
   }
 
@@ -79,7 +81,17 @@ class PrincipalScreenState extends State<PrincipalScreen> {
       ];
     }else if(rol=="Administrador"){
       //TO-DO
+      pantalles=[
+        AdminScreen(),
+      ];
+      navegacio=[
+        NavigationDestination(icon: Icon(Icons.login), label: 'Login')
+      ];
+      titolsAppBar = const [
+        Text("Admin"),
+      ];
     }
   } 
+  
 }
 
