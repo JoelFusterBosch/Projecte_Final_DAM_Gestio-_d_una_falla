@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/repository/Api-Odoo_repository.dart';
 import 'package:gestio_falla/infrastructure/data_source/Api-Odoo_datasource.dart';
+import 'package:gestio_falla/infrastructure/repository/Api-Odoo_repository_impl.dart';
 
 class AdminScreen extends StatefulWidget{
   @override
@@ -7,6 +9,15 @@ class AdminScreen extends StatefulWidget{
 
 }
 class AdminScreenState extends State<AdminScreen>{
+  late String missatge;
+  late final ApiOdooRepository apiOdooRepository;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    missatge="";
+    apiOdooRepository=ApiOdooRepositoryImpl(ApiOdooDataSource(baseUrl: 'http://192.168.125.26:8069', db: 'Projecte_Falla'));
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,6 +30,7 @@ class AdminScreenState extends State<AdminScreen>{
           child:Column(
             mainAxisAlignment:MainAxisAlignment.center,
             children: [
+              Text(missatge),
               ElevatedButton(onPressed:login, child: Text("Login")),
             ]
           )
@@ -27,17 +39,21 @@ class AdminScreenState extends State<AdminScreen>{
     );
   }
 void login() async {
-  final odoo = ApiOdooDataSource(
-    baseUrl: 'http://localhost:8069',
-    db: 'Projecte_Falla',
-  );
+  setState(() {
+    missatge="Iniciar sessió";
+  });
+  final odoo = apiOdooRepository;
 
   final uid = await odoo.login('odoo@odoo.com', '1234');
 
   if (uid != null) {
-    Text("Login executat correctament");
+    setState(() {
+      missatge="Login executat correctament";
+    });
   } else {
-    Text("Fallo el login");
+    setState(() {
+      missatge="Fallo el login";
+    });
   }
 }
 }

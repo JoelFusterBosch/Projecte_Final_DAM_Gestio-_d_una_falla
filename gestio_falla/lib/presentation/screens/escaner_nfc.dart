@@ -4,7 +4,8 @@ import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/domain/repository/nfc_repository.dart';
 import 'package:gestio_falla/infrastructure/data_source/nfc_datasource.dart';
 import 'package:gestio_falla/infrastructure/repository/nfc_repository_impl.dart';
-import 'package:gestio_falla/presentation/screens/descompta_cadira_screen.dart';
+import 'package:gestio_falla/provider/nfcProvider.dart';
+import 'package:provider/provider.dart';
 
 class EscanerNfc extends StatefulWidget{
   const EscanerNfc({super.key});
@@ -14,7 +15,6 @@ class EscanerNfc extends StatefulWidget{
 
 }
 class EscanerNfcState extends State<EscanerNfc>{
-  late String _nfcData;
   List pantalles=[];
   late Event event;
   late Faller faller;
@@ -34,7 +34,6 @@ class EscanerNfcState extends State<EscanerNfc>{
   @override
   void initState(){
     super.initState();
-    _nfcData="Escaneja una etiqueta NFC";
     faller=Faller(nom: "Joel");
     event=Event(nom: "Paella");
     dia=16;
@@ -66,46 +65,20 @@ class EscanerNfcState extends State<EscanerNfc>{
             mainAxisAlignment:MainAxisAlignment.center,
             children: [
               pantalles[indexPantallaActual],
-              Text(eventCorrecte? _nfcData:""),
-              ElevatedButton(onPressed:eventCorrecte? _startNFC:null, child: Text("Escaner")),
+              Consumer<NfcProvider>(
+                builder: (context, provider, child) {
+                  return Text(eventCorrecte ? provider.nfcData : "");
+                },
+              ),
+              ElevatedButton(onPressed:eventCorrecte? () => {context.read<NfcProvider>().llegirEtiqueta(context)}:null, 
+              child: Text("Escaner")
+              ),
             ]
           )
         ) 
       )
     );
   }
-  void _startNFC() async {
-    setState(() {
-      _nfcData = "Acosta una etiqueta NFC perfavor";
-    });
-
-    final resultat = await nfcRepository.llegirNfc(
-      valorEsperat: '8430001000017',
-      onCoincidencia: () {
-        setState(() {
-          _nfcData = "Acció realitzada per valor NFC: 8430001000017";
-        });
-
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const DescomptaCadira()),
-        );
-      },
-      onError: () {
-        setState(() {
-          _nfcData = "Error en llegir etiqueta NFC";
-        });
-      },
-    );
-
-    // Mostra resultat llegit si no coincideix
-    if (resultat != null && resultat != '8430001000017') {
-      setState(() {
-        _nfcData = "Valor llegit: $resultat no coincideix";
-      });
-    }
-  }
-
   void event1() {
     setState(() {
       if (nomEvent == "Paella" && dia == 16 && mes == "de març" && any == 2025 && horaInici == "12:30" && horaFi == "15:30") {

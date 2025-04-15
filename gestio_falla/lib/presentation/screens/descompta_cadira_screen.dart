@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/infrastructure/data_source/notificacions_datasource.dart';
-import 'package:gestio_falla/infrastructure/repository/notificacions_repository_impl.dart';
+import 'package:gestio_falla/provider/notificacionsProvider.dart';
+import 'package:provider/provider.dart';
 
 class DescomptaCadira extends StatefulWidget{
   const DescomptaCadira({super.key});
@@ -19,7 +19,6 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
   bool pagat=false;
   bool cancelat=false;
   String usuari="Joel";
-  late final NotificacionsRepositoryImpl notificacionsRepositoryImpl;
   
 
   @override
@@ -29,7 +28,6 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
     preuTotal=preu;
     cadires=cadiresAssignades;
     cadiresRestants-=cadires;
-    notificacionsRepositoryImpl= NotificacionsRepositoryImpl(NotificacionsDatasource());
   }
   
   @override
@@ -165,7 +163,13 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
     );
   }
 
-  Future<void> notificacio() => notificacionsRepositoryImpl.showNotification(title: 'Cadires', body: 'Cadires al usuari $usuari reservades correctament');
+  Future<void> notificacio() async {
+    Provider.of<NotificacionsProvider>(context, listen: false).showNotification(
+      title: 'Cadires',
+      body: 'Cadires al usuari $usuari reservades correctament',
+    );
+  }
+
   
   void augmentarNumTickets(){
     setState(() {
