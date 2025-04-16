@@ -1,59 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/domain/repository/Api-Odoo_repository.dart';
-import 'package:gestio_falla/infrastructure/data_source/Api-Odoo_datasource.dart';
-import 'package:gestio_falla/infrastructure/repository/Api-Odoo_repository_impl.dart';
+import 'package:gestio_falla/provider/Api-OdooProvider.dart';
+import 'package:provider/provider.dart';
 
-class AdminScreen extends StatefulWidget{
-  @override
-  State<AdminScreen> createState() => AdminScreenState();
+class AdminScreen extends StatelessWidget {
+  const AdminScreen({super.key});
 
-}
-class AdminScreenState extends State<AdminScreen>{
-  late String missatge;
-  late final ApiOdooRepository apiOdooRepository;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    missatge="";
-    apiOdooRepository=ApiOdooRepositoryImpl(ApiOdooDataSource(baseUrl: 'http://192.168.125.26:8069', db: 'Projecte_Falla'));
-  }
   @override
   Widget build(BuildContext context) {
+    final apiOdooProvider = Provider.of<ApiOdooProvider>(context);
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Escaner"),
-      centerTitle: true,
-      backgroundColor: Colors.orange,
+      appBar: AppBar(
+        title: const Text("Pantalla de login"),
+        centerTitle: true,
+        backgroundColor: Colors.orange,
       ),
-      body: Center(child: Padding(
-          padding: EdgeInsets.all(20.0),
-          child:Column(
-            mainAxisAlignment:MainAxisAlignment.center,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
             children: [
-              Text(missatge),
-              ElevatedButton(onPressed:login, child: Text("Login")),
-            ]
-          )
-        ) 
-      )
+              const SizedBox(height: 20),
+              Text(apiOdooProvider.message),
+              Text(
+                apiOdooProvider.status,
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 30),
+              // Botón de login
+              ElevatedButton.icon(
+                icon: const Icon(Icons.login),
+                label: const Text("Login"),
+                onPressed: () {
+                  apiOdooProvider.login('odoo@odoo.com', '1234');
+                },
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.download),
+                label: const Text("Obtener Usuarios"),
+                onPressed: () {
+                  apiOdooProvider.fetchUsers('1234');
+                },
+              ),
+              const SizedBox(height: 30),
+              // Lista de usuarios
+              if (apiOdooProvider.users != null &&
+                  apiOdooProvider.users!.isNotEmpty)
+                Expanded(
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Llista d'usuaris:",
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: apiOdooProvider.users!.length,
+                          itemBuilder: (context, index) {
+                            final user = apiOdooProvider.users![index];
+                            return ListTile(
+                              leading: const Icon(Icons.person),
+                              title: Text(user['name'] ?? 'Sense nom'),
+                              subtitle: Text(user['login'] ?? ''),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              else if (apiOdooProvider.users != null)
+                const Text("No n'hi han usuaris per a mostrar."),
+            ],
+          ),
+        ),
+      ),
     );
   }
-void login() async {
-  setState(() {
-    missatge="Iniciar sessió";
-  });
-  final odoo = apiOdooRepository;
-
-  final uid = await odoo.login('odoo@odoo.com', '1234');
-
-  if (uid != null) {
-    setState(() {
-      missatge="Login executat correctament";
-    });
-  } else {
-    setState(() {
-      missatge="Fallo el login";
-    });
-  }
-}
 }

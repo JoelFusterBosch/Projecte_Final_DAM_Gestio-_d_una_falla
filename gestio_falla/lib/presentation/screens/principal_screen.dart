@@ -24,8 +24,8 @@ class PrincipalScreenState extends State<PrincipalScreen> {
   void initState() {
     super.initState();
     indexPantallaActual=0;
-    rol = "Cobrador";
-    ConfigurarVistaPerRol();
+    rol = "Administrador";
+    configurarVistaPerRol();
   }
 
   @override
@@ -48,7 +48,7 @@ class PrincipalScreenState extends State<PrincipalScreen> {
     );
   }
   
-  void ConfigurarVistaPerRol() {
+  void configurarVistaPerRol() {
     if(rol=="Faller"){
       pantalles=[
         const EventsScreen(),

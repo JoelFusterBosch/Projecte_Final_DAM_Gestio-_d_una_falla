@@ -7,15 +7,12 @@ class ApiOdooDataSource {
 
   ApiOdooDataSource({required this.baseUrl, required this.db});
 
-  /// Login function that returns the UID or null on failure
   Future<int?> login(String email, String password) async {
     final url = Uri.parse('$baseUrl/jsonrpc');
 
     final response = await http.post(
       url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         "jsonrpc": "2.0",
         "method": "call",
@@ -30,10 +27,11 @@ class ApiOdooDataSource {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      if (data['result'] != null) {
-        return data['result']; // UID del usuario
+      final result = data['result'];
+      if (result != null && result is int && result > 0) {
+        return result;
       } else {
-        print('Error en login: ${data['error']}');
+        print('Login fallido o UID inválido. Result: $result');
         return null;
       }
     } else {
@@ -41,4 +39,34 @@ class ApiOdooDataSource {
       return null;
     }
   }
+  Future<List<dynamic>?> getUsers(int uid, String password) async {
+  final url = Uri.parse('$baseUrl/jsonrpc');
+
+  final response = await http.post(
+    url,
+    headers: {'Content-Type': 'application/json'},
+    body: jsonEncode({
+      "jsonrpc": "2.0",
+      "method": "call",
+      "params": {
+        "service": "object",
+        "method": "execute_kw",
+        "args": [
+          db,
+          uid,
+          password,
+          'res.users',
+          'search_read',
+          [],
+          {'fields': ['id', 'name', 'login']}
+        ],
+      },
+      "id": 2
+    }),
+  );
+
+  final data = jsonDecode(response.body);
+  return data['result'];
+}
+
 }
