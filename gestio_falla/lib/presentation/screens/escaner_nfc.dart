@@ -24,17 +24,15 @@ class EscanerNfcState extends State<EscanerNfc>{
   late String horaInici;
   late String horaFi;
   late int indexPantallaActual;
-  late String nomEvent;
   late bool esFaller;
   late int cadiresPerAlFaller;
-  late String nomFaller;
   late bool eventCorrecte;
   late final NfcRepository nfcRepository;
   
   @override
   void initState(){
     super.initState();
-    faller=Faller(nom: "Joel");
+    faller=Faller(nom: "Joel", rol:"Faller");
     event=Event(nom: "Paella");
     dia=16;
     mes="de març";
@@ -42,10 +40,8 @@ class EscanerNfcState extends State<EscanerNfc>{
     horaInici="12:30";
     horaFi="15:30";
     indexPantallaActual=0;
-    nomEvent= event.nom;
     esFaller=true;
     cadiresPerAlFaller=1;
-    nomFaller=faller.nom;
     eventCorrecte=false;
     nfcRepository = NfcRepositoryImpl(NfcDataSource());
     event1();
@@ -81,9 +77,9 @@ class EscanerNfcState extends State<EscanerNfc>{
   }
   void event1() {
     setState(() {
-      if (nomEvent == "Paella" && dia == 16 && mes == "de març" && any == 2025 && horaInici == "12:30" && horaFi == "15:30") {
+      if (event.nom == "Paella" && dia == 16 && mes == "de març" && any == 2025 && horaInici == "12:30" && horaFi == "15:30") {
         if (esFaller) {
-          if (nomFaller == "Joel") {
+          if (faller.nom == "Joel") {
             if (cadiresPerAlFaller >= 1) {
               eventCorrecte=true;
               pantalles = [
@@ -91,7 +87,7 @@ class EscanerNfcState extends State<EscanerNfc>{
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(nomEvent),
+                      Text(event.nom),
                       Text("Data: $dia $mes $any"),
                       Text("Durada: $horaInici-$horaFi"),
                     ],
@@ -105,7 +101,7 @@ class EscanerNfcState extends State<EscanerNfc>{
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "L'usuari $nomFaller no té cadires assignades!",
+                        "L'usuari ${faller.nom} no té cadires assignades!",
                         style: TextStyle(color: Colors.red),
                       ),
                       Text("Cadires assignades: $cadiresPerAlFaller")
@@ -121,7 +117,7 @@ class EscanerNfcState extends State<EscanerNfc>{
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "L'usuari $nomFaller no és correcte",
+                      "L'usuari ${faller.nom} no és correcte",
                       style: TextStyle(color: Colors.red),
                     )
                   ],
@@ -136,7 +132,7 @@ class EscanerNfcState extends State<EscanerNfc>{
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "L'usuari $nomFaller no és un faller",
+                    "L'usuari ${faller.nom} no és un faller",
                     style: TextStyle(color: Colors.red),
                   ),
                 ],

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/faller.dart';
+import 'package:gestio_falla/domain/entities/familia.dart';
 import 'package:gestio_falla/presentation/screens/afegir_membre.dart';
 import 'package:gestio_falla/presentation/screens/crear_familia.dart';
 import 'package:gestio_falla/presentation/screens/editar_perfil.dart';
@@ -11,9 +13,7 @@ class PerfilScreen extends StatefulWidget {
 }
 
 class PerfilScreenState extends State<PerfilScreen> {
-  String userName = "Joel";
-  String familia = "Família de Joel";
-  String rol="Cap de familia";
+  Faller faller = Faller(nom: "Joel",familia: Familia(nom: "Família de Joel"), rol: "Cap de familia");
 
   @override
   Widget build(BuildContext context) {
@@ -35,15 +35,15 @@ class PerfilScreenState extends State<PerfilScreen> {
               ),
               SizedBox(height: 10),
               Text(
-                userName,
+                faller.nom,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
               Text(
-                familia,
+                faller.familia!.nom,
                 style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
               SizedBox(height: 20),
-              ElevatedButton(onPressed: rol=="Cap de familia" ? (){afgMembre();}:null, child: Text("Agregar membre")),
+              ElevatedButton(onPressed: faller.rol=="Cap de familia" ? (){afgMembre();}:null, child: Text("Agregar membre")),
               ElevatedButton(onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>CrearFamilia()));
               }, child: Text("Crear familia")),
@@ -109,7 +109,7 @@ class PerfilScreenState extends State<PerfilScreen> {
     });
   }
   void afgMembre(){
-    if(rol=="Cap de familia"){
+    if(faller.rol=="Cap de familia"){
       Navigator.push(context,MaterialPageRoute(builder: (context)=> AfegirMembre()));
     }
   }

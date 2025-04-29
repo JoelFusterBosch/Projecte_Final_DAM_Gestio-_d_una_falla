@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/presentation/screens/admin_screen.dart';
 import 'package:gestio_falla/presentation/screens/escaner_nfc.dart';
 import 'package:gestio_falla/presentation/screens/events_screen.dart';
@@ -15,7 +16,7 @@ class PrincipalScreen extends StatefulWidget {
 
 class PrincipalScreenState extends State<PrincipalScreen> {
   late int indexPantallaActual;
-  late String rol;
+  late Faller faller=Faller(nom: "Joel", rol: "Cobrador", subRol: "Cadires");
   late List<Widget> pantalles;
   late List<NavigationDestination> navegacio;
   late List<Widget> titolsAppBar;
@@ -24,7 +25,6 @@ class PrincipalScreenState extends State<PrincipalScreen> {
   void initState() {
     super.initState();
     indexPantallaActual=0;
-    rol = "Administrador";
     configurarVistaPerRol();
   }
 
@@ -49,7 +49,7 @@ class PrincipalScreenState extends State<PrincipalScreen> {
   }
   
   void configurarVistaPerRol() {
-    if(rol=="Faller"){
+    if(faller.rol=="Faller"){
       pantalles=[
         const EventsScreen(),
         const LlegirIEscriureNfcScreen(),
@@ -60,7 +60,7 @@ class PrincipalScreenState extends State<PrincipalScreen> {
         NavigationDestination(icon: Icon(indexPantallaActual == 0 ? Icons.event_outlined : Icons.event), label: 'Events'),
         NavigationDestination(icon: Icon(indexPantallaActual == 1 ? Icons.nfc_outlined : Icons.nfc), label: 'Llegir NFC'),
         NavigationDestination(icon: Icon(indexPantallaActual == 2 ? Icons.account_circle_outlined : Icons.account_circle), label: 'Perfil'),
-        NavigationDestination(icon: Icon(indexPantallaActual ==3 ? Icons.login_outlined : Icons.login), label: 'Login'),
+        NavigationDestination(icon: Icon(indexPantallaActual == 3 ? Icons.login_outlined : Icons.login), label: 'Login'),
       ];
       titolsAppBar = const [
         Text('Events'),
@@ -68,7 +68,7 @@ class PrincipalScreenState extends State<PrincipalScreen> {
         Text('Perfil'),
         Text('Login'),
       ];
-    }else if(rol=="Cobrador"){
+    }else if(faller.rol=="Cobrador"){
       pantalles=[
         const EscanerNfc(),
       ];
@@ -78,7 +78,7 @@ class PrincipalScreenState extends State<PrincipalScreen> {
       titolsAppBar = const [
         Text("Escaner"),
       ];
-    }else if(rol=="Administrador"){
+    }else if(faller.rol=="Administrador"){
       //TO-DO
       pantalles=[
         AdminScreen(),

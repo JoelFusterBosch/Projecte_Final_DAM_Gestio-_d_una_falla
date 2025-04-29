@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/cobrador.dart';
 import 'package:gestio_falla/domain/repository/nfc_repository.dart';
+import 'package:gestio_falla/presentation/screens/barra_screen.dart';
 import 'package:gestio_falla/presentation/screens/descompta_cadira_screen.dart';
+import 'package:gestio_falla/presentation/screens/escudellar_screen.dart';
 
 class NfcProvider with ChangeNotifier {
   final NfcRepository _nfcRepository;
@@ -10,7 +13,7 @@ class NfcProvider with ChangeNotifier {
   String _nfcData = "Escaneja una etiqueta NFC";
   String get nfcData => _nfcData;
 
-  String rol = "Cobrador"; // Esto puedes modificarlo desde fuera
+  Cobrador cobrador = Cobrador(rolCobrador: "Escudellar");
 
   Future<void> llegirEtiqueta(BuildContext context) async {
     _nfcData = "Acosta una etiqueta NFC perfavor";
@@ -36,13 +39,23 @@ class NfcProvider with ChangeNotifier {
         _nfcData = "Acció realitzada per valor NFC: $valorLlegit";
         notifyListeners();
 
-        switch (rol) {
-          case 'Cobrador':
-          case 'Barra':
-          case 'Escudellar':
+        switch (cobrador.rolCobrador) {
+          case 'Cadires':
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const DescomptaCadira()),
+            );
+            break;
+          case 'Barra':
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Barra()),
+            );
+            break;
+          case 'Escudellar':
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Escudellar()),
             );
             break;
         }

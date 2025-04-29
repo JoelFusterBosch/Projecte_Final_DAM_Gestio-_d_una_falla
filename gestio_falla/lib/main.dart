@@ -17,7 +17,7 @@ void main(){
   final nfcRepository = NfcRepositoryImpl(nfcDataSource);
   final notificacionsDataSource= NotificacionsDatasource();
   final notificacionsRepository= NotificacionsRepositoryImpl(notificacionsDataSource);
-  final apiOdooDataSource=ApiOdooDataSource(baseUrl: "http://192.168.125.26:8069", db: "Projecte_Falla");
+  final apiOdooDataSource=ApiOdooDataSource(baseUrl: "http://192.168.68.26:8069", db: "Projecte_Falla");
   final apiOdooRepository= ApiOdooRepositoryImpl(apiOdooDataSource);
   runApp(MyApp(
     nfcRepositoryImpl: nfcRepository,

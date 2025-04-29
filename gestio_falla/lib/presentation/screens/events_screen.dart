@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/entities/event.dart';
+import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/presentation/screens/event_categoria_screen.dart';
 import 'package:gestio_falla/presentation/screens/event_detallat_screen.dart';
 
@@ -11,7 +12,7 @@ class EventsScreen extends StatefulWidget{
   State<EventsScreen> createState() => EventsScreenState();
 }
 class EventsScreenState extends State<EventsScreen>{
-  String usuari="Joel";
+  Faller faller= Faller(nom: "Joel", rol: "Faller");
   List<Event> totsElsEvents=[];
   List<Event> eventsFiltrats=[];
   int eventSeleccionat=0; 
@@ -91,9 +92,8 @@ class EventsScreenState extends State<EventsScreen>{
                     ),
                   ],
                 ),
-                Text(usuari),
-                
-                
+                Text(faller.nom
+              ),   
             ],
           ),
         ),

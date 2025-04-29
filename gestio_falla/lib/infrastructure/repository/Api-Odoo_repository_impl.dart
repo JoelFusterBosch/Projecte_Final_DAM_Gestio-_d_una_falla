@@ -8,8 +8,7 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
 
   @override
   Future<int?> login(String email, String password) async {
-    final uid = await apiOdooDataSource.login(email, password);
-    return uid;
+    return apiOdooDataSource.login(email, password);
   }
   
   @override
