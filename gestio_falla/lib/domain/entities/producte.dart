@@ -3,6 +3,6 @@ class Producte {
   String? desc;
   double preu;
   int stock;
-
-  Producte({required this.nom, this.desc, required this.preu, required this.stock});
+  String? urlImatge;
+  Producte({required this.nom, this.desc, required this.preu, required this.stock, this.urlImatge});
 }

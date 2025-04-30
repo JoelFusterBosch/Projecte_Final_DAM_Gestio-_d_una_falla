@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/entities/cobrador.dart';
+import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/domain/repository/nfc_repository.dart';
 import 'package:gestio_falla/presentation/screens/barra_screen.dart';
 import 'package:gestio_falla/presentation/screens/descompta_cadira_screen.dart';
@@ -13,7 +14,7 @@ class NfcProvider with ChangeNotifier {
   String _nfcData = "Escaneja una etiqueta NFC";
   String get nfcData => _nfcData;
 
-  Cobrador cobrador = Cobrador(rolCobrador: "Escudellar");
+  Faller faller = Faller(nom: "Joel", rol: "Cobrador", cobrador: Cobrador(rolCobrador: "Escudellar"));
 
   Future<void> llegirEtiqueta(BuildContext context) async {
     _nfcData = "Acosta una etiqueta NFC perfavor";
@@ -39,7 +40,7 @@ class NfcProvider with ChangeNotifier {
         _nfcData = "Acció realitzada per valor NFC: $valorLlegit";
         notifyListeners();
 
-        switch (cobrador.rolCobrador) {
+        switch (faller.cobrador!.rolCobrador) {
           case 'Cadires':
             Navigator.push(
               context,

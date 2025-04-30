@@ -50,6 +50,29 @@ samples, guidance on mobile development, and a full API reference.
  flutter pub get
  ```
  Més documentacio en [la pàgina oficial](https://pub.dev/packages/http)
+### MobileScanner(Per a codi QR)
+ Esta llibreria ens dona la capacitat de llegir codis QR, cal posar el següent en el yaml en l'apartat de `dependencies`:
+ ```yaml
+ mobile_scanner: ^3.0.0 #Versió de mobile_scanner utilitzada
+ ```
+ Ara executem:
+ ```plaintext
+ flutter pub get
+ ```
+ ### Permisos
+ Per a poder llegir codis QR necessitarem la camara, i per això hi haura que demanar permisos de la següent forma:
+ Anem al `AndroidManifest` que es troba en la següent ruta:
+ ```plaintext
+ /android/src/AndroidManifest.xml
+ ```
+ Tindrem que posar el següent:<br>
+ En l'apartat de manifest
+ ```
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+ ...
+ <uses-permission android:name="android.permission.CAMERA"/>
+ <uses-feature android:name="android.hardware.camera" android:required="false"/>
+ ```
 ### Notificacions
  Esta llibreria ens permetrà manar notificacions al mòbil, cal posar el següent en el yaml en l'apartat de `dependencies`:
  ```yaml

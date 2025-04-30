@@ -1,3 +1,4 @@
+import 'package:gestio_falla/domain/entities/cobrador.dart';
 import 'package:gestio_falla/domain/entities/familia.dart';
 
 class Faller {
@@ -5,40 +6,37 @@ class Faller {
   String nom;
   bool? teLimit;
   double? limit;
-  bool? esCap;
   double? saldo;
   Familia? familia;
 
   String rol;     
-  static const List<String> rolsValids = ['Faller', 'Cobrador','Cap de familia'];  
-  String? subRol;   
+  static const List<String> rolsValids = ['Faller', 'Cobrador','Cap de familia','Administrador'];  
+  Cobrador? cobrador;  
 
   Faller({
     this.id,
     required this.nom,
     this.teLimit,
     this.limit,
-    this.esCap,
     this.saldo,
     this.familia,
     required this.rol,
-    
-    this.subRol,
+    this.cobrador,
   }) {
     if (!rolsValids.contains(rol)) {
       throw ArgumentError('Rol no vàlid: $rol');
-    }else if (rol == 'cobrador') {
-      if (subRol == null || !subRolesCobrador.contains(subRol)) {
-        throw ArgumentError('Cobrador debe tener un subRol válido.');
+    } else if (rol == 'Cobrador') {
+      if (cobrador == null) {
+        throw ArgumentError('El rol "Cobrador" requereix una instància de Cobrador.');
+      }
+      if (!Cobrador.rolsValids.contains(cobrador!.rolCobrador)) {
+        throw ArgumentError('Cobrador deu tindre un subRol vàlid: ${cobrador!.rolCobrador}.');
       }
     } else {
-      subRol = null; // limpiar si no es cobrador
+      // Si no és Cobrador, subRol hauria de ser null
+      cobrador = null;
     }
   }
-
-  static const List<String> subRolesCobrador = ['Cadires', 'Barra', 'Escudellar'];
-
-  bool get esCobrador => rol == 'cobrador';
 
   factory Faller.fromJSON(Map<String, dynamic> json) {
     return Faller(
@@ -46,13 +44,11 @@ class Faller {
       nom: json['nom'],
       teLimit: json['teLimit'],
       limit: json['limit'],
-      esCap: json['esCap'],
       saldo: (json['saldo'] is int)
           ? (json['saldo'] as int).toDouble()
           : json['saldo'],
-      familia: json['familia'], // debería deserializar Familia si es un objeto
+      familia: json['familia'], 
       rol: json['rol'],
-      subRol: json['subRol'],
     );
   }
 }

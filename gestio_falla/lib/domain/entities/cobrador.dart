@@ -1,7 +1,7 @@
 class Cobrador {
-  final String rolCobrador; // solo permite ciertos valores
+  final String rolCobrador; // sols permet certs valors
 
-  static const List<String> rolsValids = ['cadires', 'barra', 'escudellar'];
+  static const List<String> rolsValids = ['Cadires', 'Barra', 'Escudellar'];
 
   Cobrador({required this.rolCobrador}) {
     if (!rolsValids.contains(rolCobrador)) {

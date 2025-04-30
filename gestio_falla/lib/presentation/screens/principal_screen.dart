@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/cobrador.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/presentation/screens/admin_screen.dart';
-import 'package:gestio_falla/presentation/screens/escaner_nfc.dart';
+import 'package:gestio_falla/presentation/screens/escaner.dart';
 import 'package:gestio_falla/presentation/screens/events_screen.dart';
 import 'package:gestio_falla/presentation/screens/llegir_i_escriure_nfc_screen.dart';
 import 'package:gestio_falla/presentation/screens/login_screen.dart';
@@ -16,7 +17,11 @@ class PrincipalScreen extends StatefulWidget {
 
 class PrincipalScreenState extends State<PrincipalScreen> {
   late int indexPantallaActual;
-  late Faller faller=Faller(nom: "Joel", rol: "Cobrador", subRol: "Cadires");
+  late Faller faller=Faller(
+    nom: "Joel",
+    rol: "Cobrador", 
+    cobrador: Cobrador(rolCobrador: "Cadires")
+  );
   late List<Widget> pantalles;
   late List<NavigationDestination> navegacio;
   late List<Widget> titolsAppBar;
@@ -70,7 +75,7 @@ class PrincipalScreenState extends State<PrincipalScreen> {
       ];
     }else if(faller.rol=="Cobrador"){
       pantalles=[
-        const EscanerNfc(),
+        const Escaner(),
       ];
       navegacio=[
         NavigationDestination(icon: Icon(Icons.scanner), label: 'Escaner')

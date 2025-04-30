@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/domain/entities/producte.dart';
 import 'package:gestio_falla/provider/notificacionsProvider.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,7 @@ class Barra extends StatefulWidget{
 
 class BarraState extends State<Barra>{
   late double preuTotal;
-  late String usuari;
+  Faller faller= Faller(nom: "Joel", rol: "Faller");
   List <Producte>totsElsProductes=[
     Producte(nom: "Aigua 500ml", preu: 1 ,stock: 20),
     Producte(nom: "Cervesa 33cl", preu: 1.5, stock: 33),
@@ -23,7 +24,6 @@ class BarraState extends State<Barra>{
   Map<Producte, int> quantitatsSeleccionades = {};
   @override
   void initState() {
-    usuari="Joel";
     preuTotal=0;
     for (var p in totsElsProductes) {
     quantitatsSeleccionades[p] = 0;
@@ -197,7 +197,7 @@ class BarraState extends State<Barra>{
   Future<void> notificacio() async {
     Provider.of<NotificacionsProvider>(context, listen: false).showNotification(
       title: 'Barra',
-      body: 'Pagament realitzat pel usuari $usuari amb preu de $preuTotal€ pagat de forma correcta',
+      body: 'Pagament realitzat pel usuari ${faller.nom} amb preu de $preuTotal€ pagat de forma correcta',
     );
   }
 }

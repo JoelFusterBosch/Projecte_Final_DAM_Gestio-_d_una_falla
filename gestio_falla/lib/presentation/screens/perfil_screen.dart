@@ -13,7 +13,11 @@ class PerfilScreen extends StatefulWidget {
 }
 
 class PerfilScreenState extends State<PerfilScreen> {
-  Faller faller = Faller(nom: "Joel",familia: Familia(nom: "Família de Joel"), rol: "Cap de familia");
+  Faller faller = Faller(
+    nom: "Joel",
+    familia: Familia(nom: "Família de Joel"), 
+    rol: "Cap de familia"
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +47,7 @@ class PerfilScreenState extends State<PerfilScreen> {
                 style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
               SizedBox(height: 20),
-              ElevatedButton(onPressed: faller.rol=="Cap de familia" ? (){afgMembre();}:null, child: Text("Agregar membre")),
+              ElevatedButton(onPressed: faller.rol=="Cap de familia" ? (){afigMembre();}:null, child: Text("Agregar membre")),
               ElevatedButton(onPressed: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context)=>CrearFamilia()));
               }, child: Text("Crear familia")),
@@ -108,7 +112,7 @@ class PerfilScreenState extends State<PerfilScreen> {
       }
     });
   }
-  void afgMembre(){
+  void afigMembre(){
     if(faller.rol=="Cap de familia"){
       Navigator.push(context,MaterialPageRoute(builder: (context)=> AfegirMembre()));
     }
