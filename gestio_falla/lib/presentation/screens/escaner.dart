@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
-import 'package:gestio_falla/domain/repository/nfc_repository.dart';
-import 'package:gestio_falla/infrastructure/data_source/nfc_datasource.dart';
-import 'package:gestio_falla/infrastructure/repository/nfc_repository_impl.dart';
+import 'package:gestio_falla/domain/repository/qr_repository.dart';
+import 'package:gestio_falla/infrastructure/data_source/qr_datasource.dart';
+import 'package:gestio_falla/infrastructure/repository/qr_repository_impl.dart';
 import 'package:gestio_falla/presentation/screens/descompta_cadira_screen.dart';
 import 'package:gestio_falla/provider/nfcProvider.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class Escaner extends StatefulWidget{
@@ -18,7 +16,6 @@ class Escaner extends StatefulWidget{
 
 }
 class EscanerState extends State<Escaner>{
-  bool isProcessingQR = false;
   String? qrData;
   List pantalles=[];
   late Event event;
@@ -32,7 +29,7 @@ class EscanerState extends State<Escaner>{
   late bool esFaller;
   late int cadiresPerAlFaller;
   late bool eventCorrecte;
-  late final NfcRepository nfcRepository;
+  late final QrRepository qrRepository;
   
   @override
   void initState(){
@@ -48,7 +45,7 @@ class EscanerState extends State<Escaner>{
     esFaller=true;
     cadiresPerAlFaller=1;
     eventCorrecte=false;
-    nfcRepository = NfcRepositoryImpl(NfcDataSource());
+    qrRepository = QrRepositoryImpl(QrDataSource());
     event1();
   }
   
@@ -72,21 +69,39 @@ class EscanerState extends State<Escaner>{
                 },
               ),
               ElevatedButton(onPressed:eventCorrecte? () => {context.read<NfcProvider>().llegirEtiqueta(context)}:null, 
-              child: Text("Escaner NFC")
+              child: Text("Escàner NFC")
               ),
-              ElevatedButton(onPressed: eventCorrecte? () => {llegirQR()}:null,
-              child: Text("Escaner QR")),
+              ElevatedButton(onPressed: eventCorrecte? () => {qrRepository.llegirQR(
+                context: context,
+                valorEsperat: '8430001000017',
+                onCoincidencia: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const DescomptaCadira()),
+                  );
+                },
+                onDiferent: (valor) {
+                  setState(() {
+                    qrData = valor;
+                  });
+                },
+                onError: () {
+                  qrData = "Error al llegir el codi QR";
+                },
+              )}:null,
+              child: Text("Escàner QR")
+              ),
               if (qrData != null) 
-              Text(
-                'QR detectat: $qrData',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              )
-            else
-              Text(
-                "No s'ha escanejat cap QR",
-                style: TextStyle(fontSize: 16, color: Colors.grey),
-              ),
+                Text(
+                  'QR detectat: $qrData',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                )
+              else
+                Text(
+                  "No s'ha escanejat cap QR",
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
             ]
           )
         ) 
@@ -174,49 +189,5 @@ class EscanerState extends State<Escaner>{
         ];
       }
     });
-  }
-  void llegirQR() async {
-    final status = await Permission.camera.request();
-    if (!status.isGranted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Permís de camara denegat')),
-      );
-      return;
-    }
-
-    bool isProcessing = false;
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext dialogContext) {
-        return Scaffold(
-          appBar: AppBar(title: const Text('Escàner QR')),
-          body: MobileScanner(
-            controller: MobileScannerController(),
-            onDetect: (capture) {
-              if (isProcessing) return;
-              isProcessing = true;
-
-              final String? code = capture.barcodes.first.rawValue;
-              if (code == null) return;
-
-              Navigator.pop(dialogContext); // Tanca l'escaner
-
-              if (code == '8430001000017') {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const DescomptaCadira()),
-                );
-              } else {
-                setState(() {
-                  qrData = code;
-                });
-              }
-            },
-          ),
-        );
-      },
-    );
   }
 }

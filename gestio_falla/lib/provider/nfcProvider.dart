@@ -24,22 +24,6 @@ class NfcProvider with ChangeNotifier {
       valorEsperat: '8430001000017',
       onCoincidencia: () {
         _nfcData = "Acció realitzada per valor NFC: 8430001000017";
-        notifyListeners();
-      },
-      onError: () {
-        _nfcData = "Valor llegit no coincideix o error";
-        notifyListeners();
-      },
-    );
-
-    if (valorLlegit != null) {
-      _nfcData = "Valor llegit: $valorLlegit";
-      notifyListeners();
-
-      if (valorLlegit == '8430001000017') {
-        _nfcData = "Acció realitzada per valor NFC: $valorLlegit";
-        notifyListeners();
-
         switch (faller.cobrador!.rolCobrador) {
           case 'Cadires':
             Navigator.push(
@@ -60,7 +44,17 @@ class NfcProvider with ChangeNotifier {
             );
             break;
         }
-      }
+        notifyListeners();
+      },
+      onError: () {
+        _nfcData = "Valor llegit no coincideix o error";
+        notifyListeners();
+      },
+    );
+
+    if (valorLlegit != null) {
+      _nfcData = "Valor llegit: $valorLlegit";
+      notifyListeners();
     } else {
       _nfcData = "No s'ha pogut llegir l'etiqueta.";
       notifyListeners();
