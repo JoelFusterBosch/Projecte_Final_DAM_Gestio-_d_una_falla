@@ -47,8 +47,8 @@ class AdminScreen extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               // Lista de usuarios
-              if (apiOdooProvider.users != null &&
-                  apiOdooProvider.users!.isNotEmpty)
+              if (apiOdooProvider.events != null &&
+                  apiOdooProvider.events!.isNotEmpty)
                 Expanded(
                   child: Column(
                     children: [
@@ -60,9 +60,9 @@ class AdminScreen extends StatelessWidget {
                       const SizedBox(height: 10),
                       Expanded(
                         child: ListView.builder(
-                          itemCount: apiOdooProvider.users!.length,
+                          itemCount: apiOdooProvider.events!.length,
                           itemBuilder: (context, index) {
-                            final user = apiOdooProvider.users![index];
+                            final user = apiOdooProvider.events![index];
                             return ListTile(
                               leading: const Icon(Icons.person),
                               title: Text(user['name'] ?? 'Sense nom'),
@@ -74,7 +74,7 @@ class AdminScreen extends StatelessWidget {
                     ],
                   ),
                 )
-              else if (apiOdooProvider.users != null)
+              else if (apiOdooProvider.events != null)
                 const Text("No n'hi han usuaris per a mostrar."),
             ],
           ),

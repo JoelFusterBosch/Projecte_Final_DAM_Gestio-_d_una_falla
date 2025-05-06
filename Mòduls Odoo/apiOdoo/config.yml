@@ -1,6 +1,6 @@
 production:
     connection:
-        url: http://localhost o http://IPMàquinaVirual # Canvia això per la ip de la màquina virtual o localhost si ho fas en la màquina virtual
+        url: http://localhost:8069/xmlrpc/2/common o http://IPMàquinaVirual:8069/xmlrpc/2/common # Canvia això per la ip de la màquina virtual o localhost si ho fas en la màquina virtual
         port: 8069 # Canvia això si tens un port diferent
         db: nom_db # Canvia això pel nom de la base de dades
         user: odoo@odoo.com # Canvia això pel correu que tingues en el correu
@@ -8,7 +8,7 @@ production:
 
 development:
     connection:
-        url: http://localhost o http://IPMàquinaVirual # Canvia això per la ip de la màquina virtual o localhost si ho fas en la màquina virtual
+        url: http://localhost:8069/xmlrpc/2/common o http://IPMàquinaVirual:8069/xmlrpc/2/common # Canvia això per la ip de la màquina virtual o localhost si ho fas en la màquina virtual
         port: 8069 # Canvia això si tens un port diferent
         db: nom_db # Canvia això pel nom de la base de dades
         user: odoo@odoo.com # Canvia això pel correu que tingues en el correu

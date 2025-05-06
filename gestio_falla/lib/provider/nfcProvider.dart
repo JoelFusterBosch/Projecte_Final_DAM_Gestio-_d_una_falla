@@ -14,7 +14,7 @@ class NfcProvider with ChangeNotifier {
   String _nfcData = "Escaneja una etiqueta NFC";
   String get nfcData => _nfcData;
 
-  Faller faller = Faller(nom: "Joel", rol: "Cobrador", cobrador: Cobrador(rolCobrador: "Escudellar"));
+  Faller faller = Faller(nom: "Joel", rol: "Cobrador", cobrador: Cobrador(rolCobrador: "Cadires"));
 
   Future<void> llegirEtiqueta(BuildContext context) async {
     _nfcData = "Acosta una etiqueta NFC perfavor";
@@ -59,5 +59,13 @@ class NfcProvider with ChangeNotifier {
       _nfcData = "No s'ha pogut llegir l'etiqueta.";
       notifyListeners();
     }
+  }
+  Future<void> escriureNFC(BuildContext context) async {
+    _nfcData = "Acosta una etiqueta NFC perfavor";
+    notifyListeners();
+    final valorLlegit = await _nfcRepository.escriureNFC("8430001000017");
+    notifyListeners();
+    _nfcData="Etiqueta nfc canviada amb el valor $valorLlegit";
+    notifyListeners();
   }
 }

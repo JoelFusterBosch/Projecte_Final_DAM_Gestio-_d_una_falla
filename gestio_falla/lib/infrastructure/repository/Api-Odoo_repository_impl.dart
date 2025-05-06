@@ -15,4 +15,9 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   Future<List?> getUsers(int uid, String password) {
     return apiOdooDataSource.getUsers(uid, password);
   }
+  
+  @override
+  Future<List?> getEvents(int uid, String password) {
+    return apiOdooDataSource.getEvents(uid, password);
+  }
 }

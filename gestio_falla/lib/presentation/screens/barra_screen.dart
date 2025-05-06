@@ -174,8 +174,10 @@ class BarraState extends State<Barra>{
       },
     ).then((resultado) {
       if (resultado != null && resultado) {
-        // Aquí actualizamos el stock
-        notificacio();
+        Provider.of<NotificacionsProvider>(context, listen: false).showNotification(
+          title: 'Barra',
+          body: 'Pagament realitzat pel usuari ${faller.nom} amb preu de $preuTotal€ pagat de forma correcta',
+        );
         setState(() {
           quantitatsSeleccionades.forEach((producte, quantitat) {
             producte.stock -= quantitat;
@@ -193,11 +195,5 @@ class BarraState extends State<Barra>{
         );
       }
     });
-  }
-  Future<void> notificacio() async {
-    Provider.of<NotificacionsProvider>(context, listen: false).showNotification(
-      title: 'Barra',
-      body: 'Pagament realitzat pel usuari ${faller.nom} amb preu de $preuTotal€ pagat de forma correcta',
-    );
   }
 }

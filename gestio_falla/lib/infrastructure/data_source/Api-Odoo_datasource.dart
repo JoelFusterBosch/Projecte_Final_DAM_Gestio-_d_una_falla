@@ -40,33 +40,59 @@ class ApiOdooDataSource {
     }
   }
   Future<List<dynamic>?> getUsers(int uid, String password) async {
-  final url = Uri.parse('$baseUrl/jsonrpc');
+    final url = Uri.parse('$baseUrl/jsonrpc');
 
-  final response = await http.post(
-    url,
-    headers: {'Content-Type': 'application/json'},
-    body: jsonEncode({
-      "jsonrpc": "2.0",
-      "method": "call",
-      "params": {
-        "service": "object",
-        "method": "execute_kw",
-        "args": [
-          db,
-          uid,
-          password,
-          'res.users',
-          'search_read',
-          [],
-          {'fields': ['id', 'name', 'login']}
-        ],
-      },
-      "id": 2
-    }),
-  );
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        "jsonrpc": "2.0",
+        "method": "call",
+        "params": {
+          "service": "object",
+          "method": "execute_kw",
+          "args": [
+            db,
+            uid,
+            password,
+            'res.users',
+            'search_read',
+            [],
+            {'fields': ['id', 'name', 'login']}
+          ],
+        },
+        "id": 2
+      }),
+    );
 
-  final data = jsonDecode(response.body);
-  return data['result'];
-}
+    final data = jsonDecode(response.body);
+    return data['result'];
+  }
+  Future<List<dynamic>?> getEvents(int uid, String password) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/jsonrpc'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        "jsonrpc": "2.0",
+        "method": "call",
+        "params": {
+          "service": "object",
+          "method": "execute_kw",
+          "args": [
+            db,
+            uid, 
+            password, 
+            'calendar.event',
+            'search_read',
+            [],
+            {'fields': ['name', 'start', 'stop']}
+          ],
+        },
+        "id": 3
+      }),
+    );
 
+    final data = jsonDecode(response.body);
+    return data['result'];
+  }
 }

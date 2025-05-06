@@ -1,5 +1,5 @@
 # apiOdoo
-No precisament un mòdul d'Odoo, però el que fa és mitjançant `xmlrpc` es connecta a l'API d'Odoo i fa una petició que trau un event per pantalla
+No precisament un mòdul d'Odoo, però el que fa és mitjançant `xmlrpc` es connecta a l'API d'Odoo i fa una petició que trau un event per pantalla i als seus participants que estiguen registrats en eixe event que tinguen un codi de barres en específic.
 
 ## 1. Accedeix al teu perfil
 Primer, inicia sessió al teu compte d'Odoo. Fes clic a la teua foto o icona de perfil al cantó superior dret i selecciona **"El meu perfil"**.
@@ -58,7 +58,7 @@ Assegurat de configurar correctament el fitxer `config.yml` amb les dades de con
 ```yaml
 production:    
     connection:
-        url: http://localhost o http://IPMàquinaVirtual # localhost si Odoo està en la mateixa màquina i IP de la màquina virtual si està en un sistema diferent.
+        url: http://localhost:8069/xmlrpc/2/common o http://IPMàquinaVirtual:8069/xmlrpc/2/common # localhost si Odoo està en la mateixa màquina i IP de la màquina virtual si està en un sistema diferent.
         port: 8069 # Port de l'Odoo
         db: nom_bd # Nom de la base de dades a través del següent enllaç 
         user: usuari # Correu electrònic configurat a l'usuari administrador d'Odoo
@@ -66,7 +66,7 @@ production:
 
 development:    
     connection:
-        url: http://localhost o http://IPMàquinaVirtual # localhost si Odoo està en la mateixa màquina i IP de la màquina virtual si està en un sistema diferent.
+        url: http://localhost:8069/xmlrpc/2/common o http://IPMàquinaVirtual/xmlrpc/2/common # localhost si Odoo està en la mateixa màquina i IP de la màquina virtual si està en un sistema diferent.
         port: 8069 # Port del Odoo
         db: nom_bd # Nom de la base de dades a través del següent enllaç 
         user: usuari # Correu electrònic configurat a l'usuari administrador d'Odoo
@@ -91,14 +91,29 @@ Si no recordes el nom de la teua base de dades, pots trobar-lo a la secció de c
   ```
 ---
 ## Obtindre el correu
-Si no et recordes del correu electrònic pel motiu que siga fixat en esta icona<img src="/img/icona.png" alt="Icona"/> i prems on diu `Contactes` i veuràs el següent:
+Si no et recordes del correu electrònic pel motiu que siga fixat en esta icona<img src="img/icona.png" alt="Icona"/> i prems on diu `Contactes` i veuràs el següent:
 <img src="img/PantallaContactes.png" alt="Pantalla de contactes"/><br>
 I allí seleccionaràs al usuari administrador:<br>
 <img src="img/UsuariAdmin.png"><br>
 Quan el selecciones veuràs el següent:
 <img src="img/PantallaUsuariAdmin.png"><br>
 I ens fixarem on diu `Correu electrònic`, si té valor ja hem acabat, si no posa-li un correu electrònic.<br>
-<img src="img/CorreuElectrònic.png">
+<img src="img/CorreuElectrònic.png"><br>
+
+## Com crear un event
+Per a crear un 'event' el que has de fer és tindre el mòdul `Events` instal·lat:<br>
+<img src="img/MòdulEsdeveniments.png"><br>
+Quan el tingues instal·lat el mòdul d'Events ens fixarem en esta icona <img src="img/icona.png" alt="Icona"> i premes on diu `Esdeveniments` i veuràs el següent:
+<img src="img/PantallaPerAIntroduirEsdeveniments.png"><br>
+Ara li premeràs on diu `Nou` i s'obrira el següent formulari:
+<img src="img/PantallaEsdeveniments.png"><br>
+Emplena el formulari, i si vols afegir a un contacte al event, hauràs de prémer el següent:<br>
+<img src="img/Assistents.png"><br>
+S'obrira el següent i li premeràs al botó que diu `Nou`:
+<img src="img/PantallaPerAIntroduirAssistents.png"><br>
+Quan premes el botó que diu `Nou s'obrira el següent`:
+<img src="img/PantallaAssistents.png"><br>
+Emplena el formulari amb el contacte que vulgues i ja tens un esdeveniment amb un assistent.
 
 Per a executar el script `main.py`, assegurat d'estar en un entorn de Python 3.5 o superior. Pots seguir estos passos:
 
