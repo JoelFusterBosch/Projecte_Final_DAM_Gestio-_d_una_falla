@@ -8,7 +8,7 @@
     <!-- Reglas de acceso para el modelo 'familia' -->
     <record id="familia_familia_rule" model="ir.rule">
         <field name="name">Familia: ver todas</field>
-        <field name="model_id" ref="familia.model_familia"/>
+        <field name="model_id" ref="familia.model_familia_familia"/>
         <field name="groups" eval="[(4, ref('group_familia_manager'))]"/>
         <field name="domain_force">[(1, '=', 1)]</field>
     </record>

@@ -16,18 +16,29 @@
     'website': 'https://provestalens.es',
     'depends': ['base', 'event', 'sale', 'familia', 'website_event'],
     'images': ['static/description/icon.png'],
+    'qweb': [
+    'static/src/xml/website_event_card_status.xml',
+],
     'data': [
         'views/event_registration_views.xml',
         'views/event_event_ticket_views.xml',
         'views/event_event_views.xml',
         'security/ir.model.access.csv',
         'views/website_event_registration_templates.xml',
+        
+        
+        'data/ir_cron.xml',
     ],
     'assets': {
         'web.assets_frontend': [
             'event_family_registration/static/src/js/custom_registration.js',  # Aquí se registra tu JS
+            'event_family_registration/static/src/js/event_registration_status.js',
+            'event_family_registration/static/src/js/event_status_ribbon.js',
+            
+            
         ],
     },
     'installable': True,
     'application': True,
+    'license': 'LGPL-3',
 }

@@ -1,58 +1,56 @@
-from odoo import models, fields, exceptions, _
+from odoo import models, fields, exceptions, api, _
 
 class AccountPaymentMethodSaldo(models.Model):
     _inherit = 'account.payment'
 
+    payment_method_line_id = fields.Many2one(
+        'account.payment.method.line',
+        string="Mètode de pagament",
+        required=True,
+        default=lambda self: self._get_valid_payment_method()
+    )
+
+    def _get_valid_payment_method(self):
+        """Retorna un mètode de pagament vàlid (amb Journal)"""
+        return self.env['account.payment.method.line'].search(
+            [('journal_id', '!=', False)], limit=1
+        ).id
+
     payment_method_type = fields.Selection(
-        selection=[('saldo', 'Pago con saldo'), ('cash', 'En metálico')],
-        string="Tipo de Método de Pago",
+        selection=[('saldo', 'Pago con saldo'), ('cash', 'En metàl·lic')],
+        string="Tipus de Mètode de Pagament",
         required=True,
         default='saldo'
     )
 
     payment_option_id = fields.Many2one(
         'payment.provider',
-        string="Opción de pago",
-        help="Método de pago seleccionado"
+        string="Opció de pagament",
+        help="Mètode de pagament seleccionat"
     )
 
     def action_post(self):
         for record in self:
             if record.payment_method_type == 'saldo':
-                cliente = record.partner_id
-                if cliente.saldo < record.amount:
-                    raise exceptions.UserError(_('Saldo insuficiente para completar el pago.'))
+                # ❌ No tornar a descomptar saldo
+                # Només ens assegurem que tot estiga ben configurat
 
-                # Descomptar el saldo
-                cliente.saldo -= record.amount
-                cliente.sudo().write({'saldo': cliente.saldo})
-
-                # Assignar el diari de pagament
-                journal_saldo = self.env['account.journal'].search([('code', '=', 'BF')], limit=1)
-                if journal_saldo:
-                    record.write({'journal_id': journal_saldo.id})
-
-                # 🔥 **ASSEGURAR QUE `payment_option_id` ESTÀ ASSIGNAT**
-                if not record.payment_option_id:
-                    provider_saldo = self.env['payment.provider'].search([('code', '=', 'custom')], limit=1)
-                    if provider_saldo:
-                        record.payment_option_id = provider_saldo
+                # 🧾 Assignar el diari
+                if not record.journal_id:
+                    journal_saldo = self.env['account.journal'].search([('code', '=', 'BNK1')], limit=1)
+                    if journal_saldo:
+                        record.journal_id = journal_saldo.id
                     else:
-                        raise exceptions.UserError(_("No s'ha trobat el proveïdor de pagament per saldo."))
+                        raise exceptions.UserError(_("No s'ha trobat el diari per a pagament amb saldo."))
 
-                # 🔥 **CREAR LA TRANSACTIÓ I ASSEGURAR-SE QUE `payment_option_id` ES REGISTRA**
-                transaction = self.env['payment.transaction'].create({
-                    'provider_id': record.payment_option_id.id,
-                    'partner_id': cliente.id,
-                    'amount': record.amount,
-                    'currency_id': record.currency_id.id or self.env.company.currency_id.id,
-                    'reference': record.name or self.env['ir.sequence'].next_by_code('payment.transaction'),
-                    'state': 'done',
-                    'operation': 'direct',
-                    'payment_option_id': record.payment_option_id.id,  # ✅ **ARA ASSIGNEM `payment_option_id`**
-                })
-
-                transaction._set_done()
-                transaction._reconcile_after_done()
+                # 💳 Assignar el mètode de pagament si no està definit
+                if not record.payment_method_line_id:
+                    payment_method = self.env['account.payment.method.line'].search(
+                        [('journal_id', '=', record.journal_id.id)], limit=1
+                    )
+                    if payment_method:
+                        record.payment_method_line_id = payment_method
+                    else:
+                        raise exceptions.UserError(_("No s'ha trobat una línia de mètode de pagament vàlida."))
 
         return super(AccountPaymentMethodSaldo, self).action_post()

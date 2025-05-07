@@ -5,7 +5,7 @@
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name" string="Cliente"/>
+                <field name="name" string="Membre de la falla"/>
                 <field name="saldo_a_favor" string="Saldo a Favor"/>
             </tree>
         </field>
@@ -18,7 +18,7 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='category_id']" position="after">
-                <field name="saldo_a_favor"/>
+                <field name="saldo_a_favor" readonly="1" string="A compte"/>
             </xpath>
         </field>
     </record>

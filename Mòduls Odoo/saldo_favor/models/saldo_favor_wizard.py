@@ -17,5 +17,7 @@ class SaldoFavorWizard(models.TransientModel):
             'amount': self.amount,
             'date': fields.Datetime.now(),
         })
-        return {'type': 'ir.actions.act_window_close'}
+        #return {'type': 'ir.actions.act_window_close'}
+         # Tornar a la llista de clients amb saldo
+        return self.env.ref('saldo_favor.action_saldo_favor_list').read()[0]
 

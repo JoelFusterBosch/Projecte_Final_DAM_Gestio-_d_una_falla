@@ -1,0 +1,16 @@
+<odoo>
+    <template xml:space="preserve"
+              t-name="website_event_card_status"
+              t-inherit="website_event.index_events_list"
+              t-inherit-mode="extension"
+              priority="30">
+
+        <xpath expr="//article" position="inside">
+            <div class="o_event_status_badge"
+                 style="background: green; color: white; padding: 4px; border-radius: 4px; margin: 4px;">
+                ✅ DEBUG: ara sí!
+            </div>
+        </xpath>
+
+    </template>
+</odoo>

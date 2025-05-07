@@ -3,7 +3,7 @@
         <field name="name">saldo.favor.wizard.form</field>
         <field name="model">saldo.favor.wizard</field>
         <field name="arch" type="xml">
-            <form string="Ingreso de Saldo a Favor">
+            <form string="Ingrés a compte">
                 <group>
                     <field name="partner_id"/>
                     <field name="amount"/>

@@ -1,0 +1,6 @@
+<odoo>
+    <record id="group_order_manager" model="res.groups">
+        <field name="name">Gestor de Comandes</field>
+        <field name="category_id" ref="base.module_category_sales"/>
+    </record>
+</odoo>

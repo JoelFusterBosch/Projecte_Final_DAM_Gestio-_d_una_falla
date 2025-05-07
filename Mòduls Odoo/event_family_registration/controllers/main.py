@@ -73,3 +73,24 @@ class EventRegistrationController(http.Controller):
         
         # Redirigir al cliente de vuelta a la página de pedidos
         return request.redirect('/my/orders')
+
+
+    @http.route('/event/<int:event_id>/max_faller_limits', type='json', auth='public')
+    def get_max_faller_limits(self, event_id, partner_id):
+        event = request.env['event.event'].sudo().browse(event_id)
+        partner = request.env['res.partner'].sudo().browse(partner_id)
+
+        miembro_familia = request.env['familia.miembro'].sudo().search([
+            ('partner_id', '=', partner.id)
+        ], limit=1)
+
+        if not miembro_familia:
+            return {}  # No hi ha límit si no és membre de família
+
+        family_member_count = len(miembro_familia.familia_id.miembros_ids)
+
+        limits = {}
+        for ticket in event.ticket_ids:
+            if ticket.max_faller:
+                limits[ticket.id] = family_member_count
+        return limits

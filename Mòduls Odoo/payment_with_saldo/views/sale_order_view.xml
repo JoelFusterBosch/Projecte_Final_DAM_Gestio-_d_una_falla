@@ -1,0 +1,15 @@
+<odoo>
+    <record id="view_sale_order_form_qr" model="ir.ui.view">
+        <field name="name">sale.order.form.qr</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="qr_code" widget="image" class="oe_avatar oe_picture"/>
+                <t t-if="record and record.id">
+                    <a t-att-href="'/qr_scan/%s' % record.id" class="btn btn-info" role="button">Escanejar QR</a>
+                </t>
+            </xpath>
+        </field>
+    </record>
+</odoo>

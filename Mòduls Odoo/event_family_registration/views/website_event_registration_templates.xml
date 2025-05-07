@@ -22,9 +22,12 @@
                             <t t-esc="ticket.name"/> - <t t-esc="'%.2f €' % ticket.price"/>
                         </label>
                         <div class="col-2">
-                            <input type="number" class="form-control form-control-sm ticket-quantity"
-                                   t-att-id="'ticket_' + str(ticket.id) if ticket.id else ''"
-                                   t-att-data-ticket-id="ticket.id" value="0" min="0"/>
+                            <input type="number"
+                                class="form-control form-control-sm ticket-quantity"
+                                t-att-id="'ticket_' + str(ticket.id) if ticket.id else ''"
+                                t-att-data-ticket-id="ticket.id"
+                                t-att-data-ticket-max="ticket.seats_max"
+                                value="0" min="0"/>
                         </div>
                     </div>
                 </t>

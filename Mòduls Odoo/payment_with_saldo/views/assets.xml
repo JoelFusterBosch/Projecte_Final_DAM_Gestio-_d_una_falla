@@ -1,0 +1,8 @@
+<odoo>
+    <template id="assets_frontend_payment_with_saldo" inherit_id="website.assets_frontend" name="Payment With Saldo Assets" priority="20">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/payment_with_saldo/static/src/js/payment_with_saldo.js"/>
+            <script type="text/javascript" src="/payment_with_saldo/static/src/js/payment_saldo_error.js"/>
+        </xpath>
+    </template>
+</odoo>

@@ -2,4 +2,6 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_payment_with_saldo_user,payment_with_saldo user access,account.model_account_payment,,1,1,1,1
 access_payment_with_saldo_partner,payment_with_saldo partner access,base.model_res_partner,,1,1,0,0
 access_payment_with_saldo_provider,payment_with_saldo provider access,payment.model_payment_provider,,1,1,0,0
-access_payment_with_saldo_familia,payment_with_saldo familia access,familia.model_familia,,1,1,1,1
+access_payment_with_saldo_familia,payment_with_saldo familia access,familia.model_familia_familia,,1,1,1,1
+access_sale_order_manager,sale.order.manager,model_sale_order,payment_with_saldo.group_order_manager,1,1,1,0
+access_payment_method_line_user,payment method line user access,account.model_account_payment_method_line,,1,0,0,0

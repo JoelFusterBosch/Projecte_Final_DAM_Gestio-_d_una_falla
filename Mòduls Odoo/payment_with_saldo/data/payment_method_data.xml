@@ -1,9 +1,24 @@
 <odoo>
     <data noupdate="1">
+
+        <!--
+            ✅ Definició del mètode de pagament personalitzat "Pagament amb saldo"
+            Aquest mètode s'utilitza per registrar pagaments interns usant el saldo disponible
+            del client (camp saldo_a_favor o similar).
+        -->
+
         <record id="payment_method_saldo" model="account.payment.method">
-            <field name="name">{'ca_ES': 'Pagament amb saldo', 'en_US': 'Pago con saldo'}</field>
+            <!-- Nom visible a la interfície d'usuari, amb suport per idiomes -->
+            <field name="name">
+                {'ca_ES': 'Pagament amb saldo', 'en_US': 'Payment with saldo'}
+            </field>
+
+            <!-- Codi tècnic que utilitzes des del teu codi Python -->
             <field name="code">saldo</field>
-            <field name="payment_type">inbound</field>  <!-- Per a pagaments rebuts -->
+
+            <!-- Tipus de pagament: inbound = entrada (client paga a nosaltres) -->
+            <field name="payment_type">inbound</field>
         </record>
+
     </data>
 </odoo>

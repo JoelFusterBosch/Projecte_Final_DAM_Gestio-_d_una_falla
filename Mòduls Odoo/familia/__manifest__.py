@@ -12,8 +12,12 @@
         'views/familia_views.xml',
         'views/miembro_familia_views.xml',
         'views/familia_menu.xml',
+        'views/res_partner_faller_view.xml',
+        'views/partner_server_action.xml',
+        'data/partner_titles.xml',
     ],
     'installable': True,
     'application': True,
-    'auto_install': False,
+    'auto_install': True,
+    'license': 'LGPL-3',
 }

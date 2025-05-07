@@ -3,7 +3,6 @@
         <xpath expr="//form[hasclass('o_payment_form')]" position="replace">
             <form name="o_payment_checkout" class="o_payment_form mt-3 clearfix" 
                   action="/shop/payment/validate" method="post"
-                  t-att-data-order-id="order.id if order else ''"
                   t-att-data-reference-prefix="reference_prefix"
                   t-att-data-amount="amount"
                   t-att-data-currency-id="currency and currency.id"
@@ -11,31 +10,27 @@
                   t-att-data-access-token="access_token"
                   t-att-data-transaction-route="transaction_route"
                   t-att-data-landing-route="landing_route"
+                  t-att-data-order-id="sale_order.id"
                   t-att-data-allow-token-selection="True">
 
-                <!-- Input ocult per a passar el payment_option_id directament com "20" -->
-                <!-- <input type="hidden" name="payment_option_id" value="20"/>-->
-                <input type="hidden" name="payment_option_id" t-att-value="default_payment_option_id or 'saldo'"/>
+                <!-- CAMP AMAGAT -->
+                <input type="hidden" name="payment_option_id" t-att-value="default_payment_option_id"/>
 
-                
-                <t t-if="order and order.id">
-                <input type="hidden" name="order_id" t-att-value="order.id"/>
-                </t>
-
-
-                <!-- Opció única de pagament amb saldo -->
-                <div class="o_payment_option">
-                    <label>
-                        <input type="checkbox" id="payment_saldo" name="o_payment_checkbox" value="20" checked="checked"/>
-                        <strong>Pagament amb saldo</strong>
-                    </label>
+                <!-- OPCIONS DE PAGAMENT -->
+                <div t-if="providers">
+                    <div class="o_payment_option">
+                        <label>
+                            <input type="radio" name="o_payment_radio" id="payment_saldo" value="20"
+                                   t-att-checked="'checked' if default_payment_option_id == '20' else ''"/>
+                            Pago amb saldo
+                        </label>
+                    </div>
                 </div>
 
-                <!-- Botó de pagament -->
-                <t t-call="payment.footer">
-                    <t t-set="label">Pagar</t>
-                    <t t-set="icon_class" t-value="'fa-lock'"/>
-                </t>
+                <!-- BOTÓ PERSONALITZAT -->
+                <button type="submit" name="o_payment_submit_button" class="btn btn-primary btn-block">
+                    <i class="fa fa-lock"></i> Pagar amb saldo
+                </button>
             </form>
         </xpath>
     </template>

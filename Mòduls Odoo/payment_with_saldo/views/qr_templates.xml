@@ -1,0 +1,26 @@
+<odoo>
+    <template id="qr_not_found">
+        <t t-call="website.layout">
+            <div class="oe_structure">
+                <h2>Error: Comanda no trobada</h2>
+                <p>No s'ha pogut trobar la comanda amb referència <t t-esc="order_name"/>.</p>
+                <a href="/shop" class="btn btn-primary">Tornar a la botiga</a>
+            </div>
+        </t>
+    </template>
+
+    <template id="qr_success">
+        <t t-call="website.layout">
+            <div class="oe_structure">
+                <h2>Unitat descomptada</h2>
+                <p>S'ha restat una unitat d'un producte de la comanda <t t-esc="order.name"/>.</p>
+                <t t-if="order.state == 'done'">
+                    <p><strong>La comanda ja està completament servida.</strong></p>
+                </t>
+                <a t-att-href="'/web#id=%s&amp;model=sale.order&amp;view_type=form' % order.id"
+   class="btn btn-primary">Veure Comanda</a>
+
+            </div>
+        </t>
+    </template>
+</odoo>

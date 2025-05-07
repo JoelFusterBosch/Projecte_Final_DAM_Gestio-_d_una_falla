@@ -17,6 +17,7 @@ class  ApiOdooProvider with ChangeNotifier{
   bool get loading => _loading;
   String? get error => _error;
 
+  List<dynamic>? users;
   List<dynamic>? events;
 
   Future<void> login(String email, String password) async {
@@ -56,15 +57,15 @@ class  ApiOdooProvider with ChangeNotifier{
 
     final result = await _apiOdooRepository.getUsers(uid!, password);
     if (result != null) {
-      events = result;
-      status = "Usuaris carregats: ${events!.length}";
+      users = result;
+      status = "Usuaris carregats: ${users!.length}";
     } else {
       status = "Error a l'hora d'obtindre usuaris.";
     }
 
     notifyListeners();
   }
-  Future<void> getUsers(String password) async{
+  Future<void> getEvents(String password) async{
     if (uid == null) {
       status = "UID no disponible. Fes login primer.";
       notifyListeners();

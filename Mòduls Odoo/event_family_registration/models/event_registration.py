@@ -28,6 +28,11 @@ class EventRegistration(models.Model):
         ('cancelled', 'Cancelado')
     ], string='Estado', default='draft')
 
+    def action_cancel(self):
+        for record in self:
+            record.write({'state': 'cancelled'})
+
+
     @api.depends('ticket_qty', 'ticket_id.price')
     def _compute_price_total(self):
         for record in self:

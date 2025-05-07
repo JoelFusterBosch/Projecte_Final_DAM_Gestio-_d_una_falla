@@ -140,15 +140,15 @@ I si vols que s'inicie de forma automàtica quan encengues l'equip executa el se
    ```
 I per últim executa el `docker-compose.yaml`:
  - ```plaintext
-   sudo docker compose up -d --build
+   docker compose up -d --build
    ```
 Sí ix tot bé ja tindràs l'Odoo en Docker Compose, l'únic que hauras de fer és:
  - ```plaintext
-   sudo docker ps
+   docker ps
    ```
 Per veure si esta executant, si no veus el teu contenidor o simplement en `status` està `stopped` i no `up` executa el següent comand:
  - ```plaintext
-   sudo docker start <nom del contenidor>
+   docker start <nom del contenidor>
    ```
 Sols canvia `nom del contenidor` pel nom o id del contenidor de docker que el pots veure igualment amb `docker ps` en el apartat de `Container id` o `name`.
 Per últim ens dirigim al navegador del nostre sistema real i col·locarem el següent:

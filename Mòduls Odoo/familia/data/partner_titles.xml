@@ -1,0 +1,17 @@
+<odoo>
+    <record id="res_partner_title_en" model="res.partner.title">
+        <field name="name">En</field>
+        <field name="shortcut">En</field>
+    </record>
+
+    <record id="res_partner_title_na" model="res.partner.title">
+        <field name="name">Na</field>
+        <field name="shortcut">Na</field>
+    </record>
+
+    <record id="res_partner_title_n_apostrof" model="res.partner.title">
+        <field name="name">N'</field>
+        <field name="shortcut">N'</field>
+    </record>
+
+</odoo>

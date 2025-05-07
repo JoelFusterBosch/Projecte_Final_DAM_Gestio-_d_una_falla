@@ -1,0 +1,15 @@
+<odoo>
+    <template id="report_saleorder_document_inherit" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//div[@class='page']" position="inside">
+            <div class="row mt32">
+                <div class="col-6">
+                    <strong>QR per servir la comanda:</strong>
+                    <t t-if="doc.qr_code">
+                        <img t-att-src="'data:image/png;base64,' + doc.qr_code.decode('utf-8')" 
+                             style="width: 150px; height: 150px;"/>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

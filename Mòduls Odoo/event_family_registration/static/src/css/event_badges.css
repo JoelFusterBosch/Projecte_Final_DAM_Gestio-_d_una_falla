@@ -1,0 +1,25 @@
+.badge.bg-success {
+    background-color: #28a745 !important; /* verd intens */
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.badge.bg-warning {
+    background-color: #ffc107 !important; /* groc */
+    color: #000;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.badge.bg-danger {
+    background-color: #dc3545 !important; /* roig */
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.badge.event-badge {
+    border-radius: 20px;
+    padding: 5px 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    font-family: 'Segoe UI', sans-serif;
+}

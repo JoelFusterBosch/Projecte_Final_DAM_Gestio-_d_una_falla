@@ -4,3 +4,4 @@ from . import payment_provider
 from . import payment_transaction 
 from . import payment_transaction_inherit
 from . import account_payment_method_line
+from . import sale_order

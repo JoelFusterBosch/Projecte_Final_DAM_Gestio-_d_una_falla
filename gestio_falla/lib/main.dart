@@ -22,7 +22,7 @@ void main(){
   final qrRepository = QrRepositoryImpl(qrDataSource);
   final notificacionsDataSource= NotificacionsDatasource();
   final notificacionsRepository= NotificacionsRepositoryImpl(notificacionsDataSource);
-  final apiOdooDataSource=ApiOdooDataSource(baseUrl: "http://192.168.159.26:8069", db: "Projecte_Falla");
+  final apiOdooDataSource=ApiOdooDataSource(baseUrl: "http://192.168.82.182:8069", db: "Projecte_Falla");
   final apiOdooRepository= ApiOdooRepositoryImpl(apiOdooDataSource);
   runApp(MyApp(
     nfcRepositoryImpl: nfcRepository,

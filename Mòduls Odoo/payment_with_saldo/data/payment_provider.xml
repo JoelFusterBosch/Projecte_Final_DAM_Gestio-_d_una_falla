@@ -1,11 +1,41 @@
 <odoo>
-    <data>
+    <data noupdate="1">
+
+        <!--
+            ✅ Proveïdor de pagament personalitzat: "Pago con saldo"
+            Aquest registre crea un provider amb codi "custom", que s’utilitza
+            per a pagaments no integrats amb una passarel·la externa.
+        -->
 
         <record id="payment_provider_saldo" model="payment.provider">
+            <!-- Nom visible del mètode de pagament al frontend -->
             <field name="name">Pago con saldo</field>
+
+            <!-- Codi tècnic: usem "custom" perquè no hi ha integració real amb passarel·les -->
+            <field name="code">custom</field>
+
+            <!-- Estat del proveïdor: ha d'estar "enabled" perquè aparega -->
             <field name="state">enabled</field>
+
+            <!-- No utilitza comissions -->
             <field name="fees_active">False</field>
+
+            <!-- Color identificador per a l'UI (valor entre 1 i 12) -->
             <field name="color">5</field>
+
+            <!-- Mode de personalització per a providers "custom" -->
+            
+            <!-- Sols compatible en versions de Odoo 17.0+-->
+            <!-- <field name="custom_mode">wire_transfer</field> -->
         </record>
+
     </data>
 </odoo>
+<!--
+    Aquest fitxer defineix un proveïdor de pagament personalitzat anomenat "Pago con saldo".
+    El codi tècnic és "custom" i no està associat a cap passarel·la externa.
+    Assegura't que el codi tècnic sigui únic i no es repeteixi en altres mètodes de pagament.
+    Si necessites més proveïdors, pots duplicar aquest registre i modificar els camps necessaris.
+    Gràcies per utilitzar Odoo i el mòdul de pagament amb saldo!
+    ✅ Fi del fitxer XML
+-->

@@ -6,8 +6,8 @@
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="inside">
                 <group>
-                    <field name="saldo_a_favor_cliente"/>
-                    <field name="aplicar_saldo_a_favor"/>
+                    <field name="saldo_a_favor_cliente" string="A compte"/>
+                    <field name="aplicar_saldo_a_favor" string="Utilitzar saldo a compte"/>
                 </group>
             </xpath>
         </field>
