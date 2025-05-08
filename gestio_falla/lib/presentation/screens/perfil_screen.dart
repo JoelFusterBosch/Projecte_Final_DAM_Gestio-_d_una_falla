@@ -27,51 +27,64 @@ class PerfilScreenState extends State<PerfilScreen> {
         centerTitle: true,
         backgroundColor: Colors.orange
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: AssetImage("lib/assets/perfil.jpg"),
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: AssetImage("lib/assets/perfil.jpg"),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          faller.nom,
+                          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          faller.familia!.nom,
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                        SizedBox(height: 20),
+                        ElevatedButton(onPressed: faller.rol=="Cap de familia" ? (){afigMembre();}:null, child: Text("Agregar membre")),
+                        ElevatedButton(onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>CrearFamilia()));
+                        }, child: Text("Crear familia")),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                          Navigator.push(
+                            context, 
+                            MaterialPageRoute(builder: (context) => EditarPerfil())
+                          );
+                        },
+                          icon: Icon(Icons.edit),
+                          label: Text("Editar Perfil"),
+                        ),
+                        SizedBox(height: 10),
+                        OutlinedButton.icon(
+                          onPressed: () {
+                          mostrarAlerta(context);
+                          },
+                          icon: Icon(Icons.logout, color: Colors.red),
+                          label: Text("Tancar sessió"),
+                          style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              SizedBox(height: 10),
-              Text(
-                faller.nom,
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                faller.familia!.nom,
-                style: TextStyle(fontSize: 16, color: Colors.grey),
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(onPressed: faller.rol=="Cap de familia" ? (){afigMembre();}:null, child: Text("Agregar membre")),
-              ElevatedButton(onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>CrearFamilia()));
-              }, child: Text("Crear familia")),
-              ElevatedButton.icon(
-                onPressed: () {
-                Navigator.push(
-                  context, 
-                  MaterialPageRoute(builder: (context) => EditarPerfil())
-                );
-              },
-                icon: Icon(Icons.edit),
-                label: Text("Editar Perfil"),
-              ),
-              SizedBox(height: 10),
-              OutlinedButton.icon(
-                onPressed: () {
-                 mostrarAlerta(context);
-                },
-                icon: Icon(Icons.logout, color: Colors.red),
-                label: Text("Tancar sessió"),
-                style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

@@ -17,63 +17,76 @@ class LoginScreenState extends State<LoginScreen>{
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Iniciar sessió"),
-            Text("Nom d'usuari"),
-            TextFormField(
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15)
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints){
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight
                 ),
-                labelText: "Nom d'usuari",
-              ),
-              validator: (value) {
-                if(value==null || value.isEmpty){
-                  return "El camp Nom d'usuari és obligatori";
-                }
-                return null;
-              },
-            ),
-            Text("Contrasenya"),
-            TextFormField(
-              keyboardType: TextInputType.text,
-              obscureText: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15)
-                ),
-                labelText: "Contrasenya"
-              ),
-              validator: (value) {
-                if(value==null || value.isEmpty){
-                  return "El camp contrasenya es obligatori";
-                }
-                return null;
-              },
-            ),
-            ElevatedButton(onPressed: iniciasesio, child: Text("Iniciar sessió")),
-            Text("No tens un compte?"),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(context, 
-                MaterialPageRoute(
-                  builder: (context)=> RegistrarUsuari()
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Iniciar sessió"),
+                      Text("Nom d'usuari"),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                          labelText: "Nom d'usuari",
+                        ),
+                        validator: (value) {
+                          if(value==null || value.isEmpty){
+                            return "El camp Nom d'usuari és obligatori";
+                          }
+                          return null;
+                        },
+                      ),
+                      Text("Contrasenya"),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                          labelText: "Contrasenya"
+                        ),
+                        validator: (value) {
+                          if(value==null || value.isEmpty){
+                            return "El camp contrasenya es obligatori";
+                          }
+                          return null;
+                        },
+                      ),
+                      ElevatedButton(onPressed: iniciasesio, child: Text("Iniciar sessió")),
+                      Text("No tens un compte?"),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, 
+                          MaterialPageRoute(
+                            builder: (context)=> RegistrarUsuari()
+                            ),
+                          );
+                        },
+                        child: const Text(
+                          "Registrat ara",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      )
+                    ],
                   ),
-                );
-              },
-              child: const Text(
-                "Registrat ara",
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold
                 ),
               ),
-            )
-          ],
+            );
+          }
         ),
       ),
     );
@@ -81,4 +94,5 @@ class LoginScreenState extends State<LoginScreen>{
   void iniciasesio(){
     print("Has iniciat sessió");
   }
+  
 }

@@ -1,19 +1,15 @@
-/*
-No borrar, es per a quan tinga la Api de Odoo
-*/
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class ApiOdooDataSource {
+class FakeApiOdooDataSource {
   final String baseUrl;
   final String db;
 
-  ApiOdooDataSource({required this.baseUrl, required this.db});
+  FakeApiOdooDataSource({required this.baseUrl, required this.db});
 
   Future<int?> login(String email, String password) async {
-    final url = Uri.parse('$baseUrl/jsonrpc');
-
+    final url = Uri.parse('$baseUrl/');
+    
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -43,9 +39,9 @@ class ApiOdooDataSource {
       return null;
     }
   }
-  Future<List<dynamic>?> getUsers(int uid, String password) async {
-    final url = Uri.parse('$baseUrl/jsonrpc');
 
+  Future<List<dynamic>?> getUsers(int uid, String password) async {
+    final url = Uri.parse('$baseUrl/');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -68,10 +64,10 @@ class ApiOdooDataSource {
         "id": 2
       }),
     );
-
     final data = jsonDecode(response.body);
     return data['result'];
   }
+
   Future<List<dynamic>?> getEvents(int uid, String password) async {
     final url = Uri.parse('$baseUrl/jsonrpc');
     final response = await http.post(
@@ -85,8 +81,8 @@ class ApiOdooDataSource {
           "method": "execute_kw",
           "args": [
             db,
-            uid, 
-            password, 
+            uid,
+            password,
             'calendar.event',
             'search_read',
             [],
@@ -99,5 +95,17 @@ class ApiOdooDataSource {
 
     final data = jsonDecode(response.body);
     return data['result'];
+  }
+  Future<String> saluda() async{
+    final url = Uri.parse('$baseUrl/saluda');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['mensaje'];
+    } else {
+      throw Exception('Error al conectar con el servidor');
+    }
   }
 }

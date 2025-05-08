@@ -27,65 +27,80 @@ class EscudellarState extends State<Escudellar>{
       centerTitle: true,
       backgroundColor: Colors.orange,
       ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: SingleChildScrollView( 
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text("Quantitat de ${producte.nom}: $numProductes"),
-                Text("${producte.nom} restants: ${producte.stock}"),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: Icon(Icons.remove, color: Colors.red),
-                        onPressed: numProductes > 1 ? decrementarNumTickets : null,
-                      ),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(color: Colors.black, width: 1),
-                        ),
-                        child: Text(
-                          "$numProductes",
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.add, color: Colors.green),
-                        onPressed: producte.stock == 0 ? null : augmentarNumTickets,
-                      ),
-                    ],
-                  ),
-                Text("Preu total: $preuTotal€"),
-                ElevatedButton(
-                  onPressed: () {
-                    producte.stock >= 0 && maxProductes == false ? pagar(context) : null;
-                  },
-                  child: Text("Pagar"),
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context,constrains){
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: constrains.maxHeight
                 ),
-                Text(
-                  maxProductes ? "Ja no queda ${producte.nom} per a eixe event" : "",
-                  style: TextStyle(
-                    color: maxProductes ? Colors.red : Colors.white,
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20),
+                    child: SingleChildScrollView( 
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text("Quantitat de ${producte.nom}: $numProductes"),
+                          Text("${producte.nom} restants: ${producte.stock}"),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.remove, color: Colors.red),
+                                  onPressed: numProductes > 1 ? decrementarNumTickets : null,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(6),
+                                    border: Border.all(color: Colors.black, width: 1),
+                                  ),
+                                  child: Text(
+                                    "$numProductes",
+                                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.add, color: Colors.green),
+                                  onPressed: producte.stock == 0 ? null : augmentarNumTickets,
+                                ),
+                              ],
+                            ),
+                          Text("Preu total: $preuTotal€"),
+                          ElevatedButton(
+                            onPressed: () {
+                              producte.stock >= 0 && maxProductes == false ? pagar(context) : null;
+                            },
+                            child: Text("Pagar"),
+                          ),
+                          Text(
+                            maxProductes ? "Ja no queda ${producte.nom} per a eixe event" : "",
+                            style: TextStyle(
+                              color: maxProductes ? Colors.red : Colors.white,
+                            ),
+                          ),
+                          Text(pagat ? "Joel" : cancelat ? "Cancelat" : ""),
+                          Text(
+                            pagat ? "Pagat exitosament" : cancelat ? "Acció cancelada" : "",
+                            style: TextStyle(
+                              color: pagat ? Colors.green : cancelat ? Colors.red : Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-                Text(pagat ? "Joel" : cancelat ? "Cancelat" : ""),
-                Text(
-                  pagat ? "Pagat exitosament" : cancelat ? "Acció cancelada" : "",
-                  style: TextStyle(
-                    color: pagat ? Colors.green : cancelat ? Colors.red : Colors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
+      /*
+      */
     );
   }
   void pagar(BuildContext context) {

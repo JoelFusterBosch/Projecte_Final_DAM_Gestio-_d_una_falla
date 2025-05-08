@@ -39,63 +39,76 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(20.0),
-          child:Column(
-            mainAxisAlignment:MainAxisAlignment.center,
-            children: [
-              /*Fer la imatge ací*/
-              Text(event.nom),
-              Text("Quantitat de cadires: $cadires"),
-              Text("Cadires restants: $cadiresRestants"),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("Quants tickets vols?"),
-                  IconButton(
-                    icon: Icon(Icons.remove, color: Colors.red),
-                    onPressed: cadires>1 ? decrementarNumTickets : null,
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: Colors.black, width: 1),
-                    ),
-                    child: Text(
-                      "$cadires",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.add, color: Colors.green),
-                    onPressed: cadiresRestants==0 ?null :augmentarNumTickets,
-                  ),
-                ],
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child:  ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
               ),
-              Text("Preu total: $preuTotal€"),
-              ElevatedButton(onPressed:(){
-                cadiresRestants>=0&&maxCadires==false? pagar(context) : null;
-                }, 
-                child: Text("Pagar")
-              ),
-              Text(maxCadires?"Ja no queden cadires per a eixe event":"",
-                style: TextStyle(
-                  color: maxCadires?Colors.red:Colors.white
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child:Column(
+                    mainAxisAlignment:MainAxisAlignment.center,
+                    children: [
+                      /*Fer la imatge ací*/
+                      Text(event.nom),
+                      Text("Quantitat de cadires: $cadires"),
+                      Text("Cadires restants: $cadiresRestants"),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text("Quants tickets vols?"),
+                          IconButton(
+                            icon: Icon(Icons.remove, color: Colors.red),
+                            onPressed: cadires>1 ? decrementarNumTickets : null,
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(color: Colors.black, width: 1),
+                            ),
+                            child: Text(
+                              "$cadires",
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.add, color: Colors.green),
+                            onPressed: cadiresRestants==0 ?null :augmentarNumTickets,
+                          ),
+                        ],
+                      ),
+                      Text("Preu total: $preuTotal€"),
+                      ElevatedButton(onPressed:(){
+                        cadiresRestants>=0&&maxCadires==false? pagar(context) : null;
+                        }, 
+                        child: Text("Pagar")
+                      ),
+                      Text(maxCadires?"Ja no queden cadires per a eixe event":"",
+                        style: TextStyle(
+                          color: maxCadires?Colors.red:Colors.white
+                        ),
+                      ),
+                      Text(pagat ?"Joel":cancelat?"Cancelat":""),
+                      Text(pagat ?"Pagat exitosament":cancelat?"Acció cancelada":"",
+                        style:TextStyle( 
+                          color: pagat?Colors.green:cancelat?Colors.red:Colors.white
+                        ),
+                      ),
+                    ],
+                  )
                 ),
               ),
-              Text(pagat ?"Joel":cancelat?"Cancelat":""),
-              Text(pagat ?"Pagat exitosament":cancelat?"Acció cancelada":"",
-                style:TextStyle( 
-                  color: pagat?Colors.green:cancelat?Colors.red:Colors.white
-                ),
               ),
-            ],
-          )
+            );
+          }
         ),
-      ),
+      ), 
     );
   }
   void pagar(BuildContext context) {

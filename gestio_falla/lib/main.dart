@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/infrastructure/data_source/Api-Odoo_datasource.dart';
+// import 'package:gestio_falla/infrastructure/data_source/Api-Odoo_datasource.dart';
+import 'package:gestio_falla/infrastructure/data_source/Fake_Api-Odoo.datasource.dart';
 import 'package:gestio_falla/infrastructure/data_source/nfc_datasource.dart';
 import 'package:gestio_falla/infrastructure/data_source/notificacions_datasource.dart';
 import 'package:gestio_falla/infrastructure/data_source/qr_datasource.dart';
@@ -22,8 +23,8 @@ void main(){
   final qrRepository = QrRepositoryImpl(qrDataSource);
   final notificacionsDataSource= NotificacionsDatasource();
   final notificacionsRepository= NotificacionsRepositoryImpl(notificacionsDataSource);
-  final apiOdooDataSource=ApiOdooDataSource(baseUrl: "http://192.168.82.182:8069", db: "Projecte_Falla");
-  final apiOdooRepository= ApiOdooRepositoryImpl(apiOdooDataSource);
+  final fakeApiOdooDataSource=FakeApiOdooDataSource(baseUrl: "http://10.0.2.15:3000", db: "Projecte_Falla");
+  final apiOdooRepository= ApiOdooRepositoryImpl(fakeApiOdooDataSource);
   runApp(MyApp(
     nfcRepositoryImpl: nfcRepository,
     qrRepositoryImpl: qrRepository,

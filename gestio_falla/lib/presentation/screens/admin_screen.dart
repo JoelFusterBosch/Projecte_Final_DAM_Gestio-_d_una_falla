@@ -40,6 +40,11 @@ class AdminScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 30),
                             ElevatedButton.icon(
+                              icon: const Icon(Icons.cookie),
+                              label: const Text("Saluda"),
+                              onPressed: apiOdooProvider.saluda, 
+                              ),
+                            ElevatedButton.icon(
                               icon: const Icon(Icons.login),
                               label: const Text("Login"),
                               onPressed: () {

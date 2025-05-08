@@ -51,44 +51,58 @@ class EscanerState extends State<Escaner>{
       centerTitle: true,
       backgroundColor: Colors.orange,
       ),
-      body: Center(child: Padding(
-          padding: EdgeInsets.all(20.0),
-          child:Column(
-            mainAxisAlignment:MainAxisAlignment.center,
-            children: [
-              pantalles[indexPantallaActual],
-              Consumer<NfcProvider>(
-                builder: (context, provider, child) {
-                  return Text(eventCorrecte ? provider.nfcData : "",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold, 
-                      overflow: TextOverflow.ellipsis, 
-                    ),
-                    maxLines: 1,
-                  );
-                },
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints){
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child:Column(
+                      mainAxisAlignment:MainAxisAlignment.center,
+                      children: [
+                        pantalles[indexPantallaActual],
+                        Consumer<NfcProvider>(
+                          builder: (context, provider, child) {
+                            return Text(eventCorrecte ? provider.nfcData : "",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold, 
+                                overflow: TextOverflow.ellipsis, 
+                              ),
+                              maxLines: 1,
+                            );
+                          },
+                        ),
+                        ElevatedButton(onPressed:eventCorrecte? () => {context.read<NfcProvider>().llegirEtiqueta(context)}:null, 
+                        child: Text("Escàner NFC")
+                        ),
+                        ElevatedButton(onPressed: eventCorrecte? () => {context.read<Qrprovider>().llegirQR(context)}:null,
+                        child: Text("Escàner QR")
+                        ),
+                        Consumer<Qrprovider>(
+                          builder: (context, provider, child){
+                            return Text(eventCorrecte ? provider.qrData : "",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold, 
+                              overflow: TextOverflow.ellipsis, 
+                            ),
+                            maxLines: 1, 
+                            );
+                          }
+                        ),
+                      ]
+                    )
+                  ) 
+                ),
               ),
-              ElevatedButton(onPressed:eventCorrecte? () => {context.read<NfcProvider>().llegirEtiqueta(context)}:null, 
-              child: Text("Escàner NFC")
-              ),
-              ElevatedButton(onPressed: eventCorrecte? () => {context.read<Qrprovider>().llegirQR(context)}:null,
-              child: Text("Escàner QR")
-              ),
-              Consumer<Qrprovider>(
-                builder: (context, provider, child){
-                  return Text(eventCorrecte ? provider.qrData : "",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold, 
-                    overflow: TextOverflow.ellipsis, 
-                  ),
-                  maxLines: 1, 
-                  );
-                }
-              ),
-            ]
-          )
-        ) 
-      )
+            );
+          }
+        ),
+      ),
     );
   }
   void event1() {

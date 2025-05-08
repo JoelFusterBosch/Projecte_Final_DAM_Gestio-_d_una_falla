@@ -13,7 +13,13 @@ class EventsScreen extends StatefulWidget{
 }
 class EventsScreenState extends State<EventsScreen>{
   Faller faller= Faller(nom: "Joel", rol: "Faller");
-  List<Event> totsElsEvents=[];
+  List<Event> totsElsEvents=[
+    Event(nom: "Paella"),
+    Event(nom: "Cremà"),
+    Event(nom: "Jocs"),
+    Event(nom: "Despedida"),
+    Event(nom: "Caminata"),
+  ];
   List<Event> eventsFiltrats=[];
   int eventSeleccionat=0; 
   final TextEditingController _searchController = TextEditingController();
@@ -48,55 +54,96 @@ class EventsScreenState extends State<EventsScreen>{
           .toList();
     });
   }
+  /*
+  Pendent per corregir (no és mostra res per pantalla)
+   */
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
-          appBar: AppBar(
-          title: Text("Events"),
-          centerTitle: true,
-          backgroundColor: Colors.orange
-          ),
-          body: Center(
+      appBar: AppBar(
+        title: const Text("Events"),
+        centerTitle: true,
+        backgroundColor: Colors.orange,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      labelText: 'Buscar events',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      prefixIcon: const Icon(Icons.search),
+                TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    labelText: 'Buscar events',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
                     ),
+                    prefixIcon: const Icon(Icons.search),
                   ),
+                  onChanged: (_) => eventsFiltratsBusqueda(),
                 ),
+                const SizedBox(height: 20),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(onPressed: (){
-                    Navigator.push(context, 
-                      MaterialPageRoute(builder: (context) => EventDetallatScreen())
-                      );
-                    },
-                    child: Text("Event detallat")
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => EventDetallatScreen()),
+                        );
+                      },
+                      child: const Text("Event detallat"),
                     ),
-                    ElevatedButton(onPressed: (){
-                      Navigator.push(context, 
-                      MaterialPageRoute(builder: (context) => EventCategoriaScreen())
-                      );
-                    },
-                    child: Text("Categories d'events")
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => EventCategoriaScreen()),
+                        );
+                      },
+                      child: const Text("Categories d'events"),
                     ),
                   ],
                 ),
-                Text(faller.nom
-              ),   
-            ],
+                const SizedBox(height: 20),
+                Text("Usuari: ${faller.nom}"),
+                const SizedBox(height: 20),
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: eventsFiltrats.isNotEmpty ? eventsFiltrats.length : totsElsEvents.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 2.3 / 3,
+                  ),
+                  itemBuilder: (context, index) {
+                    final event = eventsFiltrats.isNotEmpty ? eventsFiltrats[index] : totsElsEvents[index];
+                    return Card(
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(event.nom, style: const TextStyle(fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 10),
+                            const Text("Prova"),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
-      );
+      ),
+    );
   }
+
 }
