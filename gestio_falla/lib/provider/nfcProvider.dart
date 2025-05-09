@@ -14,16 +14,16 @@ class NfcProvider with ChangeNotifier {
   String _nfcData = "Escaneja una etiqueta NFC";
   String get nfcData => _nfcData;
 
-  Faller faller = Faller(nom: "Joel", rol: "Cobrador", cobrador: Cobrador(rolCobrador: "Cadires"));
+  Faller faller = Faller(nom: "Joel", rol: "Cobrador", cobrador: Cobrador(rolCobrador: "Cadires"), valorPulsera: "8430001000017");
 
   Future<void> llegirEtiqueta(BuildContext context) async {
     _nfcData = "Acosta una etiqueta NFC perfavor";
     notifyListeners();
 
     final valorLlegit = await _nfcRepository.llegirNfc(
-      valorEsperat: '8430001000017',
+      valorEsperat: faller.valorPulsera,
       onCoincidencia: () {
-        _nfcData = "Acció realitzada per valor NFC: 8430001000017";
+        _nfcData = "Acció realitzada per valor NFC: ${faller.valorPulsera}";
         switch (faller.cobrador!.rolCobrador) {
           case 'Cadires':
             Navigator.push(

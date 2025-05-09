@@ -1,3 +1,5 @@
+
+
 class Cobrador {
   final String rolCobrador; // sols permet certs valors
 
@@ -7,5 +9,8 @@ class Cobrador {
     if (!rolsValids.contains(rolCobrador)) {
       throw ArgumentError('Rol no vàlid: $rolCobrador');
     }
+  }
+  factory Cobrador.fromJSON(Map<String, dynamic> json){
+    return Cobrador(rolCobrador: json["rolCobrador"]);
   }
 }

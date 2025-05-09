@@ -29,7 +29,7 @@ class EscanerState extends State<Escaner>{
   @override
   void initState(){
     super.initState();
-    faller=Faller(nom: "Joel", rol:"Faller");
+    faller=Faller(nom: "Joel", rol:"Faller",valorPulsera: "8430001000017");
     event=Event(nom: "Paella");
     dia=16;
     mes="de març";

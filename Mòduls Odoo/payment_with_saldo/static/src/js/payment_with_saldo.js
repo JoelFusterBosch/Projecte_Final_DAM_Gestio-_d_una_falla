@@ -119,12 +119,14 @@ odoo.define('payment_with_saldo.payment', function (require) {
         },
 
         _showMessage: function (msg, type='success') {
+            $('#saldo-alert').remove(); // Elimina missatge anterior si existeix
             const alertHtml = `
                 <div class="alert alert-${type} mt-3 text-center" role="alert" id="saldo-alert">
                     ${msg}
                 </div>`;
-            $('.o_payment_form').append(alertHtml);
+            $('.o_payment_form').prepend(alertHtml); // millor a dalt de tot
         },
+
 
         _onSubmit: function (event) {
             if (this._submitted) return;
@@ -153,6 +155,7 @@ odoo.define('payment_with_saldo.payment', function (require) {
                 type: 'POST',
                 contentType: 'application/json',
                 dataType: 'json',
+                headers: { "X-Requested-With": "XMLHttpRequest" },
                 data: JSON.stringify({
                     order_id: orderId,
                     csrf_token: odoo.csrf_token,
@@ -161,17 +164,23 @@ odoo.define('payment_with_saldo.payment', function (require) {
                 success: function (response) {
                     console.log("📩 [SALDO] Resposta:", response);
 
-                    if (response.result && response.result.status === 'success') {
-                        $(".spinner-border").remove(); // elimina spinner
+                    if (response.status === 'success') {
+                        $(".spinner-border").remove();
                         this._showMessage("✅ Pagament amb saldo realitzat correctament! Redirigint...", 'success');
+                        $('form.o_payment_form').off('submit');  // 👉 DESACTIVA el 'submit' per evitar doble enviament
                         setTimeout(function () {
-                            window.location.href = response.result.redirect_url;
+                            window.location.href = response.redirect_url;
                         }, 500);
+                    } else if (response.status === 'error') {
+                        $(".spinner-border").remove();
+                        this._showMessage("❌ Error en el pagament: " + (response.message || "Desconegut"), 'danger');
+                        $button.prop('disabled', false);
                     } else {
-                        $(".spinner-border").remove(); // elimina spinner
-                        this._showMessage("❌ Error en el pagament: " + (response.result?.message || "Desconegut"), 'danger');
+                        $(".spinner-border").remove();
+                        this._showMessage("❌ Error desconegut.", 'danger');
                         $button.prop('disabled', false);
                     }
+
                 }.bind(this),
                 error: function (xhr) {
                     $(".spinner-border").remove(); // elimina spinner

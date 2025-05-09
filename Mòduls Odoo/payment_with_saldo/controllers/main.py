@@ -8,16 +8,17 @@ _logger = logging.getLogger(__name__)
 class PaymentWithSaldoController(http.Controller):
 
     @http.route('/shop/payment/validate', type='json', auth='public', csrf=False)
-    def validate_payment(self):
+    def validate_payment(self, order_id=None, payment_option_id=None, **kwargs):
         try:
             _logger.info("📥 [SALDO] Inici de la ruta /shop/payment/validate")
-            raw_data = request.httprequest.data.decode('utf-8')
-            _logger.info(f"📦 [SALDO] Raw request data: {raw_data}")
-            request_data = json.loads(raw_data) if raw_data else {}
-            _logger.info(f"📅 [SALDO] JSON data: {request_data}")
+            _logger.info(f"📅 [SALDO] Rebut: order_id={order_id}, payment_option_id={payment_option_id}")
 
-            order_id = request_data.get('order_id')
-            payment_option_id = request_data.get('payment_option_id')
+            # request_data = request.jsonrequest
+            # _logger.info(f"📅 [SALDO] JSON data: {request_data}")
+
+
+            # order_id = request_data.get('order_id')
+            # payment_option_id = request_data.get('payment_option_id')
 
             if not order_id or not payment_option_id:
                 _logger.warning("⚠️ [SALDO] Falten dades: order_id o payment_option_id")
@@ -44,16 +45,20 @@ class PaymentWithSaldoController(http.Controller):
             if payment_option_id == 20:
                 _logger.info("💰 [SALDO] Pagament amb saldo detectat. Iniciant validacions...")
 
+                # if client.saldo_a_favor < order.amount_total:
+                #     _logger.warning(f"⚠️ [SALDO] Saldo insuficient! Client té {client.saldo_a_favor}, cost és {order.amount_total}")
+                #     return {
+                #         'status': 'error',
+                #         'message': f'Saldo insuficient. Tens {client.saldo_a_favor:.2f}€, però la comanda costa {order.amount_total:.2f}€.',
+                #         'redirect_url': f"/my/orders/{order.id}",
+                #         'processingValues': {
+                #             'return_url': f"/my/orders/{order.id}"
+                #         }
+                #     }
                 if client.saldo_a_favor < order.amount_total:
                     _logger.warning(f"⚠️ [SALDO] Saldo insuficient! Client té {client.saldo_a_favor}, cost és {order.amount_total}")
-                    return {
-                        'status': 'error',
-                        'message': f'Saldo insuficient. Tens {client.saldo_a_favor:.2f}€, però la comanda costa {order.amount_total:.2f}€.',
-                        'redirect_url': f"/my/orders/{order.id}",
-                        'processingValues': {
-                            'return_url': f"/my/orders/{order.id}"
-                        }
-                    }
+                    # S'accepta igualment el pagament, però es deixarà saldo negatiu (ja ha estat confirmat al frontend)
+
 
                 reference = f"{order.name}-{order.id}"
                 existing_transaction = request.env['payment.transaction'].sudo().search([('reference', '=', reference)], limit=1)

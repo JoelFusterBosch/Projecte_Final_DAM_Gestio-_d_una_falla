@@ -20,6 +20,8 @@ class PrincipalScreenState extends State<PrincipalScreen> {
     nom: "Joel",
     rol: "Administrador", 
 
+    valorPulsera: "8430001000017",
+
   );
   late List<Widget> pantalles;
   late List<NavigationDestination> navegacio;

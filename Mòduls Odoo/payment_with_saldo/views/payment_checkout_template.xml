@@ -22,14 +22,14 @@
                         <label>
                             <input type="radio" name="o_payment_radio" id="payment_saldo" value="20"
                                    t-att-checked="'checked' if default_payment_option_id == '20' else ''"/>
-                            Pago amb saldo
+                            Pagament amb saldo
                         </label>
                     </div>
                 </div>
 
                 <!-- BOTÓ PERSONALITZAT -->
                 <button type="submit" name="o_payment_submit_button" class="btn btn-primary btn-block">
-                    <i class="fa fa-lock"></i> Pagar amb saldo
+                    <i class="fa fa-lock"></i> Confirmar
                 </button>
             </form>
         </xpath>

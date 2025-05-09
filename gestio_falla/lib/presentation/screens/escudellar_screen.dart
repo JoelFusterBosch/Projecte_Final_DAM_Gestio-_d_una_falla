@@ -19,7 +19,7 @@ class EscudellarState extends State<Escudellar>{
   bool maxProductes=false;
   bool pagat=false;
   bool cancelat=false;
-  Faller faller= Faller(nom: "Joel", rol: "Faller");
+  Faller faller= Faller(nom: "Joel", rol: "Faller",valorPulsera: "8430001000017");
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -14,7 +14,7 @@ class Barra extends StatefulWidget{
 
 class BarraState extends State<Barra>{
   late double preuTotal;
-  Faller faller= Faller(nom: "Joel", rol: "Faller");
+  Faller faller= Faller(nom: "Joel", rol: "Faller",valorPulsera: "8430001000017");
   List <Producte>totsElsProductes=[
     Producte(nom: "Aigua 500ml", preu: 1 ,stock: 20),
     Producte(nom: "Cervesa 33cl", preu: 1.5, stock: 33),

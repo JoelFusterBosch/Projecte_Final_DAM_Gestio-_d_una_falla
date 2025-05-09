@@ -13,16 +13,16 @@ class Qrprovider with ChangeNotifier{
   String _qrData = "Escaneja un QR";
   String get qrData => _qrData;
 
-  Faller faller = Faller(nom: "Joel", rol: "Cobrador", cobrador: Cobrador(rolCobrador: "Escudellar"));
+  Faller faller = Faller(nom: "Joel", rol: "Cobrador", cobrador: Cobrador(rolCobrador: "Escudellar"), valorPulsera: '8430001000017');
 
   Future<void> llegirQR(BuildContext context) async {
     _qrData="Llegint QR...";
     notifyListeners();
     qrRepository.llegirQR(
       context: context, 
-      valorEsperat: "8430001000017", 
+      valorEsperat: faller.valorPulsera, 
       onCoincidencia: (){
-        _qrData="Valor llegit 8430001000017";
+        _qrData="Valor llegit ${faller.valorPulsera}";
         switch (faller.cobrador!.rolCobrador) {
           case 'Cadires':
             Navigator.push(

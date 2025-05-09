@@ -24,9 +24,7 @@
             <field name="color">5</field>
 
             <!-- Mode de personalització per a providers "custom" -->
-            
-            <!-- Sols compatible en versions de Odoo 17.0+-->
-            <!-- <field name="custom_mode">wire_transfer</field> -->
+           <field name="custom_mode">wire_transfer</field>
         </record>
 
     </data>

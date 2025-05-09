@@ -12,7 +12,7 @@ class EventsScreen extends StatefulWidget{
   State<EventsScreen> createState() => EventsScreenState();
 }
 class EventsScreenState extends State<EventsScreen>{
-  Faller faller= Faller(nom: "Joel", rol: "Faller");
+  Faller faller= Faller(nom: "Joel", rol: "Faller", valorPulsera: "8430001000017");
   List<Event> totsElsEvents=[
     Event(nom: "Paella"),
     Event(nom: "Cremà"),

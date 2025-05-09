@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/repository/Api-Odoo_repository.dart';
-import 'package:mobile_scanner/mobile_scanner_web.dart';
 
 class  ApiOdooProvider with ChangeNotifier{
   final ApiOdooRepository _apiOdooRepository;
@@ -87,15 +86,15 @@ class  ApiOdooProvider with ChangeNotifier{
     notifyListeners();
   }
   Future<void> saluda() async {
-    /*
+    
     try {
-      final result = await _apiOdooRepository.saluda(); // Llamas al método del repositorio
-      _message = result;  // Actualizas el mensaje con la respuesta
-      notifyListeners();  // Notificas a los widgets escuchando este Provider
+      final result = await _apiOdooRepository.saluda(); 
+      _message = result;  
+      notifyListeners();  
     } catch (e) {
-      _message = 'Error: $e';  // En caso de error, actualizas el mensaje
+      _message = 'Error: $e';  
       notifyListeners();
     }
-    */
+    
   }
 }

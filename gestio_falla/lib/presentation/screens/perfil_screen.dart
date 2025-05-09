@@ -16,7 +16,8 @@ class PerfilScreenState extends State<PerfilScreen> {
   Faller faller = Faller(
     nom: "Joel",
     familia: Familia(nom: "Família de Joel"), 
-    rol: "Cap de familia"
+    rol: "Cap de familia",
+    valorPulsera: "8430001000017"
   );
 
   @override

@@ -14,7 +14,7 @@
             <!-- Referència al mètode definit en payment_method_data.xml -->
             <field name="payment_method_id" ref="payment_with_saldo.payment_method_saldo"/>
 
-            <!-- Diari associat: aquest ha d'estar definit a account_journal_data.xml -->
+            <!-- Diari associat: aquest ha d'estar definit a account_journal_data.xml ref="payment_with_saldo.account_journal_bancfalla"/>-->
             <field name="journal_id" ref="payment_with_saldo.account_journal_bancfalla"/>
 
             <!-- Codi tècnic opcional, pot ajudar en cerques (no obligatori però útil) -->

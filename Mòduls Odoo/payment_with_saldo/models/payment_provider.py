@@ -4,13 +4,16 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-class PaymentProviderSaldo(models.Model):
+class PaymentProviderCodePatch(models.Model):
     _inherit = 'payment.provider'
 
     code = fields.Selection(
-        selection_add=[('custom', 'Saldo personal')],
-        ondelete={'custom': 'cascade'}
+        selection_add=[('custom', 'Pago con saldo')],
+        ondelete={'custom': 'set default'}
     )
+
+class PaymentProviderSaldo(models.Model):
+    _inherit = 'payment.provider'
 
     saldo_payment_type = fields.Selection(
         [('saldo', 'Pago con saldo')],

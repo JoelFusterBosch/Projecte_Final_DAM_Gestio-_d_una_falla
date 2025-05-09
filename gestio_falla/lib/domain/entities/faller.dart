@@ -12,6 +12,7 @@ class Faller {
   String rol;     
   static const List<String> rolsValids = ['Faller', 'Cobrador','Cap de familia','Administrador'];  
   Cobrador? cobrador;  
+  String valorPulsera; 
 
   Faller({
     this.id,
@@ -22,6 +23,7 @@ class Faller {
     this.familia,
     required this.rol,
     this.cobrador,
+    required this.valorPulsera,
   }) {
     if (!rolsValids.contains(rol)) {
       throw ArgumentError('Rol no vàlid: $rol');
@@ -49,6 +51,7 @@ class Faller {
           : json['saldo'],
       familia: json['familia'], 
       rol: json['rol'],
+      valorPulsera: json['valorPulsera'],
     );
   }
 }
