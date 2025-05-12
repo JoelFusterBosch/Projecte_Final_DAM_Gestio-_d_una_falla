@@ -12,13 +12,13 @@ class EventsScreen extends StatefulWidget{
   State<EventsScreen> createState() => EventsScreenState();
 }
 class EventsScreenState extends State<EventsScreen>{
-  Faller faller= Faller(nom: "Joel", rol: "Faller", valorPulsera: "8430001000017");
+  Faller faller= Faller(nom: "Joel", rol: "Faller", valorPulsera: "8430001000017", teLimit: false);
   List<Event> totsElsEvents=[
-    Event(nom: "Paella"),
-    Event(nom: "Cremà"),
-    Event(nom: "Jocs"),
-    Event(nom: "Despedida"),
-    Event(nom: "Caminata"),
+    Event(nom: "Paella", dataInici:DateTime(2025,3,16,14,0,0), dataFi:DateTime(2025,3,16,17,0,0)),
+    Event(nom: "Cremà", dataInici:DateTime(2025,3,20,20,0,0), dataFi:DateTime(2025,3,21,2,0,0)),
+    Event(nom: "Jocs", dataInici:DateTime(2025,3,15,9,0,0), dataFi:DateTime(2025,3,16,19,0,0)),
+    Event(nom: "Despedida", dataInici:DateTime(2025,3,19,16,0,0), dataFi:DateTime(2025,3,19,18,0,0)),
+    Event(nom: "Caminata", dataInici:DateTime(2025,3,19,16,0,0), dataFi:DateTime(2025,3,19,18,0,0)),
   ];
   List<Event> eventsFiltrats=[];
   int eventSeleccionat=0; 
@@ -54,9 +54,6 @@ class EventsScreenState extends State<EventsScreen>{
           .toList();
     });
   }
-  /*
-  Pendent per corregir (no és mostra res per pantalla)
-   */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,7 +128,8 @@ class EventsScreenState extends State<EventsScreen>{
                           children: [
                             Text(event.nom, style: const TextStyle(fontWeight: FontWeight.bold)),
                             const SizedBox(height: 10),
-                            const Text("Prova"),
+                            Text("Data d'inici:${event.dataInici}"),
+                            Text("Data de fi:${event.dataFi}"),
                           ],
                         ),
                       ),

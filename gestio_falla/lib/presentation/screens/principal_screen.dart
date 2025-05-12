@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/domain/entities/cobrador.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/presentation/screens/admin_screen.dart';
 import 'package:gestio_falla/presentation/screens/escaner.dart';
@@ -15,85 +14,150 @@ class PrincipalScreen extends StatefulWidget {
 }
 
 class PrincipalScreenState extends State<PrincipalScreen> {
-  late int indexPantallaActual;
-  late Faller faller=Faller(
+  int indexPantallaActual = 0;
+
+  final Faller faller = Faller(
     nom: "Joel",
-    rol: "Administrador", 
-
+    rol: "SuperAdmin",
     valorPulsera: "8430001000017",
-
+    teLimit: false
   );
-  late List<Widget> pantalles;
-  late List<NavigationDestination> navegacio;
-  late List<Widget> titolsAppBar;
-
-  @override
-  void initState() {
-    super.initState();
-    indexPantallaActual=0;
-    configurarVistaPerRol();
-  }
 
   @override
   Widget build(BuildContext context) {
+    final config = _getConfiguracioPerRol(faller.rol, indexPantallaActual);
+
     return Scaffold(
-      //Usuari
-      appBar: AppBar(title: titolsAppBar[indexPantallaActual] ),
-      bottomNavigationBar: navegacio.length >= 2
-      ? NavigationBar(
-          onDestinationSelected: (int index) {
-            setState(() {
-              indexPantallaActual = index;
-            });
-          },
-          selectedIndex: indexPantallaActual,
-          destinations: navegacio,
-      )
-    : null, // no mostra barra si n'hi han menys de 2 ítems,
-      body: pantalles[indexPantallaActual],
+      appBar: AppBar(
+        title: config.titolsAppBar[indexPantallaActual],
+      ),
+      bottomNavigationBar: config.navegacio.length >= 2
+          ? NavigationBar(
+              selectedIndex: indexPantallaActual,
+              onDestinationSelected: (index) {
+                setState(() {
+                  indexPantallaActual = index;
+                });
+              },
+              destinations: config.navegacio,
+            )
+          : null,
+      body: config.pantalles[indexPantallaActual],
     );
   }
-  
-  void configurarVistaPerRol() {
-    if(faller.rol=="Faller"){
-      pantalles=[
-        const EventsScreen(),
-        const PerfilScreen(),
-        const LoginScreen(),
-      ];
-      navegacio=[
-        NavigationDestination(icon: Icon(indexPantallaActual == 0 ? Icons.event_outlined : Icons.event), label: 'Events'),
-        NavigationDestination(icon: Icon(indexPantallaActual == 2 ? Icons.account_circle_outlined : Icons.account_circle), label: 'Perfil'),
-        NavigationDestination(icon: Icon(indexPantallaActual == 3 ? Icons.login_outlined : Icons.login), label: 'Login'),
-      ];
-      titolsAppBar = const [
-        Text('Events'),
-        Text('Perfil'),
-        Text('Login'),
-      ];
-    }else if(faller.rol=="Cobrador"){
-      pantalles=[
-        const Escaner(),
-      ];
-      navegacio=[
-        NavigationDestination(icon: Icon(Icons.scanner), label: 'Escaner')
-      ];
-      titolsAppBar = const [
-        Text("Escaner"),
-      ];
-    }else if(faller.rol=="Administrador"){
-      //TO-DO
-      pantalles=[
-        AdminScreen(),
-      ];
-      navegacio=[
-        NavigationDestination(icon: Icon(Icons.login), label: 'Login')
-      ];
-      titolsAppBar = const [
-        Text("Admin"),
-      ];
+
+  _ConfiguracioVista _getConfiguracioPerRol(String rol, int index) {
+    if (rol == "Faller" || rol == "Cap de familia") {
+      return _ConfiguracioVista(
+        pantalles: const [
+          EventsScreen(),
+          PerfilScreen(),
+          LoginScreen(),
+        ],
+        navegacio: [
+          NavigationDestination(
+            icon: Icon(index == 0 ? Icons.event : Icons.event_outlined),
+            label: 'Events',
+          ),
+          NavigationDestination(
+            icon: Icon(index == 1 ? Icons.account_circle : Icons.account_circle_outlined),
+            label: 'Perfil',
+          ),
+          NavigationDestination(
+            icon: Icon(index == 2 ? Icons.login : Icons.login_outlined),
+            label: 'Login',
+          ),
+        ],
+        titolsAppBar: const [
+          Text('Events'),
+          Text('Perfil'),
+          Text('Login'),
+        ],
+      );
+    } else if (rol == "Cobrador") {
+      return _ConfiguracioVista(
+        pantalles: const [Escaner()],
+        navegacio: [
+          const NavigationDestination(
+            icon: Icon(Icons.scanner),
+            label: 'Escaner',
+          )
+        ],
+        titolsAppBar: const [Text("Escaner")],
+      );
+    } else if (rol == "Administrador") {
+      return _ConfiguracioVista(
+        pantalles: const [AdminScreen()],
+        navegacio: [
+          const NavigationDestination(
+            icon: Icon(Icons.admin_panel_settings),
+            label: 'Administrador',
+          )
+        ],
+        titolsAppBar: const [Text("Admin")],
+      );
+    } else if (rol == "SuperAdmin") {
+      return _ConfiguracioVista(
+        pantalles: const [
+          EventsScreen(),
+          PerfilScreen(),
+          LoginScreen(),
+          Escaner(),
+          AdminScreen(),
+        ],
+        navegacio: [
+          NavigationDestination(
+            icon: Icon(index == 0 ? Icons.event : Icons.event_outlined),
+            label: 'Events',
+          ),
+          NavigationDestination(
+            icon: Icon(index == 1 ? Icons.account_circle : Icons.account_circle_outlined),
+            label: 'Perfil',
+          ),
+          NavigationDestination(
+            icon: Icon(index == 2 ? Icons.login : Icons.login_outlined),
+            label: 'Login',
+          ),
+          NavigationDestination(
+            icon: Icon(index == 3 ? Icons.scanner : Icons.scanner_outlined),
+            label: 'Escaner',
+          ),
+          NavigationDestination(
+            icon: Icon(index == 4 ? Icons.admin_panel_settings : Icons.admin_panel_settings_outlined),
+            label: 'Admin',
+          ),
+        ],
+        titolsAppBar: const [
+          Text('Events'),
+          Text('Perfil'),
+          Text('Login'),
+          Text('Escaner'),
+          Text('Admin'),
+        ],
+      );
+    } else {
+      return _ConfiguracioVista(
+        pantalles: const [LoginScreen()],
+        navegacio: [
+          const NavigationDestination(
+            icon: Icon(Icons.login),
+            label: 'Login',
+          )
+        ],
+        titolsAppBar: const [Text("Login")],
+      );
     }
-  } 
-  
+  }
 }
 
+class _ConfiguracioVista {
+  final List<Widget> pantalles;
+  final List<NavigationDestination> navegacio;
+  final List<Widget> titolsAppBar;
+
+  _ConfiguracioVista({
+    required this.pantalles,
+    required this.navegacio,
+    required this.titolsAppBar,
+  });
+}

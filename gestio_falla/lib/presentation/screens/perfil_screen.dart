@@ -17,7 +17,8 @@ class PerfilScreenState extends State<PerfilScreen> {
     nom: "Joel",
     familia: Familia(nom: "Família de Joel"), 
     rol: "Cap de familia",
-    valorPulsera: "8430001000017"
+    valorPulsera: "8430001000017",
+    teLimit: false
   );
 
   @override

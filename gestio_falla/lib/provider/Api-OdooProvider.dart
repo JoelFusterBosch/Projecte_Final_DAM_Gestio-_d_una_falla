@@ -65,6 +65,7 @@ class  ApiOdooProvider with ChangeNotifier{
 
     notifyListeners();
   }
+  /*
   Future<void> getEvents(String password) async{
     if (uid == null) {
       status = "UID no disponible. Fes login primer.";
@@ -76,6 +77,22 @@ class  ApiOdooProvider with ChangeNotifier{
     notifyListeners();
 
     final result = await _apiOdooRepository.getEvents(uid!, password);
+    if (result != null) {
+      events = result;
+      status = "Events carregats: ${events!.length}";
+    } else {
+      status = "Error a l'hora d'obtindre els events.";
+    }
+
+    notifyListeners();
+  }
+  */
+  Future<void> getEvents() async{
+
+    status = "Carregant events...";
+    notifyListeners();
+
+    final result = await _apiOdooRepository.getEvents();
     if (result != null) {
       events = result;
       status = "Events carregats: ${events!.length}";

@@ -16,10 +16,14 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   Future<List?> getUsers(int uid, String password) {
     return fakeApiOdooDataSource.getUsers(uid, password);
   }
-  
+  /* Descomentar quan vaja a fer peticions per l'API de Odoo
   @override
   Future<List?> getEvents(int uid, String password) {
     return fakeApiOdooDataSource.getEvents(uid, password);
+  }*/
+  @override
+  Future<List?> getEvents() async {
+    return fakeApiOdooDataSource.getEvents();
   }
   
   @override

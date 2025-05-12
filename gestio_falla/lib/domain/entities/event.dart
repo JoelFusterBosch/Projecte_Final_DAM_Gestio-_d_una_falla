@@ -3,18 +3,20 @@ import 'package:gestio_falla/domain/entities/ticket.dart';
 class Event {
   double? id;
   String nom;
-  double? preu;
   Ticket? ticket;
-  Event({this.id,required this.nom,this.preu,this.ticket});
+  DateTime dataInici;
+  DateTime dataFi;
+  String? urlImatge;
+  Event({this.id,required this.nom,this.ticket, required this.dataInici, required this.dataFi, this.urlImatge});
 
   factory Event.fromJSON(Map<String, dynamic> json){
     return Event(
-      id: json['id'], 
+      id: (json['id'] as num?)?.toDouble(),
       nom: json['nom'],
-      preu: (json['preu'] is int)
-              ? (json['preu'] as int).toDouble()
-              : json['preu'],
-      ticket: json['ticket'],
+      ticket: json['ticket'] != null ? Ticket.fromJSON(json['ticket']) : null,
+      dataInici: DateTime.parse(json['dataInici']),
+      dataFi: DateTime.parse(json['dataFi']),
+      urlImatge: json['urlImatge'] ?? "",
     );
   }
 }

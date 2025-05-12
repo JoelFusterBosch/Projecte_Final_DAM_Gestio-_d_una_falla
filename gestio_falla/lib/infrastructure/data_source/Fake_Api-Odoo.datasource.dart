@@ -68,33 +68,15 @@ class FakeApiOdooDataSource {
     return data['result'];
   }
 
-  Future<List<dynamic>?> getEvents(int uid, String password) async {
-    final url = Uri.parse('$baseUrl/jsonrpc');
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        "jsonrpc": "2.0",
-        "method": "call",
-        "params": {
-          "service": "object",
-          "method": "execute_kw",
-          "args": [
-            db,
-            uid,
-            password,
-            'calendar.event',
-            'search_read',
-            [],
-            {'fields': ['name', 'start', 'stop']}
-          ],
-        },
-        "id": 3
-      }),
-    );
-
-    final data = jsonDecode(response.body);
-    return data['result'];
+  Future<List<dynamic>?> getEvents() async {
+    final url = Uri.parse('$baseUrl/events');
+    final response = await http.get(url);
+    if(response.statusCode == 200){
+      final data = jsonDecode(response.body);
+      return data['mensaje'];
+    }else{
+      throw Exception('Error al conectar al servidor');
+    }
   }
   Future<String> saluda() async{
     final url = Uri.parse('$baseUrl/saluda');
@@ -105,7 +87,7 @@ class FakeApiOdooDataSource {
       final data = jsonDecode(response.body);
       return data['mensaje'];
     } else {
-      throw Exception('Error al conectar con el servidor');
+      throw Exception('Error al conectar al servidor');
     }
   }
 }

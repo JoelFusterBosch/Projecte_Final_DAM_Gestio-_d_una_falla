@@ -4,20 +4,20 @@ import 'package:gestio_falla/domain/entities/familia.dart';
 class Faller {
   double? id;
   String nom;
-  bool? teLimit;
+  bool teLimit;
   double? limit;
   double? saldo;
   Familia? familia;
 
   String rol;     
-  static const List<String> rolsValids = ['Faller', 'Cobrador','Cap de familia','Administrador'];  
+  static const List<String> rolsValids = ['Faller', 'Cobrador','Cap de familia','Administrador','SuperAdmin'];  
   Cobrador? cobrador;  
   String valorPulsera; 
 
   Faller({
     this.id,
     required this.nom,
-    this.teLimit,
+    required this.teLimit,
     this.limit,
     this.saldo,
     this.familia,
@@ -37,6 +37,21 @@ class Faller {
     } else {
       // Si no és Cobrador, subRol hauria de ser null
       cobrador = null;
+    }
+    if(rol!="Cap de familia"){
+      if (teLimit && limit == null) {
+      throw ArgumentError("Si 'teLimit' es vertader, 'limit' no pot ser nul.");
+      }
+      if (!teLimit && limit != null) {
+        throw ArgumentError("Si 'teLimit' es fals, 'limit' deu ser nul.");
+      }
+    } else {
+      if (teLimit && limit == null) {
+        throw ArgumentError("Si 'teLimit' és vertader, 'limit' no pot ser nul.");
+      }
+      if (!teLimit && limit != null) {
+        throw ArgumentError("Si 'teLimit' és fals, 'limit' ha de ser nul.");
+      }
     }
   }
 

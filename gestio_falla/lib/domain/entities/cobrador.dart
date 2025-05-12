@@ -1,5 +1,3 @@
-
-
 class Cobrador {
   final String rolCobrador; // sols permet certs valors
 

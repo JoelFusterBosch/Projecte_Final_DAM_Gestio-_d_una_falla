@@ -63,7 +63,7 @@ class AdminScreen extends StatelessWidget {
                               icon: const Icon(Icons.event),
                               label: const Text("Obtindre events"),
                               onPressed: () {
-                                apiOdooProvider.getEvents('1234');
+                                apiOdooProvider.getEvents();
                               },
                             ),
                             const SizedBox(height: 30),

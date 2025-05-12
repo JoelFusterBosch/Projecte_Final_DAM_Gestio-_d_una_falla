@@ -16,11 +16,6 @@ class EscanerState extends State<Escaner>{
   List pantalles=[];
   late Event event;
   late Faller faller;
-  late int dia;
-  late String mes;
-  late int any;
-  late String horaInici;
-  late String horaFi;
   late int indexPantallaActual;
   late bool esFaller;
   late int cadiresPerAlFaller;
@@ -29,13 +24,8 @@ class EscanerState extends State<Escaner>{
   @override
   void initState(){
     super.initState();
-    faller=Faller(nom: "Joel", rol:"Faller",valorPulsera: "8430001000017");
-    event=Event(nom: "Paella");
-    dia=16;
-    mes="de març";
-    any=2025;
-    horaInici="12:30";
-    horaFi="15:30";
+    faller=Faller(nom: "Joel", rol:"Faller",valorPulsera: "8430001000017", teLimit: false);
+    event=Event(nom: "Paella", dataInici:DateTime(2025,3,16,14,0,0), dataFi:DateTime(2025,3,16,17,0,0));
     indexPantallaActual=0;
     esFaller=true;
     cadiresPerAlFaller=1;
@@ -107,7 +97,7 @@ class EscanerState extends State<Escaner>{
   }
   void event1() {
     setState(() {
-      if (event.nom == "Paella" && dia == 16 && mes == "de març" && any == 2025 && horaInici == "12:30" && horaFi == "15:30") {
+      if (event.nom == "Paella" && event.dataInici == DateTime(2025,3,16,14,0,0)) {
         if (esFaller) {
           if (faller.nom == "Joel") {
             if (cadiresPerAlFaller >= 1) {
@@ -118,8 +108,7 @@ class EscanerState extends State<Escaner>{
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(event.nom),
-                      Text("Data: $dia $mes $any"),
-                      Text("Durada: $horaInici-$horaFi"),
+                      Text("Durada: ${event.dataInici}-${event.dataFi}"),
                     ],
                   ),
                 )

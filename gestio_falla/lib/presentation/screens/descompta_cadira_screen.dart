@@ -11,7 +11,7 @@ class DescomptaCadira extends StatefulWidget{
   State<DescomptaCadira> createState() => DescomptaCadiraState();
 }
 class DescomptaCadiraState extends State<DescomptaCadira>{
-  Event event= Event(nom: "Paella");
+  Event event= Event(nom: "Paella", dataInici: DateTime(2025,3,16,14,0,0), dataFi:DateTime(2025,3,16,17,0,0));
   late int cadires;
   int cadiresAssignades=1;
   int cadiresRestants=10;
@@ -20,7 +20,7 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
   late double preuTotal;
   bool pagat=false;
   bool cancelat=false;
-  Faller faller= Faller(nom: "Joel", rol: "Faller",valorPulsera: "8430001000017");
+  Faller faller= Faller(nom: "Joel", rol: "Faller",valorPulsera: "8430001000017", teLimit: false);
 
   @override
   void initState() {
@@ -55,6 +55,8 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
                     children: [
                       /*Fer la imatge ací*/
                       Text(event.nom),
+                      Text("Data d'inici: ${event.dataInici}"),
+                      Text("Data de fi: ${event.dataFi}"),
                       Text("Quantitat de cadires: $cadires"),
                       Text("Cadires restants: $cadiresRestants"),
                       Row(

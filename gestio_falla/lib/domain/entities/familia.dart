@@ -1,10 +1,9 @@
-import 'dart:ffi';
 import 'package:gestio_falla/domain/entities/faller.dart';
 
 class Familia {
   double? id;
   String nom;
-  Float? saldoTotal;
+  double? saldoTotal;
   List<Faller>? membres;
   Familia({this.id, required this.nom,this.saldoTotal, this.membres});
 

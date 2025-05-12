@@ -223,28 +223,28 @@ Abans de fer res actualitzarem tots els paquets per si algo ix mal:
 
 En els scripts que n'hi han en esta carpeta, tindreu que donar-los permís d'execució:
  - ```plaintext
- chmod +x nomScript
+  chmod +x nomScript
  ```
 
 ## 4.Executant el script
 
 Ara quan tinguen els permisos d'execució executem el que es diu `script.sh` amb el següent comandament:
-   - ```plaintext
-   ./script.sh
-   ```
+ - ```plaintext
+  ./script.sh
+ ```
 Quan execute anirem a l'Odoo posant el següent en el vostre navegador de confiança:
  - ```plaintext
- http://IPServidor:8069
+  http://IPServidor:8069
  ```
 I se'ns obrira el següent <img src="../static/description/Instal·lació_Odoo/Pantalla principal de Odoo.png"><br>
 Plena amb totes les teues dades i quan li prems on diu `Create Database` torna a la teua màquina i modifica el següent del fitxer `creaentorn.sh`
-   - ```sh
-   # VARIABLES
-   ODOO_DB_NAME=falla # Canvia això pel nom de la base de dades
-   ODOO_DB_PASS='Pa$$w0rd'# Canvia això per la contrasenya que li hages posat a l'usuari
-   ODOO_MASTER_PASS='Pa$$w0rd' # Canvia això per la Master Password que li hages ficat
-   ```
+ - ```sh
+  # VARIABLES
+  ODOO_DB_NAME=falla # Canvia això pel nom de la base de dades
+  ODOO_DB_PASS='Pa$$w0rd'# Canvia això per la contrasenya que li hages posat a l'usuari
+  ODOO_MASTER_PASS='Pa$$w0rd' # Canvia això per la Master Password que li hages ficat
+ ```
 Quan ho hages modificat, aleshores ja podràs executar l'altre script:
  - ```plaintext
- ./creaentorn.sh
+  ./creaentorn.sh
  ```
