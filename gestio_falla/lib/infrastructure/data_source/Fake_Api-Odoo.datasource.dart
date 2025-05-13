@@ -90,4 +90,14 @@ class FakeApiOdooDataSource {
       throw Exception('Error al conectar al servidor');
     }
   }
+  Future<List<dynamic>?> getFamilies() async{
+    final url = Uri.parse('$baseUrl/families');
+    final response = await http.get(url);
+    if(response.statusCode==200){
+      final data = jsonDecode(response.body);
+      return data['missatge'];
+    }else{
+      throw Exception("Error a l'hora de conectar al servidor");
+    }
+  }
 }

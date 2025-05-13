@@ -117,4 +117,9 @@ samples, guidance on mobile development, and a full API reference.
  ```plaintext
  flutter pub get
  ```
+### Modificació per a posar el format d'hora que vullgues "intl"
+ Esta llibrearia ens permet posar el format d'hora que nosaltres vullgam potser tant hh:mm:ss aaaa-mm-dd com dd-mm-aaaa hh:mm:ss per exemple, cal posar en el següent en ´'apartat de `dependencies`:
+  ```yaml
+ intl: ^11.0.0  #Versió de intl utilitzada 
+ ```
  Més documentació em [la pàgina oficial](https://pub.dev/packages/permission_handler)

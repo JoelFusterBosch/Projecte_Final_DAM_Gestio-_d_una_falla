@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/event.dart';
+import 'package:gestio_falla/domain/entities/ticket.dart';
 
 class EventDetallatScreen extends StatefulWidget{
   const EventDetallatScreen({super.key});
@@ -7,18 +9,16 @@ class EventDetallatScreen extends StatefulWidget{
   State<EventDetallatScreen> createState() => EventDetallatScreenState();
 }
 class EventDetallatScreenState extends State<EventDetallatScreen>{
-  String event="Cremà de la falla Portal";
+  Event event=Event(nom: "Cremà de la Falla Portal", dataInici: DateTime(2025,3,16,15,0), dataFi: DateTime(2025,3,16,15,0),ticket:Ticket(id: 1, preu: 1.2, quantitat: 1, maxim: false), urlImatge: "lib/assets/perfil.jpg");
   bool maxFallers=false;
-  int tickets=1;
   int ticketsRestants=9;
-  double preu=1.20;
   late double preuTotal;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    preuTotal=preu;
+    preuTotal=event.ticket!.preu;
   }
   
   @override
@@ -35,43 +35,36 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
           child:Column(
             mainAxisAlignment:MainAxisAlignment.center,
             children: [
-              /*Fer la imatge ací*/
-              Text(event),
-              Text("Quantitat de tickets: $tickets"),
-              Text("Tickets restants: $ticketsRestants"),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("Quants tickets vols?"),
-                  IconButton(
-                    icon: Icon(Icons.remove, color: Colors.red),
-                    onPressed: tickets==1 ?null :decrementarNumTickets,
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: Colors.black, width: 1),
+                    const SizedBox(height: 80),
+                    Image.network(event.urlImatge ?? ""),
+                    Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            event.nom,
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            event.desc ?? "",
+                            textAlign: TextAlign.justify,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          )
+                        ],
+                      ),
                     ),
-                    child: Text(
-                      "$tickets",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.add, color: Colors.green),
-                    onPressed: ticketsRestants==0 ?null :augmentarNumTickets,
-                  ),
-                ],
-              ),
-              Text("Preu total: $preuTotal€"),
-              ElevatedButton(onPressed:(){
-                pagar(context);
-                }, 
-                child: Text("Pagar")
-                )
-            ],
+                  ],
           )
         ),
       ),
@@ -107,8 +100,8 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
             SnackBar(content: Text("Has acceptat l'acció")),
           );
           setState(() {
-            tickets=1;
-            preuTotal=tickets*preu;
+            event.ticket!.quantitat=1;
+            preuTotal=event.ticket!.quantitat*event.ticket!.preu;
           });
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -120,9 +113,9 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
   }
   void augmentarNumTickets(){
     setState(() {
-      tickets++;
+      event.ticket!.quantitat++;
       ticketsRestants--;
-      preuTotal=tickets*preu;
+      preuTotal=event.ticket!.quantitat*event.ticket!.preu;
       if(ticketsRestants==0){
         maxFallers=true;
       } 
@@ -131,9 +124,9 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
   }
   void decrementarNumTickets(){
     setState(() {
-      tickets--;
+      event.ticket!.quantitat--;
       ticketsRestants++;
-      preuTotal=tickets*preu;
+      preuTotal=event.ticket!.quantitat*event.ticket!.preu;
       if(ticketsRestants!=0){
         maxFallers=false;
       } 

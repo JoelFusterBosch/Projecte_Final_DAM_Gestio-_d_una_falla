@@ -19,6 +19,7 @@ class  ApiOdooProvider with ChangeNotifier{
 
   List<dynamic>? users;
   List<dynamic>? events;
+  List<dynamic>? families;
 
   Future<void> login(String email, String password) async {
     _message = "Iniciant sessió...";
@@ -111,7 +112,18 @@ class  ApiOdooProvider with ChangeNotifier{
     } catch (e) {
       _message = 'Error: $e';  
       notifyListeners();
+    } 
+  }
+  Future<void> getFamilies() async{
+    status="Carregant families";
+    notifyListeners();
+
+    final result = await _apiOdooRepository.getFamilies();
+    if(result!=null){
+      families = result;
+      status="Families carregades ${families!.length}";
+    }else{
+      status="Error a l'hora d'obtindre les families";
     }
-    
   }
 }

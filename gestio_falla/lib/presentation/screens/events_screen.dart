@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
-import 'package:gestio_falla/presentation/screens/event_categoria_screen.dart';
 import 'package:gestio_falla/presentation/screens/event_detallat_screen.dart';
 
 
@@ -14,15 +13,16 @@ class EventsScreen extends StatefulWidget{
 class EventsScreenState extends State<EventsScreen>{
   Faller faller= Faller(nom: "Joel", rol: "Faller", valorPulsera: "8430001000017", teLimit: false);
   List<Event> totsElsEvents=[
-    Event(nom: "Paella", dataInici:DateTime(2025,3,16,14,0,0), dataFi:DateTime(2025,3,16,17,0,0)),
-    Event(nom: "Cremà", dataInici:DateTime(2025,3,20,20,0,0), dataFi:DateTime(2025,3,21,2,0,0)),
-    Event(nom: "Jocs", dataInici:DateTime(2025,3,15,9,0,0), dataFi:DateTime(2025,3,16,19,0,0)),
-    Event(nom: "Despedida", dataInici:DateTime(2025,3,19,16,0,0), dataFi:DateTime(2025,3,19,18,0,0)),
-    Event(nom: "Caminata", dataInici:DateTime(2025,3,19,16,0,0), dataFi:DateTime(2025,3,19,18,0,0)),
+    Event(nom: "Paella", dataInici:DateTime(2025,3,16,14,0), dataFi:DateTime(2025,3,16,17,0)),
+    Event(nom: "Cremà", dataInici:DateTime(2025,3,20,20,0), dataFi:DateTime(2025,3,21,2,0)),
+    Event(nom: "Jocs", dataInici:DateTime(2025,3,15,9,0), dataFi:DateTime(2025,3,16,19,0)),
+    Event(nom: "Despedida", dataInici:DateTime(2025,3,19,16,0), dataFi:DateTime(2025,3,19,18,0)),
+    Event(nom: "Caminata", dataInici:DateTime(2025,3,19,16,0), dataFi:DateTime(2025,3,19,18,0)),
   ];
   List<Event> eventsFiltrats=[];
   int eventSeleccionat=0; 
   final TextEditingController _searchController = TextEditingController();
+  
   @override
   void initState() {
     super.initState();
@@ -56,6 +56,8 @@ class EventsScreenState extends State<EventsScreen>{
   }
   @override
   Widget build(BuildContext context) {
+    var orientation = MediaQuery.of(context).orientation;
+    double aspectRatio = orientation == Orientation.portrait ? 2 / 3 : 3 / 2;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Events"),
@@ -81,41 +83,15 @@ class EventsScreenState extends State<EventsScreen>{
                   onChanged: (_) => eventsFiltratsBusqueda(),
                 ),
                 const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => EventDetallatScreen()),
-                        );
-                      },
-                      child: const Text("Event detallat"),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => EventCategoriaScreen()),
-                        );
-                      },
-                      child: const Text("Categories d'events"),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Text("Usuari: ${faller.nom}"),
-                const SizedBox(height: 20),
                 GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: eventsFiltrats.isNotEmpty ? eventsFiltrats.length : totsElsEvents.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
-                    childAspectRatio: 2.3 / 3,
+                    childAspectRatio: aspectRatio,
                   ),
                   itemBuilder: (context, index) {
                     final event = eventsFiltrats.isNotEmpty ? eventsFiltrats[index] : totsElsEvents[index];
@@ -128,8 +104,19 @@ class EventsScreenState extends State<EventsScreen>{
                           children: [
                             Text(event.nom, style: const TextStyle(fontWeight: FontWeight.bold)),
                             const SizedBox(height: 10),
-                            Text("Data d'inici:${event.dataInici}"),
-                            Text("Data de fi:${event.dataFi}"),
+                            Text("Data d'inici:"),
+                            Text(event.dataIniciFormatejada),
+                            Text("Data de fi:"),
+                            Text(event.dataFiFormatejada),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => EventDetallatScreen()),
+                                );
+                              },
+                              child: const Text("Més detalls"),
+                            ),
                           ],
                         ),
                       ),

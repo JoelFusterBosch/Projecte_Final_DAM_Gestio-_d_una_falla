@@ -1,6 +1,5 @@
 # Guia per a instal·lar "Docker Compose" Ubuntu Server 22.04.4
 Esta guia ens servira perquè pugueu instal·lar el `Docker Compose` sense cap complicació a través d'este README tant de forma manual, com amb un script.
-# Forma manual
 ## 1.Iniciar màquina virtual:
 Quan iniciem per primera vegada la màquina virtual travessarem diferents tipus de pantalles que no entraré en detall, però n'hi ha una en la que és molt important què és la pantalla de la xarxa, allí configurarem el `DHCP` perquè s'assigne una IP de forma automàtica:
 <img src="../static/description/Instal·lació_Odoo/Pantalla de configuració de xarxa.png"><br>
@@ -54,6 +53,10 @@ Abans de fer res actualitzarem tots els paquets per si algo ix mal:
     ```plaintext
     sudo systemctl enable --now ssh
     ```
+En esta part es pot fer de 2 formes:
+ -una manual on has d'instal·lar-ho tot tu. 
+ -una automàtica que et descarrega el Docker i els mòduls personalitzats en qüestió de minuts.
+# Forma manual
 ## 3.Instal·lació de Docker
 ### 3.1.Instal·lació de Docker i els seus complements
 Instal·lar Docker:
@@ -164,87 +167,46 @@ I sí quan poses el mencionat anteriorment apareix el següent, significa que ja
 <img src="../static/description/Instal·lació_Odoo/Pantalla principal de Odoo.png"><br>
 
 # Executant un script
-## 1.Iniciar màquina virtual:
-Quan iniciem per primera vegada la màquina virtual travessarem diferents tipus de pantalles que no entraré en detall, però n'hi ha una en la que és molt important què és la pantalla de la xarxa, allí configurarem el `DHCP` perquè s'assigne una IP de forma automàtica:
-<img src="../static/description/Instal·lació_Odoo/Pantalla de configuració de xarxa.png"><br>
-Ens fixem en l'apartat de `enp0s3` i li fem un "intro".<br>
-<img src="../static/description/Instal·lació_Odoo/enp0s3.png"><br>
-Se'ns obrira un menú, ens fixem en l'opció de `Edit IPv4`, li fem un altre "intro".<br>
-<img src="../static/description/Instal·lació_Odoo/Menú enp0s3.png"><br>
-I ací posem que ens pose la IP de forma automàtica en l'opció de `Automàtic (DHCP)` i guardarem la configuració.<br>
-<img src="../static/description/Instal·lació_Odoo/Configuració del DHCP.png"><br>
-
-## 2.Conectar ssh tant en Windows com en Linux(Ubuntu):
-### 2.1.Actualitzar els paquets:
-Abans de fer res actualitzarem tots els paquets per si algo ix mal:
-- ```plaintext
-    sudo apt update && sudo apt upgrade -y
-    ```
-- ### 2.2. Instal·lar ssh 
- - Windows (PowerShell)
-    ```plaintext
-    Get-Service -Name ssh-agent
-    ```
- - Linux(Ubuntu)
-    ```plaintext
-    sudo apt install ssh
-    ```
-### 2.3.Saber sobre l'estat de ssh
- - Windows (PowerShell)
-    ```plaintext
-    Get-Service -Name ssh-agent
-    ```
- - Linux(Ubuntu)
-    ```plaintext
-    sudo sytemctl status ssh
-    ```
-### 2.4.Com activar-lo tant de forma manual tant com de forma automàtica
-#### 2.4.1 Activar-lo de forma manual
- - Windows (PowerShell)
-    ```plaintext
-    Start-Service ssh-agent
-    ```
- - Linux(Ubuntu)
-    ```plaintext
-    sudo systemctl enable ssh
-    ```
-#### 2.4.2 Activar-lo de forma automàtica
- - Windows (PowerShell)
-    ```plaintext
-    Set-Service -Name ssh-agent -StartupType Automatic
-    ```
- - Linux(Ubuntu)
-    ```plaintext
-    sudo systemctl enable --now ssh
-    ```
-
-## 3.Donar-li permis d'execució
+## 3.Pasar fitxers d'una màquina a altra
+**Advertencia**<br>
 *Aquests scripts estan pensats per a ser executats en sistemes de Linux, per ser més precisos Ubuntu*
+Per a passar fitxers tant com en Windows com en Linux podem usar `scp` ací estan els comands:
+  - Windows(PowerShell) 
+    ```plaintext
+    scp C:\ruta\del\arxiu\script.sh usuariServidor@ipServidor:/home/usuariServidor/ 
+    ```
+  - Linux(Ubuntu)
+    ```plaintext
+    scp /ruta/del/arxiu/script.sh usuariServidor@ipServidor:/home/usuariServidor/
+    ```
+## 4.Donar-li permis d'execució
 
 En els scripts que n'hi han en esta carpeta, tindreu que donar-los permís d'execució:
- - ```plaintext
-  chmod +x nomScript
- ```
-
-## 4.Executant el script
+  ```plaintext
+  chmod +x script.sh
+  ```
+  ```plaintext
+  chmod +x crearentorn.sh
+  ```
+## 5.Executant el script
 
 Ara quan tinguen els permisos d'execució executem el que es diu `script.sh` amb el següent comandament:
- - ```plaintext
+  ```plaintext
   ./script.sh
- ```
+  ```
 Quan execute anirem a l'Odoo posant el següent en el vostre navegador de confiança:
- - ```plaintext
+  ```plaintext
   http://IPServidor:8069
- ```
-I se'ns obrira el següent <img src="../static/description/Instal·lació_Odoo/Pantalla principal de Odoo.png"><br>
+  ```
+I se'ns obrira el següent:<br> <img src="../static/description/Instal·lació_Odoo/Pantalla principal de Odoo.png"><br>
 Plena amb totes les teues dades i quan li prems on diu `Create Database` torna a la teua màquina i modifica el següent del fitxer `creaentorn.sh`
- - ```sh
-  # VARIABLES
-  ODOO_DB_NAME=falla # Canvia això pel nom de la base de dades
-  ODOO_DB_PASS='Pa$$w0rd'# Canvia això per la contrasenya que li hages posat a l'usuari
-  ODOO_MASTER_PASS='Pa$$w0rd' # Canvia això per la Master Password que li hages ficat
- ```
+   ```sh
+   # VARIABLES
+   ODOO_DB_NAME=falla # Canvia això pel nom de la base de dades
+   ODOO_DB_PASS='Pa$$w0rd'# Canvia això per la contrasenya que li hages posat a l'usuari
+   ODOO_MASTER_PASS='Pa$$w0rd' # Canvia això per la "Master Password" que li hages ficat
+  ```
 Quan ho hages modificat, aleshores ja podràs executar l'altre script:
- - ```plaintext
-  ./creaentorn.sh
+ ```plaintext
+ ./creaentorn.sh
  ```

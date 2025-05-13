@@ -1,20 +1,31 @@
 /*
 Fitxer per a copiar i pegar en una base de dades PostgresSQL
 */
+-- Sols la primera vegada
+CREATE USER joel WITH PASSWORD '1234';
+CREATE DATABASE gestio_falla;
+GRANT ALL PRIVILEGES ON DATABASE gestio_falla TO joel;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO joel;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO joel;
+
 -- Eliminar taules si existeixen
 DROP TABLE IF EXISTS faller CASCADE;
 DROP TABLE IF EXISTS familia CASCADE;
 DROP TABLE IF EXISTS cobrador CASCADE;
 DROP TABLE IF EXISTS events CASCADE;
-DROP TABLE IF EXISTS ticket CASCADE
+DROP TABLE IF EXISTS ticket CASCADE;
+DROP TABLE IF EXISTS producte CASCADE;
 
 -- Crea la taula 'familia'
 CREATE TABLE familia (
   id BIGSERIAL PRIMARY KEY,
   nom TEXT NOT NULL,
   saldo_total NUMERIC
-  
 );
+INSERT INTO familia(id, nom)
+VALUES 
+(1,'Familia de Joel'),
+(2,'Familia de Juan'); 
 
 -- Crea la taula 'cobrador' 
 CREATE TABLE cobrador (
@@ -24,9 +35,10 @@ CREATE TABLE cobrador (
 
 -- Insertar un exemple
 INSERT INTO cobrador (rolCobrador)
-VALUES ('Cadires');
-VALUES ('Escudellar');
-VALUES ('Barra');
+VALUES 
+('Cadires'),
+('Escudellar'),
+('Barra');
 
 -- Crea la taula 'faller'
 CREATE TABLE faller (
@@ -48,7 +60,7 @@ CREATE TABLE faller (
       (teLimit = TRUE AND limit IS NOT NULL) OR
       (teLimit = FALSE AND limit IS NULL)
     ))
-  )
+  ),
 
   saldo NUMERIC,
 
@@ -64,41 +76,62 @@ CREATE TABLE faller (
 );
 
 
--- Insertar un exemple
-INSERT INTO faller (nom, rol, valorPulsera, teLimit, limit, saldo) 
-VALUES ('Joel', 'Faller', '1', true, 100.0, 50.0);
-VALUES ('Juan', 'Administrador', '2', false, NULL, 500.0);
-VALUES ('Alexis', 'Faller', '3', true, 25.0, 20.0);
+-- Insertar fallers AMB familia
+INSERT INTO faller (nom, rol, valorPulsera, teLimit, limit, saldo, familia_id) 
+VALUES 
+('Joel', 'SuperAdmin', '1', false, NULL, 50.0, 1),
+('Juan', 'Administrador', '2', false, NULL, 500.0, 2),
+('Alexis', 'Faller', '3', true, 25.0, 20.0, 1);
 
+--Insertar fallers SENSE familia
+INSERT INTO faller (nom, rol, valorPulsera, teLimit, limit, saldo)
+VALUES ('José', 'Faller', '7', false, NULL, 200.0);
+
+--Insertar fallers amb rols de cobrador
 INSERT INTO faller (nom, rol, cobrador_id, valorPulsera, teLimit, limit, saldo)
-VALUES ('José Maria', 'Cobrador', 1, '4', false, NULL, 25.0);
-VALUES ('Maria José', 'Cobrador', 2, '5', false, NULL, 55.5);
-VALUES ('Josefina', 'Cobrador', 3, '6', false, NULL, 114.0)
+VALUES 
+('José Maria', 'Cobrador', 1, '4', false, NULL, 25.0),
+('Maria José', 'Cobrador', 2, '5', false, NULL, 55.5),
+('Josefina', 'Cobrador', 3, '6', false, NULL, 114.0);
 
 -- Crea la taula 'events'
 CREATE TABLE events(
   nom TEXT NOT NULL,
+  descripcio TEXT,
   ticket_id BIGINT,
-  dataInici TEXT,
+  dataInici TIMESTAMP,
   dataFi TIMESTAMP,
-  urlImatge TIMESTAMP,
+  urlImatge TEXT,
   FOREIGN KEY (ticket_id) REFERENCES ticket(id)
 );
-INSERT INTO events (nom, dataInici, dataFi)
-VALUES ('Paella', '2025-3-16 14:00:00', '2025-3-16 17:00:00');
-VALUES ('Cremà', '2025-3-20 20:00:00', '2025-3-21 2:00:00');
-VALUES ('Jocs', '2025-3-15 9:00:00', '2025-3-16 19:00:00');
-VALUES ('Despedida', '2025-3-19 16:00:00', '2025-3-19 18:00:00');
-VALUES ('Caminata', '2025-3-19 16:00:00', '2025-3-19 18:00:00');
+--Insertar events sense tickets
+INSERT INTO events (nom, dataInici, dataFi, urlImatge)
+VALUES 
+('Cremà', '2025-3-20 20:00:00', '2025-3-21 2:00:00','/img/Cremà.png'),
+('Jocs', '2025-3-15 9:00:00', '2025-3-16 19:00:00','/img/Castell_unflable.png'),
+('Despedida', '2025-3-19 16:00:00', '2025-3-19 18:00:00','/img/Despedida.png'),
+('Caminata', '2025-3-19 16:00:00', '2025-3-19 18:00:00','/img/Despedida.png');
+
+--Insertar events AMB tickets
+INSERT INTO events (nom, dataInici, dataFi, ticket_id, urlImatge)
+VALUES ('Paella', '2025-3-16 14:00:00', '2025-3-16 17:00:00', 1, '/img/Paella.png');
 
 -- Crea la taula 'ticket'
 CREATE TABLE ticket(
  id BIGSERIAL PRIMARY KEY NOT NULL,
- quantitat INT,
+ quantitat INT NOT NULL,
  preu BIGINT NOT NULL,
  maxim BOOLEAN NOT NULL 
 );
-SELECT *, (quantitat=0) AS maxim FROM ticket
-INSERT INTO ticket (quantitat, preu, maxim)
-VALUES (0, 1000, (0 = 0));
-VALUES (20, 1, (20=0));
+SELECT *, (quantitat=0) AS maxim FROM ticket;
+INSERT INTO ticket (id, quantitat, preu, maxim)
+VALUES (1, 20, 1, false);
+
+CREATE TABLE producte(
+ id BIGSERIAL PRIMARY KEY,
+ nom TEXT NOT NULL,
+ descripcio TEXT,
+ preu BIGINT,
+ stock INTEGER NOT NULL,
+ urlImatge TEXT
+);

@@ -30,4 +30,9 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   Future<String> saluda() {
     return fakeApiOdooDataSource.saluda();
   }
+  
+  @override
+  Future<List?> getFamilies() {
+    return fakeApiOdooDataSource.getFamilies();
+  }
 }

@@ -25,7 +25,7 @@ class EscanerState extends State<Escaner>{
   void initState(){
     super.initState();
     faller=Faller(nom: "Joel", rol:"Faller",valorPulsera: "8430001000017", teLimit: false);
-    event=Event(nom: "Paella", dataInici:DateTime(2025,3,16,14,0,0), dataFi:DateTime(2025,3,16,17,0,0));
+    event=Event(nom: "Paella", dataInici:DateTime(2025,3,16,14,0), dataFi:DateTime(2025,3,16,17,0));
     indexPantallaActual=0;
     esFaller=true;
     cadiresPerAlFaller=1;
@@ -97,7 +97,7 @@ class EscanerState extends State<Escaner>{
   }
   void event1() {
     setState(() {
-      if (event.nom == "Paella" && event.dataInici == DateTime(2025,3,16,14,0,0)) {
+      if (event.nom == "Paella" && event.dataInici == DateTime(2025,3,16,14,0)) {
         if (esFaller) {
           if (faller.nom == "Joel") {
             if (cadiresPerAlFaller >= 1) {
@@ -108,7 +108,8 @@ class EscanerState extends State<Escaner>{
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(event.nom),
-                      Text("Durada: ${event.dataInici}-${event.dataFi}"),
+                      Text("Durada:"),
+                      Text("${event.dataIniciFormatejada}-${event.dataFiFormatejada}"),
                     ],
                   ),
                 )

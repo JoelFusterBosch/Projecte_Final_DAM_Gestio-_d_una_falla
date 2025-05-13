@@ -6,4 +6,5 @@ abstract class ApiOdooRepository {
   */
   Future<List<dynamic>?> getEvents();
   Future<String> saluda();
+  Future<List<dynamic>?> getFamilies();
 }
