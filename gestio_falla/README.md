@@ -59,6 +59,12 @@ samples, guidance on mobile development, and a full API reference.
  ```plaintext
  flutter pub get
  ```
+### Mostrar QR (qr_flutter)
+ Esta llibreria ens permet generar codis QR en la nostra aplicació, cal posar el següent en el yaml en l'apartat de `dependencies`:
+  ```yaml
+  qr_flutter: ^4.0.0 #Versió de qr_flutter utilitzada
+  ```
+  Més documentació en [la pàgina oficial](https://pub.dev/packages/qr_flutter)
  ### Permisos
  Per a poder llegir codis QR necessitarem la camara, i per això hi haura que demanar permisos de la següent forma:
  Anem al `AndroidManifest` que es troba en la següent ruta:

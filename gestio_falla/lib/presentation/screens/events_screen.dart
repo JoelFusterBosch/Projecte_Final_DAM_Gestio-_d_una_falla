@@ -46,7 +46,7 @@ class EventsScreenState extends State<EventsScreen>{
     });
 
   }
-  void filterProducts() {
+  void filtrarEvents() {
     setState(() {
       String query = _searchController.text.toLowerCase();
       eventsFiltrats = totsElsEvents
@@ -59,11 +59,6 @@ class EventsScreenState extends State<EventsScreen>{
     var orientation = MediaQuery.of(context).orientation;
     double aspectRatio = orientation == Orientation.portrait ? 2 / 3 : 3 / 2;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Events"),
-        centerTitle: true,
-        backgroundColor: Colors.orange,
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

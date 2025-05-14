@@ -7,6 +7,7 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
 
   ApiOdooRepositoryImpl(this.fakeApiOdooDataSource);
 
+/*Descomentar quan vaja a fer peticions per l'API de Odoo
   @override
   Future<int?> login(String email, String password) async {
     return fakeApiOdooDataSource.login(email, password);
@@ -14,13 +15,20 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   
   @override
   Future<List?> getUsers(int uid, String password) {
-    return fakeApiOdooDataSource.getUsers(uid, password);
+    return fakeApiOdooDataSource.getFallers(uid, password);
   }
-  /* Descomentar quan vaja a fer peticions per l'API de Odoo
+  
+   
   @override
   Future<List?> getEvents(int uid, String password) {
     return fakeApiOdooDataSource.getEvents(uid, password);
-  }*/
+  }
+*/
+  @override
+  Future<List?> getFallers() {
+    return fakeApiOdooDataSource.getFallers();
+  }
+
   @override
   Future<List?> getEvents() async {
     return fakeApiOdooDataSource.getEvents();

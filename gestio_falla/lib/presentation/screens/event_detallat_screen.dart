@@ -10,15 +10,11 @@ class EventDetallatScreen extends StatefulWidget{
 }
 class EventDetallatScreenState extends State<EventDetallatScreen>{
   Event event=Event(nom: "Cremà de la Falla Portal", dataInici: DateTime(2025,3,16,15,0), dataFi: DateTime(2025,3,16,15,0),ticket:Ticket(id: 1, preu: 1.2, quantitat: 1, maxim: false), urlImatge: "lib/assets/perfil.jpg");
-  bool maxFallers=false;
-  int ticketsRestants=9;
-  late double preuTotal;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    preuTotal=event.ticket!.preu;
   }
   
   @override
@@ -57,7 +53,7 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
                             height: 20,
                           ),
                           Text(
-                            event.desc ?? "",
+                            event.desc ?? "No n'hi ha descripció per a este event",
                             textAlign: TextAlign.justify,
                             style: Theme.of(context).textTheme.bodyMedium,
                           )
@@ -69,67 +65,5 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
         ),
       ),
     );
-  }
-  void pagar(BuildContext context) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Confirmació"),
-            content: Text("Vols pagar ja?"),
-            actions: <Widget>[
-              TextButton(
-                child: Text("Sí"),
-                onPressed: () {
-                  Navigator.of(context).pop(true); // Torna vertader al tancar
-                },
-              ),
-              TextButton(
-                child: Text("No"),
-                onPressed: () {
-                  Navigator.of(context).pop(false); // Torna fals al tancar
-                },
-              ),
-            ],
-          );
-        },
-      ).then((resultado) {
-        // Aquí manejas la respuesta del usuario
-        if (resultado != null && resultado) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Has acceptat l'acció")),
-          );
-          setState(() {
-            event.ticket!.quantitat=1;
-            preuTotal=event.ticket!.quantitat*event.ticket!.preu;
-          });
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Has cancelat l'acció")),
-          );
-        }
-      }
-    );
-  }
-  void augmentarNumTickets(){
-    setState(() {
-      event.ticket!.quantitat++;
-      ticketsRestants--;
-      preuTotal=event.ticket!.quantitat*event.ticket!.preu;
-      if(ticketsRestants==0){
-        maxFallers=true;
-      } 
-    });
-    
-  }
-  void decrementarNumTickets(){
-    setState(() {
-      event.ticket!.quantitat--;
-      ticketsRestants++;
-      preuTotal=event.ticket!.quantitat*event.ticket!.preu;
-      if(ticketsRestants!=0){
-        maxFallers=false;
-      } 
-    });
   }
 }

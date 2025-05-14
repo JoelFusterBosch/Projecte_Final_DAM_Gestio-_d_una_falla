@@ -29,6 +29,8 @@ class PrincipalScreenState extends State<PrincipalScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.orange,
+        centerTitle: true,
         title: config.titolsAppBar[indexPantallaActual],
       ),
       bottomNavigationBar: config.navegacio.length >= 2
@@ -101,7 +103,6 @@ class PrincipalScreenState extends State<PrincipalScreen> {
         pantalles: const [
           EventsScreen(),
           PerfilScreen(),
-          LoginScreen(),
           Escaner(),
           AdminScreen(),
         ],
@@ -115,22 +116,17 @@ class PrincipalScreenState extends State<PrincipalScreen> {
             label: 'Perfil',
           ),
           NavigationDestination(
-            icon: Icon(index == 2 ? Icons.login : Icons.login_outlined),
-            label: 'Login',
-          ),
-          NavigationDestination(
-            icon: Icon(index == 3 ? Icons.scanner : Icons.scanner_outlined),
+            icon: Icon(index == 2 ? Icons.scanner : Icons.scanner_outlined),
             label: 'Escaner',
           ),
           NavigationDestination(
-            icon: Icon(index == 4 ? Icons.admin_panel_settings : Icons.admin_panel_settings_outlined),
+            icon: Icon(index == 3 ? Icons.admin_panel_settings : Icons.admin_panel_settings_outlined),
             label: 'Admin',
           ),
         ],
         titolsAppBar: const [
           Text('Events'),
           Text('Perfil'),
-          Text('Login'),
           Text('Escaner'),
           Text('Admin'),
         ],

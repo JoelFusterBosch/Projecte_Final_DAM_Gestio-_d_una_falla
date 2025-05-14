@@ -4,6 +4,7 @@ import 'package:gestio_falla/domain/entities/familia.dart';
 import 'package:gestio_falla/presentation/screens/afegir_membre.dart';
 import 'package:gestio_falla/presentation/screens/crear_familia.dart';
 import 'package:gestio_falla/presentation/screens/editar_perfil.dart';
+import 'package:gestio_falla/presentation/screens/mostra_QR_screen.dart';
 
 class PerfilScreen extends StatefulWidget {
   const PerfilScreen({super.key});
@@ -24,11 +25,6 @@ class PerfilScreenState extends State<PerfilScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Perfil"),
-        centerTitle: true,
-        backgroundColor: Colors.orange
-      ),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -57,10 +53,22 @@ class PerfilScreenState extends State<PerfilScreen> {
                           style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
                         SizedBox(height: 20),
-                        ElevatedButton(onPressed: faller.rol=="Cap de familia" ? (){afigMembre();}:null, child: Text("Agregar membre")),
-                        ElevatedButton(onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>CrearFamilia()));
-                        }, child: Text("Crear familia")),
+                        Offstage(
+                          offstage: faller.rol!="Cap de familia" && faller.familia==null,
+                          child: ElevatedButton(onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>AfegirMembre()));
+                          }, 
+                          child: Text("Agregar membre")
+                          ),
+                        ),
+                        Offstage(
+                          offstage: faller.rol=="Cap de familia" && faller.familia!=null,
+                          child: ElevatedButton(onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>CrearFamilia()));
+                          }, 
+                          child: Text("Crear familia")
+                          ),
+                        ),
                         ElevatedButton.icon(
                           onPressed: () {
                           Navigator.push(
@@ -70,6 +78,16 @@ class PerfilScreenState extends State<PerfilScreen> {
                         },
                           icon: Icon(Icons.edit),
                           label: Text("Editar Perfil"),
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context, 
+                              MaterialPageRoute(builder: (context) => MostraQrScreen())
+                            );
+                          },
+                          icon: Icon(Icons.qr_code),
+                          label: Text("Mostrar QR"),
                         ),
                         SizedBox(height: 10),
                         OutlinedButton.icon(
@@ -126,10 +144,5 @@ class PerfilScreenState extends State<PerfilScreen> {
         );
       }
     });
-  }
-  void afigMembre(){
-    if(faller.rol=="Cap de familia"){
-      Navigator.push(context,MaterialPageRoute(builder: (context)=> AfegirMembre()));
-    }
   }
 }

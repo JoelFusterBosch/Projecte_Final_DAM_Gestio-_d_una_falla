@@ -10,11 +10,6 @@ class AdminScreen extends StatelessWidget {
     final apiOdooProvider = Provider.of<ApiOdooProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Pantalla de login"),
-        centerTitle: true,
-        backgroundColor: Colors.orange,
-      ),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -44,6 +39,7 @@ class AdminScreen extends StatelessWidget {
                               label: const Text("Saluda"),
                               onPressed: apiOdooProvider.saluda, 
                               ),
+                              /*
                             ElevatedButton.icon(
                               icon: const Icon(Icons.login),
                               label: const Text("Login"),
@@ -51,26 +47,20 @@ class AdminScreen extends StatelessWidget {
                                 apiOdooProvider.login('odoo@odoo.com', '1234');
                               },
                             ),
+                            */
                             const SizedBox(height: 20),
                             ElevatedButton.icon(
                               icon: const Icon(Icons.download),
-                              label: const Text("Obtindre Usuaris"),
+                              label: const Text("Obtindre Fallers"),
                               onPressed: () {
-                                apiOdooProvider.fetchUsers('1234');
-                              },
-                            ),
-                            ElevatedButton.icon(
-                              icon: const Icon(Icons.event),
-                              label: const Text("Obtindre events"),
-                              onPressed: () {
-                                apiOdooProvider.getEvents();
+                                apiOdooProvider.getFallers();
                               },
                             ),
                             const SizedBox(height: 30),
-                            if (apiOdooProvider.users != null &&
-                                apiOdooProvider.users!.isNotEmpty) ...[
+                            if (apiOdooProvider.fallers != null &&
+                                apiOdooProvider.fallers!.isNotEmpty) ...[
                               const Text(
-                                "Llista d'usuaris:",
+                                "Llista de fallers:",
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold),
@@ -79,19 +69,25 @@ class AdminScreen extends StatelessWidget {
                               ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemCount: apiOdooProvider.users!.length,
+                                itemCount: apiOdooProvider.fallers!.length,
                                 itemBuilder: (context, index) {
-                                  final user = apiOdooProvider.users![index];
+                                  final user = apiOdooProvider.fallers![index];
                                   return ListTile(
                                     leading: const Icon(Icons.person),
-                                    title: Text(user['name'] ?? 'Sense nom'),
-                                    subtitle: Text(user['login'] ?? ''),
+                                    title: Text(user['nom'] ?? 'Sense nom'),
                                   );
                                 },
                               ),
-                            ] else if (apiOdooProvider.events != null)
-                              const Text("No n'hi han events per a mostrar."),
+                            ] else if (apiOdooProvider.fallers == null)
+                              const Text("No n'hi han fallers per a mostrar."),
                             const SizedBox(height: 30),
+                            ElevatedButton.icon(
+                              icon: const Icon(Icons.event),
+                              label: const Text("Obtindre events"),
+                              onPressed: () {
+                                apiOdooProvider.getEvents();
+                              },
+                            ),
                             if (apiOdooProvider.events != null &&
                                 apiOdooProvider.events!.isNotEmpty) ...[
                               const Text(
@@ -111,12 +107,45 @@ class AdminScreen extends StatelessWidget {
                                     leading:
                                         const Icon(Icons.event_available),
                                     title:
-                                        Text(event['name'] ?? 'Sense nom'),
+                                        Text(event['nom'] ?? 'Sense nom'),
                                   );
                                 },
                               ),
-                            ] else if (apiOdooProvider.events != null)
+                            ] else if (apiOdooProvider.events == null)
                               const Text("No n'hi han events per a mostrar."),
+                            ElevatedButton.icon(
+                              icon: Icon(Icons.family_restroom),
+                              label:  const Text("Obtindre families"),
+                              onPressed: (){
+                                apiOdooProvider.getFamilies();
+                              }
+                            ),
+                            
+                            if (apiOdooProvider.families != null &&
+                                apiOdooProvider.families!.isNotEmpty) ...[
+                              const Text(
+                                "Llista de families:",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 30),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: apiOdooProvider.families!.length,
+                                itemBuilder: (context, index) {
+                                  final familia = apiOdooProvider.families![index];
+                                  return ListTile(
+                                    leading:
+                                        const Icon(Icons.event_available),
+                                    title:
+                                        Text(familia['nom'] ?? 'Sense nom'),
+                                  );
+                                },
+                              ),
+                            ] else if (apiOdooProvider.families == null)
+                              const Text("No n'hi han families per a mostrar."),
                           ],
                         ),
                       ),

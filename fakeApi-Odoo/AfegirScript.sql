@@ -96,6 +96,7 @@ VALUES
 
 -- Crea la taula 'events'
 CREATE TABLE events(
+  id BIGSERIAL PRIMARY KEY,
   nom TEXT NOT NULL,
   descripcio TEXT,
   ticket_id BIGINT,
@@ -107,14 +108,14 @@ CREATE TABLE events(
 --Insertar events sense tickets
 INSERT INTO events (nom, dataInici, dataFi, urlImatge)
 VALUES 
-('Cremà', '2025-3-20 20:00:00', '2025-3-21 2:00:00','/img/Cremà.png'),
-('Jocs', '2025-3-15 9:00:00', '2025-3-16 19:00:00','/img/Castell_unflable.png'),
-('Despedida', '2025-3-19 16:00:00', '2025-3-19 18:00:00','/img/Despedida.png'),
-('Caminata', '2025-3-19 16:00:00', '2025-3-19 18:00:00','/img/Despedida.png');
+('Cremà', '2025-3-20 20:00:00', '2025-3-21 2:00:00','/img/Events/Cremà.png'),
+('Jocs', '2025-3-15 9:00:00', '2025-3-16 19:00:00','/img/Events/Castell_unflable.png'),
+('Despedida', '2025-3-19 16:00:00', '2025-3-19 18:00:00','/img/Events/Despedida.png'),
+('Caminata', '2025-3-19 16:00:00', '2025-3-19 18:00:00','/img/Events/Despedida.png');
 
 --Insertar events AMB tickets
 INSERT INTO events (nom, dataInici, dataFi, ticket_id, urlImatge)
-VALUES ('Paella', '2025-3-16 14:00:00', '2025-3-16 17:00:00', 1, '/img/Paella.png');
+VALUES ('Paella', '2025-3-16 14:00:00', '2025-3-16 17:00:00', 1, '/img/Events/Paella.png');
 
 -- Crea la taula 'ticket'
 CREATE TABLE ticket(
@@ -135,3 +136,9 @@ CREATE TABLE producte(
  stock INTEGER NOT NULL,
  urlImatge TEXT
 );
+INSERT INTO producte(nom,preu,stock,urlImatge)
+VALUES
+('Aigua 500ml', 1, 20, 'img/Productes/Aigua.png'),
+('Cervesa 33cl', 1.5, 33, 'img/Productes/Cervesa.png'),
+('Coca-Cola', 1.30, 0, 'img/Productes/Coca-Cola.png'),
+('Pepsi', 1.25, 77, 'img/Productes/Pepsi.png');

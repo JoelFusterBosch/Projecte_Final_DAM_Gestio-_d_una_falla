@@ -37,10 +37,6 @@ class EscanerState extends State<Escaner>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Escaner"),
-      centerTitle: true,
-      backgroundColor: Colors.orange,
-      ),
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints){

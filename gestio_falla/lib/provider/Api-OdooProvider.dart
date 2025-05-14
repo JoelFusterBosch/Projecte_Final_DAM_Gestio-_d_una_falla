@@ -17,10 +17,10 @@ class  ApiOdooProvider with ChangeNotifier{
   bool get loading => _loading;
   String? get error => _error;
 
-  List<dynamic>? users;
+  List<dynamic>? fallers;
   List<dynamic>? events;
   List<dynamic>? families;
-
+  /*
   Future<void> login(String email, String password) async {
     _message = "Iniciant sessió...";
     _loading = true;
@@ -45,7 +45,7 @@ class  ApiOdooProvider with ChangeNotifier{
     _loading = false;
     notifyListeners();
   }
-
+  
   Future<void> fetchUsers(String password) async {
     if (uid == null) {
       status = "UID no disponible. Fes login primer.";
@@ -66,7 +66,7 @@ class  ApiOdooProvider with ChangeNotifier{
 
     notifyListeners();
   }
-  /*
+  
   Future<void> getEvents(String password) async{
     if (uid == null) {
       status = "UID no disponible. Fes login primer.";
@@ -88,6 +88,20 @@ class  ApiOdooProvider with ChangeNotifier{
     notifyListeners();
   }
   */
+  Future<void> getFallers() async {
+    status = "Carregant fallers...";
+    notifyListeners();
+
+    final result = await _apiOdooRepository.getFallers();
+    if (result != null) {
+      fallers = result;
+      status = "Usuaris carregats: ${fallers!.length}";
+    } else {
+      status = "Error a l'hora d'obtindre usuaris.";
+    }
+
+    notifyListeners();
+  }
   Future<void> getEvents() async{
 
     status = "Carregant events...";
@@ -115,7 +129,7 @@ class  ApiOdooProvider with ChangeNotifier{
     } 
   }
   Future<void> getFamilies() async{
-    status="Carregant families";
+    status="Carregant families...";
     notifyListeners();
 
     final result = await _apiOdooRepository.getFamilies();
