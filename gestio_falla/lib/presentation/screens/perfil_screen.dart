@@ -49,7 +49,11 @@ class PerfilScreenState extends State<PerfilScreen> {
                           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          faller.familia!.nom,
+                          faller.rol,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                        Text(
+                          faller.familia!=null ? faller.familia!.nom : "Familia no assignada",
                           style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
                         SizedBox(height: 20),
@@ -83,7 +87,7 @@ class PerfilScreenState extends State<PerfilScreen> {
                           onPressed: () {
                             Navigator.push(
                               context, 
-                              MaterialPageRoute(builder: (context) => MostraQrScreen())
+                              MaterialPageRoute(builder: (context) => MostraQrScreen(faller:faller))
                             );
                           },
                           icon: Icon(Icons.qr_code),

@@ -5,8 +5,11 @@ abstract class ApiOdooRepository {
   
   Future<List<dynamic>?> getEvents(int uid, String password);
   */
+  Future<String> saluda();
   Future<List<dynamic>?> getFallers();
   Future<List<dynamic>?> getEvents();
-  Future<String> saluda();
   Future<List<dynamic>?> getFamilies();
+  Future<List<dynamic>?> getTickets();
+  Future<List<dynamic>?> getProductes();
+  Future<List<dynamic>?> getCobradors();
 }

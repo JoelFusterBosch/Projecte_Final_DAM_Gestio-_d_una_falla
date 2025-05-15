@@ -43,4 +43,19 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   Future<List?> getFamilies() {
     return fakeApiOdooDataSource.getFamilies();
   }
+  
+  @override
+  Future<List?> getCobradors() {
+    return fakeApiOdooDataSource.getCobradors();
+  }
+  
+  @override
+  Future<List?> getProductes() {
+    return fakeApiOdooDataSource.getProductes();
+  }
+  
+  @override
+  Future<List?> getTickets() {
+    return fakeApiOdooDataSource.getTickets();
+  }
 }

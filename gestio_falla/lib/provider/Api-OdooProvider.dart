@@ -20,6 +20,8 @@ class  ApiOdooProvider with ChangeNotifier{
   List<dynamic>? fallers;
   List<dynamic>? events;
   List<dynamic>? families;
+  List<dynamic>? productes;
+  List<dynamic>? tickets;
   /*
   Future<void> login(String email, String password) async {
     _message = "Iniciant sessió...";
@@ -136,8 +138,36 @@ class  ApiOdooProvider with ChangeNotifier{
     if(result!=null){
       families = result;
       status="Families carregades ${families!.length}";
+      notifyListeners();
     }else{
       status="Error a l'hora d'obtindre les families";
+      notifyListeners();
+    }
+  }
+  Future<void> getProductes() async{
+    status="Carregant productes...";
+    notifyListeners();
+    final result = await _apiOdooRepository.getProductes();
+    if(result!=null){
+      productes=result;
+      status="Productes carregats ${productes!.length}";
+      notifyListeners();
+    }else{
+      status="Error a l'hora d'obtindre els productes";
+      notifyListeners();
+    } 
+  }
+  Future<void> getTickets() async{
+    status="Carregant Tickets...";
+    notifyListeners();
+    final result= await _apiOdooRepository.getTickets();
+    if(result!=null){
+      tickets = result;
+      status="Tickets carregats ${tickets!.length}";
+      notifyListeners();
+    }else{
+      status="Error a l'hora d'obtindre els tickets";
+      notifyListeners();
     }
   }
 }

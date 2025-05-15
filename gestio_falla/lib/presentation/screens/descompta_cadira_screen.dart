@@ -55,8 +55,8 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
                     children: [
                       /*Fer la imatge ací*/
                       Text(event.nom),
-                      Text("Data d'inici: ${event.dataInici}"),
-                      Text("Data de fi: ${event.dataFi}"),
+                      Text("Data d'inici: ${event.dataIniciFormatejada}"),
+                      Text("Data de fi: ${event.dataFiFormatejada}"),
                       Text("Quantitat de cadires: $cadires"),
                       Text("Cadires restants: $cadiresRestants"),
                       Row(
