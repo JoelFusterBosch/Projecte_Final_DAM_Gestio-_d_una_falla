@@ -7,13 +7,12 @@ class FakeApiOdooDataSource {
 
   FakeApiOdooDataSource({required this.baseUrl, required this.db});
   Future<String> saluda() async{
-    final url = Uri.parse('$baseUrl/saluda');
+    final url = Uri.parse('$baseUrl/');
 
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      return data['mensaje'];
+      return jsonDecode(response.body);
     } else {
       throw Exception('Error al conectar al servidor');
     }
@@ -22,16 +21,16 @@ class FakeApiOdooDataSource {
   Fallers 
   */
 
-  Future<List<dynamic>?> getFallers() async {
+  Future<List<dynamic>> getFallers() async {
     final url = Uri.parse('$baseUrl/fallers');
     final response = await http.get(url);
-    if(response.statusCode==200){
-      final data = jsonDecode(response.body);
-      return data['result'];
-    }else{
-      throw Exception("Error al conectar al servidor");
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception("Error al obtndre als fallers");
     }
   }
+  
   /*
   Events 
   */
@@ -40,8 +39,7 @@ class FakeApiOdooDataSource {
     final url = Uri.parse('$baseUrl/events');
     final response = await http.get(url);
     if(response.statusCode == 200){
-      final data = jsonDecode(response.body);
-      return data['result'];
+      return jsonDecode(response.body);
     }else{
       throw Exception('Error al conectar al servidor');
     }
@@ -54,8 +52,7 @@ class FakeApiOdooDataSource {
     final url = Uri.parse('$baseUrl/families');
     final response = await http.get(url);
     if(response.statusCode==200){
-      final data = jsonDecode(response.body);
-      return data['result'];
+      return jsonDecode(response.body);
     }else{
       throw Exception("Error a l'hora de conectar al servidor");
     }
@@ -67,8 +64,7 @@ class FakeApiOdooDataSource {
     final url = Uri.parse('$baseUrl/tickets');
     final response = await http.get(url);
     if(response.statusCode==200){
-      final data = jsonDecode(response.body);
-      return data['result'];
+      return jsonDecode(response.body);
     }else{
       throw Exception("Error a l'hora d'obtindre els tickets");
     }
@@ -80,8 +76,7 @@ class FakeApiOdooDataSource {
     final url = Uri.parse('$baseUrl/productes');
     final response = await http.get(url);
     if(response.statusCode==200){
-      final data = jsonDecode(response.body);
-      return data['result'];
+      return jsonDecode(response.body);
     }else{
       throw Exception("Error a l'hora d'obtindre els productes");
     }
@@ -93,8 +88,7 @@ class FakeApiOdooDataSource {
     final url = Uri.parse('$baseUrl/cobrador');
     final response = await http.get(url);
     if(response.statusCode==200){
-      final data = jsonDecode(response.body);
-      return data['result'];
+      return jsonDecode(response.body);
     }else{
       throw Exception("Error a l'hora d'obtindre als cobradors");
     }

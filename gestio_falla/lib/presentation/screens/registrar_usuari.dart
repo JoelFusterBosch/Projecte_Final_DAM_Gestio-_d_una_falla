@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/presentation/screens/login_screen.dart';
 
 class RegistrarUsuari extends StatefulWidget{
@@ -10,17 +11,9 @@ class RegistrarUsuari extends StatefulWidget{
 }
 
 class RegistrarUsuariState extends State<RegistrarUsuari>{
-  String diaSeleccionat="1";
-  String mesSeleccionat="Gener";
-  String anySeleccionat="2000";
-  final List<String> dies = List.generate(31, (index) => (index + 1).toString());
-  final List<String> mesos = [
-    'Gener', 'Febrer', 'Març', 'Abril', 'Maig', 'Juny', 'Juliol', 'Agost',
-    'Septembre', 'Octubre', 'Novembre', 'Decembre'
-  ];
   final List<String> anys = List.generate(100, (index) => (2024 - index).toString());
-  String rol="Usuari";
-  final List<String> rols=['Usuari','Cobrador','Administrador'];
+  final List<String> rols=['Faller','Cobrador','Administrador'];
+  Faller faller = Faller(nom: "", teLimit: false, rol: "Faller", valorPulsera: '0');
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -30,119 +23,71 @@ class RegistrarUsuariState extends State<RegistrarUsuari>{
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Nom d'usuari"),
-            TextFormField(
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15)
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints){
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight
                 ),
-                labelText: "Nom d'usuari", 
-              ),
-              validator: (value) {
-                if(value==null || value.isEmpty){
-                  return "El camp Nom d'usuari és obligatori";
-                }
-                return null;
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                DropdownButton<String>(
-                  value: diaSeleccionat,
-                  onChanged: (String? newValue){
-                    setState(() {
-                      diaSeleccionat=newValue!;
-                    });
-                  },
-                  items: dies.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(), 
+                child:Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        child: Image.asset(
+                          'lib/assets/FallaPortal.png',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      Text("Nom d'usuari"),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                          labelText: "Nom d'usuari", 
+                        ),
+                        validator: (value) {
+                          if(value==null || value.isEmpty){
+                            return "El camp Nom d'usuari és obligatori";
+                          }
+                          return null;
+                        },
+                      ),
+                      Text("Rol"),
+                      DropdownButton<String>(
+                            value: faller.rol,
+                            onChanged: (String? newValue){
+                              setState(() {
+                                faller.rol=newValue!;
+                              });
+                            },
+                            items: rols.map<DropdownMenuItem<String>>((String value){
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
+                      ElevatedButton(onPressed: (){
+                        Navigator.push(
+                          context, 
+                          MaterialPageRoute(builder: (context)=>LoginScreen()),
+                        );
+                      }, 
+                      child: Text("Registrar-se")
+                      ),
+                    ],
+                  ),
                 ),
-                DropdownButton<String>(
-                  value: mesSeleccionat,
-                  onChanged: (String? newValue){
-                    setState(() {
-                      mesSeleccionat=newValue!;
-                    });
-                  },
-                  items: mesos.map<DropdownMenuItem<String>>((String value){
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                DropdownButton<String>(
-                  value: anySeleccionat,
-                  onChanged: (String? newValue){
-                    setState(() {
-                      anySeleccionat=newValue!;
-                    });
-                  },
-                  items: anys.map<DropdownMenuItem<String>>((String value){
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                )
-              ],
-            ),
-            Text("Contrasenya"),
-            TextFormField(
-              keyboardType: TextInputType.text,
-              obscureText: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15)
-                ),
-                labelText:"Contrasenya", 
-              ),
-              validator: (value) {
-                if(value==null || value.isEmpty){
-                  return "El camp Contrasenya és obligatori";
-                }
-                return null;
-              },
-            ),
-            DropdownButton<String>(
-                  value: rol,
-                  onChanged: (String? newValue){
-                    setState(() {
-                      rol=newValue!;
-                    });
-                  },
-                  items: rols.map<DropdownMenuItem<String>>((String value){
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
-            ElevatedButton(onPressed: (){
-              Navigator.push(
-                context, 
-                MaterialPageRoute(builder: (context)=>LoginScreen()),
-              );
-            }, 
-            child: Text("Registrar-se")
-            ),
-          ],
+              )
+            );
+          }
         ),
       ),
-    );
-  }
-  
-}
+    );         
+  }         
+}         

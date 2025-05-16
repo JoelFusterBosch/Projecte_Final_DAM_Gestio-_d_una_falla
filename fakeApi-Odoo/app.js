@@ -1,31 +1,28 @@
 const express = require('express');
 const app = express();
 const port = 3000;
-const pool = require('./db');
 
 app.use(express.json());
 
-//Importar ruts
+//Importar rutes
 const familiesRoutes = require('./routes/families');
 const fallersRoutes = require('./routes/fallers');
 const cobradorRoutes = require('./routes/cobrador')
 const eventsRoutes = require('./routes/events');
 const ticketsRoutes = require('./routes/tickets');
+const productesRoutes = require('./routes/productes');
 
 
 app.get('/', (req, res) => {
   res.json({missatge: 'Hola des de Node.js i PostgresSQL'})
 });
 
-app.get('/saluda', (req, res) => {
-  res.json({ missatge: 'Hola des de Node.js!' });
-});
-
 app.use('/families', familiesRoutes);
 app.use('/fallers', fallersRoutes);
 app.use('/cobrador', cobradorRoutes)
-app.use('/event', eventsRoutes);
+app.use('/events', eventsRoutes);
 app.use('/tickets', ticketsRoutes);
+app.use('/productes', productesRoutes);
 
 
 

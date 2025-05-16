@@ -10,5 +10,33 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: "Error a l'hora d'obtindre a les families" });
   }
 });
-
+/*
+Funcions amb POST
+*/
+//Pantalla afegir families?: Afegir families 
+router.post('/insertar', async (req,res) =>{
+  const {id, nom} = req.body;
+  try{
+    const result= await pool.query('INSERT INTO familia(id,nom) VALUES ($1,$2) RETURNING *',[id,nom]);
+    res.status(201).json(result.rows[0]);
+  }catch(err){
+    res.status(500).json({ error: "Error a l'hora d'insertar una familia"});
+  }
+});
+/*
+Funcions amb DELETE
+*/
+//Pantalla admin?; Borrar families
+router.delete('/borrar/:id', async (req,res) =>{
+  const {id} = req.params;
+  try{
+    await pool.query('DELETE FROM familia WHERE id=$1',[id]);
+    res.json({missatge: "Familia borrada"});
+  }catch(err){
+    res.staus(500).json({error: "Error a l'hora de borrar a la familia"});
+  }
+});
 module.exports = router;
+
+
+

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/presentation/screens/principal_screen.dart';
 import 'package:gestio_falla/presentation/screens/registrar_usuari.dart';
 
 class LoginScreen extends StatefulWidget{
@@ -29,6 +30,12 @@ class LoginScreenState extends State<LoginScreen>{
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      SizedBox(
+                        child: Image.asset(
+                          'lib/assets/FallaPortal.png',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
                       Text("Iniciar sessió"),
                       Text("Nom d'usuari"),
                       TextFormField(
@@ -46,24 +53,12 @@ class LoginScreenState extends State<LoginScreen>{
                           return null;
                         },
                       ),
-                      Text("Contrasenya"),
-                      TextFormField(
-                        keyboardType: TextInputType.text,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15)
-                          ),
-                          labelText: "Contrasenya"
-                        ),
-                        validator: (value) {
-                          if(value==null || value.isEmpty){
-                            return "El camp contrasenya es obligatori";
-                          }
-                          return null;
-                        },
-                      ),
-                      ElevatedButton(onPressed: iniciasesio, child: Text("Iniciar sessió")),
+                      ElevatedButton(onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => PrincipalScreen()
+                          )
+                        );
+                      }, child: Text("Iniciar sessió")),
                       Text("No tens un compte?"),
                       GestureDetector(
                         onTap: () {
@@ -90,9 +85,5 @@ class LoginScreenState extends State<LoginScreen>{
         ),
       ),
     );
-  }
-  void iniciasesio(){
-    print("Has iniciat sessió");
-  }
-  
+  }  
 }

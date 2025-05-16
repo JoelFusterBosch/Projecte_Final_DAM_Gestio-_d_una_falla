@@ -28,7 +28,7 @@ void main(){
   final mostraqrRepository= MostraqrRepositoryImpl(mostraqrDatasource);
   final notificacionsDataSource= NotificacionsDatasource();
   final notificacionsRepository= NotificacionsRepositoryImpl(notificacionsDataSource);
-  final fakeApiOdooDataSource=FakeApiOdooDataSource(baseUrl: "http://10.0.2.15:3000", db: "Projecte_Falla");
+  final fakeApiOdooDataSource=FakeApiOdooDataSource(baseUrl: "http://192.168.82.182:3000", db: "Projecte_Falla");
   final apiOdooRepository= ApiOdooRepositoryImpl(fakeApiOdooDataSource);
   runApp(MyApp(
     nfcRepositoryImpl: nfcRepository,

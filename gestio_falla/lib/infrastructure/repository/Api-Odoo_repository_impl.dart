@@ -58,4 +58,5 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   Future<List?> getTickets() {
     return fakeApiOdooDataSource.getTickets();
   }
+  
 }

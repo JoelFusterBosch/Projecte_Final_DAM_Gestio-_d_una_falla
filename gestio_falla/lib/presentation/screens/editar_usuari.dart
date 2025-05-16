@@ -16,63 +16,59 @@ class EditarUsuariState extends State<EditarUsuari>{
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Nom antic de l'usuari"),
-            TextFormField(
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20)
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints){
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
                 ),
-                labelText: "Nom antic de l'usuari" 
-              ),
-               validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "El camp Nou nom d'usuari és obligatori";
-                    }
-                    return null;
-               }
-            ),
-            Text("Nou nom d'usuari"),
-            TextFormField(
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20)
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Nom antic de l'usuari"),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)
+                          ),
+                          labelText: "Nom antic de l'usuari" 
+                        ),
+                        validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "El camp Nou nom d'usuari és obligatori";
+                              }
+                              return null;
+                        }
+                      ),
+                      Text("Nou nom d'usuari"),
+                      TextFormField(
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)
+                          ),
+                          labelText: "Nou nom d'usuari"
+                        ),
+                        validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "El camp Nou nom d'usuari és obligatori";
+                              }
+                              return null;
+                            },
+                      ),
+                      ElevatedButton(onPressed: (){
+                        mostrarAlerta(context);
+                      }, child: Text("Canviar"))
+                    ],
+                  ),
                 ),
-                labelText: "Nou nom d'usuari"
               ),
-              validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "El camp Nou nom d'usuari és obligatori";
-                    }
-                    return null;
-                  },
-            ),
-            Text("Contrasenya"),
-            TextFormField(
-              keyboardType: TextInputType.text,
-              obscureText: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20)
-                ),
-                labelText: 'Contrasenya'
-              ),
-              validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'El camp Contrasenya és obligatori';
-                    }
-                    return null;
-                  },
-            ),
-            ElevatedButton(onPressed: (){
-              mostrarAlerta(context);
-            }, child: Text("Canviar"))
-          ],
+            );
+          }
         ),
       ),
     );

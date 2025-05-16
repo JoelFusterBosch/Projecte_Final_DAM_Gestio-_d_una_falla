@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/presentation/screens/editar_contrasenya.dart';
 import 'package:gestio_falla/presentation/screens/editar_usuari.dart';
 
 class EditarPerfil extends StatefulWidget{
@@ -19,30 +18,34 @@ class EditarPerfilState extends State<EditarPerfil>{
         centerTitle: true,
         backgroundColor: Colors.orange,
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Text("Que vols fer?"),
-            ElevatedButton(onPressed: (){
-              Navigator.push(
-                context, 
-                MaterialPageRoute(builder: (context) => EditarUsuari())
-                );
-              },
-              child: Text("Canviar usuari")
-            ),
-            ElevatedButton(onPressed: (){
-              Navigator.push(
-                context, 
-                MaterialPageRoute(builder: (context) => EditarContrasenya())
-                );
-              },
-              child: Text("Canviar contrasenya")
-            ),
-          ],
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints){
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight
+                ),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Text("Que vols fer?"),
+                      ElevatedButton(onPressed: (){
+                        Navigator.push(
+                          context, 
+                          MaterialPageRoute(builder: (context) => EditarUsuari())
+                          );
+                        },
+                        child: Text("Canviar usuari")
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
         ),
       ),
     );
   }
-
 }

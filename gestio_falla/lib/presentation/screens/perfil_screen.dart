@@ -4,6 +4,7 @@ import 'package:gestio_falla/domain/entities/familia.dart';
 import 'package:gestio_falla/presentation/screens/afegir_membre.dart';
 import 'package:gestio_falla/presentation/screens/crear_familia.dart';
 import 'package:gestio_falla/presentation/screens/editar_perfil.dart';
+import 'package:gestio_falla/presentation/screens/login_screen.dart';
 import 'package:gestio_falla/presentation/screens/mostra_QR_screen.dart';
 
 class PerfilScreen extends StatefulWidget {
@@ -125,6 +126,7 @@ class PerfilScreenState extends State<PerfilScreen> {
               child: Text("Acceptar"),
               onPressed: () {
                 Navigator.of(context).pop(true); // Torna vertader al tancar
+                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
               },
             ),
             TextButton(
@@ -140,11 +142,11 @@ class PerfilScreenState extends State<PerfilScreen> {
       // Aquí manejas la respuesta del usuario
       if (resultado != null && resultado) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Has acceptat l'acció")),
+          SnackBar(content: Text("Has tancat sessió")),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Has cancelat l'acció")),
+          SnackBar(content: Text("No has tancat sessió")),
         );
       }
     });

@@ -24,7 +24,9 @@ class NfcProvider with ChangeNotifier {
       valorEsperat: faller.valorPulsera,
       onCoincidencia: () {
         _nfcData = "Acció realitzada per valor NFC: ${faller.valorPulsera}";
-        switch (faller.cobrador!.rolCobrador) {
+        
+        if(faller.rol=="Cobrador"){
+          switch (faller.cobrador!.rolCobrador) {
           case 'Cadires':
             Navigator.push(
               context,
@@ -45,6 +47,8 @@ class NfcProvider with ChangeNotifier {
             break;
         }
         notifyListeners();
+        }
+        
       },
       onError: () {
         _nfcData = "Valor llegit no coincideix o error";
