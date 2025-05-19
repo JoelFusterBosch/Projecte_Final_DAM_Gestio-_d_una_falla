@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
 Funcions amb POST 
 */
 //Pantalla de admin: Insertar cobradors
-router.post('/afegir', async (req,res) =>{
+router.post('/insertar', async (req,res) =>{
  const {id,rolCobrador} = req.body;
  try{
   const result = await pool.query('INSERT INTO cobrador(id, rol_cobrador) VALUES ($1,$2)',[id,rolCobrador])

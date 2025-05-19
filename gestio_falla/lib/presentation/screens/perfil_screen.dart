@@ -117,23 +117,22 @@ class PerfilScreenState extends State<PerfilScreen> {
   void mostrarAlerta(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (context) {
         return AlertDialog(
-          title: Text("Confirmació"),
-          content: Text("¿Estas segur de voler tancar sessió?"),
-          actions: <Widget>[
+          title: Text('Vols tancar sessió?'),
+          actions: [
             TextButton(
-              child: Text("Acceptar"),
-              onPressed: () {
-                Navigator.of(context).pop(true); // Torna vertader al tancar
-                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-              },
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Cancel·lar'),
             ),
             TextButton(
-              child: Text("Cancelar"),
               onPressed: () {
-                Navigator.of(context).pop(false); // Torna fals al tancar
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  (route) => false,
+                );
               },
+              child: Text('Tancar sessió'),
             ),
           ],
         );

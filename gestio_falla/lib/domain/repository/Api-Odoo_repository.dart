@@ -6,10 +6,38 @@ abstract class ApiOdooRepository {
   Future<List<dynamic>?> getEvents(int uid, String password);
   */
   Future<String> saluda();
+  //Fallers
   Future<List<dynamic>?> getFallers();
+  Future<Map<String,dynamic>> getPerfil({required String id});
+  Future<Map<String,dynamic>> getMostraQR({required String id});
+  Future<List<dynamic>?> getMostraMembres({required String idFamilia});
+  Future<Map<String,dynamic>> postFaller({required String nom, required String rol, required String valorPulsera});
+  Future<Map<String,dynamic>> canviaNom({required String id, required String nouNom});
+  Future<Map<String,dynamic>> assignarFamilia({required String id, required String idFamilia});
+  Future<Map<String,dynamic>> canviaRol({required String id, required String rol});
+  Future<void> borrarFaller({required String id});
+  //Events
   Future<List<dynamic>?> getEvents();
+  Future<Map<String,dynamic>> getEventsDetallats({required String id});
+  Future<List<dynamic>?> getLlistaEvents();
+  Future<Map<String,dynamic>> postEvents({required String nom, required DateTime dataInici, required DateTime dataFi, String? desc});
+  Future<void> borrarEvent({required String id});
+  //Families
   Future<List<dynamic>?> getFamilies();
+  Future<Map<String,dynamic>> postFamilies({required String nom});
+  Future<void> borrarFamilia({required String id});
+  //Tickets
   Future<List<dynamic>?> getTickets();
+  Future<Map<String,dynamic>> postTickets({required int quantitat,required double preu,required bool maxim});
+  Future<void> borrarTicket({required String id});
+  //Productes
   Future<List<dynamic>?> getProductes();
+  Future<List<dynamic>?> getProductesBarra();
+  Future<Map<String,dynamic>> postProducte({required String nom, required double preu, required int stock, required String imatgeUrl});
+  Future<void> borrarProducte({required String id});
+  //Cobrador
   Future<List<dynamic>?> getCobradors();
+  Future<Map<String,dynamic>> postCobrador({required String rolCobrador});
+  Future<void> borrarCobrador({required String id});
+
 }

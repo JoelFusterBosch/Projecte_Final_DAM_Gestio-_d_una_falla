@@ -9,7 +9,8 @@ class Event {
   DateTime dataInici;
   DateTime dataFi;
   String? urlImatge;
-  Event({this.id,required this.nom, this.desc, this.ticket, required this.dataInici, required this.dataFi, this.urlImatge});
+  int numCadires;
+  Event({this.id,required this.nom, this.desc, this.ticket, required this.dataInici, required this.dataFi, this.urlImatge, required this.numCadires});
   String get dataIniciFormatejada {
     return DateFormat('dd-MM-yyyy HH:mm').format(dataInici);
   }
@@ -26,6 +27,7 @@ class Event {
       dataInici: DateTime.parse(json['dataInici']),
       dataFi: DateTime.parse(json['dataFi']),
       urlImatge: json['urlImatge'] ?? "",
+      numCadires: json['numCadires'],
     );
   }
 }

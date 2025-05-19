@@ -5,6 +5,7 @@ import 'package:gestio_falla/domain/repository/nfc_repository.dart';
 import 'package:gestio_falla/presentation/screens/barra_screen.dart';
 import 'package:gestio_falla/presentation/screens/descompta_cadira_screen.dart';
 import 'package:gestio_falla/presentation/screens/escudellar_screen.dart';
+import 'package:gestio_falla/presentation/screens/principal_screen.dart';
 
 class NfcProvider with ChangeNotifier {
   final NfcRepository _nfcRepository;
@@ -14,7 +15,7 @@ class NfcProvider with ChangeNotifier {
   String _nfcData = "Escaneja una etiqueta NFC";
   String get nfcData => _nfcData;
 
-  Faller faller = Faller(nom: "Joel", rol: "Cobrador", cobrador: Cobrador(rolCobrador: "Cadires"), valorPulsera: "8430001000017", teLimit: false);
+  Faller faller = Faller(nom: "Joel", rol: "Faller", cobrador: Cobrador(rolCobrador: "Cadires"), valorPulsera: "8430001000017", teLimit: false);
 
   Future<void> llegirEtiqueta(BuildContext context) async {
     _nfcData = "Acosta una etiqueta NFC perfavor";
@@ -47,6 +48,12 @@ class NfcProvider with ChangeNotifier {
             break;
         }
         notifyListeners();
+        } else if(faller.rol == "Faller") {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => PrincipalScreen()),
+          );
+          notifyListeners();
         }
         
       },

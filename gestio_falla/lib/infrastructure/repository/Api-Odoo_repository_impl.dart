@@ -25,38 +25,167 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   }
 */
   @override
+  Future<String> saluda() {
+    return fakeApiOdooDataSource.saluda();
+  }
+
+  /*
+  Fallers
+  */
+
+  @override
   Future<List?> getFallers() {
     return fakeApiOdooDataSource.getFallers();
   }
 
   @override
-  Future<List?> getEvents() async {
-    return fakeApiOdooDataSource.getEvents();
+  Future<Map<String, dynamic>> getMostraQR({required String id}) {
+    return fakeApiOdooDataSource.getMostraQR(id);
   }
   
   @override
-  Future<String> saluda() {
-    return fakeApiOdooDataSource.saluda();
+  Future<Map<String, dynamic>> getPerfil({required String id}) {
+    return fakeApiOdooDataSource.getPerfil(id);
+  }
+
+  @override
+  Future<List?> getMostraMembres({required String idFamilia}) {
+    return fakeApiOdooDataSource.getMostraMembres(idFamilia);
+  }
+
+  @override
+  Future<Map<String, dynamic>> postFaller({required String nom, required String rol, required String valorPulsera}) {
+    return fakeApiOdooDataSource.postFaller(nom: nom, rol: rol, valorPulsera: valorPulsera);
+  }
+
+  @override
+  Future<Map<String, dynamic>> canviaNom({required String id, required String nouNom}) {
+    return fakeApiOdooDataSource.canviaNom(id, nouNom);
   }
   
+  @override
+  Future<Map<String, dynamic>> canviaRol({required String id, required String rol}) {
+    return fakeApiOdooDataSource.canviaRol(id, rol);
+  }
+
+  @override
+  Future<Map<String, dynamic>> assignarFamilia({required String id, required String idFamilia}) {
+    return fakeApiOdooDataSource.asignarFamilia(id, idFamilia);
+  }
+
+  @override
+  Future<void> borrarFaller({required String id}) {
+    return fakeApiOdooDataSource.borrarFaller(id);
+  }
+
+  /*
+  Events
+  */
+
+  @override
+  Future<List?> getEvents() async {
+    return fakeApiOdooDataSource.getEvents();
+  }
+
+  @override
+  Future<Map<String, dynamic>> getEventsDetallats({required String id}) {
+    return fakeApiOdooDataSource.getEventsDetallats(id);
+  }
+
+  @override
+  Future<List?> getLlistaEvents() {
+    return fakeApiOdooDataSource.getLlistaEvents();
+  }
+
+  @override
+  Future<Map<String, dynamic>> postEvents({required String nom, required DateTime dataInici, required DateTime dataFi, String? desc}) {
+    return fakeApiOdooDataSource.postEvents(nom: nom, dataInici: dataInici, dataFi: dataFi);
+  }
+
+  @override
+  Future<void> borrarEvent({required String id}) {
+    return fakeApiOdooDataSource.borrarEvent(id);
+  }
+  
+  /*
+  Families
+  */
+
   @override
   Future<List?> getFamilies() {
     return fakeApiOdooDataSource.getFamilies();
   }
+
+  @override
+  Future<Map<String, dynamic>> postFamilies({required String nom}) {
+    return fakeApiOdooDataSource.postFamilies(nom: nom);
+  }
+
+  @override
+  Future<void> borrarFamilia({required String id}) {
+    return fakeApiOdooDataSource.borrarFamilia(id);
+  }
+
+  /*
+  Cobradors
+  */
   
   @override
   Future<List?> getCobradors() {
     return fakeApiOdooDataSource.getCobradors();
   }
+
+  @override
+  Future<Map<String, dynamic>> postCobrador({required String rolCobrador}) {
+    return fakeApiOdooDataSource.postCobrador(rolCobrador: rolCobrador);
+  }
+
+  @override
+  Future<void> borrarCobrador({required String id}) {
+    return fakeApiOdooDataSource.borrarCobrador(id);
+  }
+
+  /*
+  Productes
+  */
   
   @override
   Future<List?> getProductes() {
     return fakeApiOdooDataSource.getProductes();
   }
+
+  @override
+  Future<List?> getProductesBarra() {
+    return fakeApiOdooDataSource.getProductesBarra();
+  }
+  
+  @override
+  Future<Map<String, dynamic>> postProducte({required String nom, required double preu, required int stock, required String imatgeUrl}) {
+    return fakeApiOdooDataSource.postProducte(nom: nom, preu: preu, stock: stock, imatgeUrl: imatgeUrl);
+  }
+
+  @override
+  Future<void> borrarProducte({required String id}) {
+    return fakeApiOdooDataSource.borrarProducte(id);
+  }
+
+  /*
+  Tickets
+  */
   
   @override
   Future<List?> getTickets() {
     return fakeApiOdooDataSource.getTickets();
+  }
+  
+  @override
+  Future<Map<String, dynamic>> postTickets({required int quantitat, required double preu, required bool maxim}) {
+    return fakeApiOdooDataSource.postTickets(quantitat: quantitat, preu: preu, maxim: maxim);
+  }
+
+  @override
+  Future<void> borrarTicket({required String id}) {
+    return fakeApiOdooDataSource.borrarTicket(id);
   }
   
 }

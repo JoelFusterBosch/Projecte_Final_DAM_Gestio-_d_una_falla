@@ -13,11 +13,11 @@ class EventsScreen extends StatefulWidget{
 class EventsScreenState extends State<EventsScreen>{
   Faller faller= Faller(nom: "Joel", rol: "Faller", valorPulsera: "8430001000017", teLimit: false);
   List<Event> totsElsEvents=[
-    Event(nom: "Paella", dataInici:DateTime(2025,3,16,14,0), dataFi:DateTime(2025,3,16,17,0)),
-    Event(nom: "Cremà", dataInici:DateTime(2025,3,20,20,0), dataFi:DateTime(2025,3,21,2,0)),
-    Event(nom: "Jocs", dataInici:DateTime(2025,3,15,9,0), dataFi:DateTime(2025,3,16,19,0)),
-    Event(nom: "Despedida", dataInici:DateTime(2025,3,19,16,0), dataFi:DateTime(2025,3,19,18,0)),
-    Event(nom: "Caminata", dataInici:DateTime(2025,3,19,16,0), dataFi:DateTime(2025,3,19,18,0)),
+    Event(nom: "Paella", dataInici:DateTime(2025,3,16,14,0), dataFi:DateTime(2025,3,16,17,0),numCadires: 10),
+    Event(nom: "Cremà", dataInici:DateTime(2025,3,20,20,0), dataFi:DateTime(2025,3,21,2,0),numCadires: 10),
+    Event(nom: "Jocs", dataInici:DateTime(2025,3,15,9,0), dataFi:DateTime(2025,3,16,19,0),numCadires: 10),
+    Event(nom: "Despedida", dataInici:DateTime(2025,3,19,16,0), dataFi:DateTime(2025,3,19,18,0),numCadires: 10),
+    Event(nom: "Caminata", dataInici:DateTime(2025,3,19,16,0), dataFi:DateTime(2025,3,19,18,0),numCadires: 10),
   ];
   List<Event> eventsFiltrats=[];
   int eventSeleccionat=0; 

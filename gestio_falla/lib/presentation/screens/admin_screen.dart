@@ -57,8 +57,7 @@ class AdminScreen extends StatelessWidget {
                             },
                           ),
                           const SizedBox(height: 30),
-                          if (apiOdooProvider.fallers != null &&
-                              apiOdooProvider.fallers!.isNotEmpty) ...[
+                          if (apiOdooProvider.fallers.isNotEmpty) ...[
                             const Text(
                               "Llista de fallers:",
                               style: TextStyle(
@@ -69,18 +68,16 @@ class AdminScreen extends StatelessWidget {
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: apiOdooProvider.fallers!.length,
+                              itemCount: apiOdooProvider.fallers.length,
                               itemBuilder: (context, index) {
-                                final user = apiOdooProvider.fallers![index];
+                                final user = apiOdooProvider.fallers[index];
                                 return ListTile(
                                   leading: const Icon(Icons.person),
                                   title: Text(user['nom'] ?? 'Sense nom'),
                                 );
                               },
                             ),
-                          ] else if (apiOdooProvider.fallers == null)
-                            const Text("No n'hi han fallers per a mostrar."),
-                          const SizedBox(height: 30),
+                          ],
                           ElevatedButton.icon(
                             icon: const Icon(Icons.event),
                             label: const Text("Obtindre events"),
@@ -88,8 +85,7 @@ class AdminScreen extends StatelessWidget {
                               apiOdooProvider.getEvents();
                             },
                           ),
-                          if (apiOdooProvider.events != null &&
-                              apiOdooProvider.events!.isNotEmpty) ...[
+                          if (apiOdooProvider.events.isNotEmpty) ...[
                             const Text(
                               "Llista d'events:",
                               style: TextStyle(
@@ -100,9 +96,9 @@ class AdminScreen extends StatelessWidget {
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: apiOdooProvider.events!.length,
+                              itemCount: apiOdooProvider.events.length,
                               itemBuilder: (context, index) {
-                                final event = apiOdooProvider.events![index];
+                                final event = apiOdooProvider.events[index];
                                 return ListTile(
                                   leading:
                                       const Icon(Icons.event_available),
@@ -110,8 +106,7 @@ class AdminScreen extends StatelessWidget {
                                 );
                               },
                             ),
-                          ] else if (apiOdooProvider.events == null)
-                            const Text("No n'hi han events per a mostrar."),
+                          ],
                           ElevatedButton.icon(
                             icon: const Icon(Icons.family_restroom),
                             label: const Text("Obtindre families"),
@@ -119,8 +114,7 @@ class AdminScreen extends StatelessWidget {
                               apiOdooProvider.getFamilies();
                             },
                           ),
-                          if (apiOdooProvider.families != null &&
-                              apiOdooProvider.families!.isNotEmpty) ...[
+                          if (apiOdooProvider.families.isNotEmpty) ...[
                             const Text(
                               "Llista de families:",
                               style: TextStyle(
@@ -131,17 +125,16 @@ class AdminScreen extends StatelessWidget {
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: apiOdooProvider.families!.length,
+                              itemCount: apiOdooProvider.families.length,
                               itemBuilder: (context, index) {
-                                final familia = apiOdooProvider.families![index];
+                                final familia = apiOdooProvider.families[index];
                                 return ListTile(
                                   leading: const Icon(Icons.event_available),
                                   title: Text(familia['nom'] ?? 'Sense nom'),
                                 );
                               },
                             ),
-                          ] else if (apiOdooProvider.families == null)
-                            const Text("No n'hi han families per a mostrar."),
+                          ],
                         ],
                       ),
                     ),

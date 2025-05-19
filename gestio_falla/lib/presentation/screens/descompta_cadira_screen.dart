@@ -11,8 +11,7 @@ class DescomptaCadira extends StatefulWidget{
   State<DescomptaCadira> createState() => DescomptaCadiraState();
 }
 class DescomptaCadiraState extends State<DescomptaCadira>{
-  Event event= Event(nom: "Paella", dataInici: DateTime(2025,3,16,14,0,0), dataFi:DateTime(2025,3,16,17,0,0));
-  late int cadires;
+  Event event= Event(nom: "Paella", dataInici: DateTime(2025,3,16,14,0,0), dataFi:DateTime(2025,3,16,17,0,0),numCadires: 10);
   int cadiresAssignades=1;
   int cadiresRestants=10;
   bool maxCadires=false;
@@ -27,8 +26,8 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
     // TODO: implement initState
     super.initState();
     preuTotal=preu;
-    cadires=cadiresAssignades;
-    cadiresRestants-=cadires;
+    event.numCadires=cadiresAssignades;
+    cadiresRestants-=event.numCadires;
   }
   
   @override
@@ -57,7 +56,7 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
                       Text(event.nom),
                       Text("Data d'inici: ${event.dataIniciFormatejada}"),
                       Text("Data de fi: ${event.dataFiFormatejada}"),
-                      Text("Quantitat de cadires: $cadires"),
+                      Text("Quantitat de cadires: ${event.numCadires}"),
                       Text("Cadires restants: $cadiresRestants"),
                       Row(
                         mainAxisSize: MainAxisSize.min,
@@ -65,7 +64,7 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
                           Text("Quants tickets vols?"),
                           IconButton(
                             icon: Icon(Icons.remove, color: Colors.red),
-                            onPressed: cadires>1 ? decrementarNumTickets : null,
+                            onPressed: event.numCadires>1 ? decrementarNumTickets : null,
                           ),
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -75,7 +74,7 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
                               border: Border.all(color: Colors.black, width: 1),
                             ),
                             child: Text(
-                              "$cadires",
+                              "${event.numCadires}",
                               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -143,11 +142,11 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
             SnackBar(content: Text("Has acceptat l'acció")),
           );
           setState(() {
-            if(cadires==1){
+            if(event.numCadires==1){
               cadiresRestants--;
             }
             if (cadiresRestants==0){
-              cadires=0;
+              event.numCadires=0;
               maxCadires=true;   
               Text("",
                 style: TextStyle(
@@ -155,9 +154,9 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
                 ),
               ); 
             }else{
-              cadires=1;
+              event.numCadires=1;
             }
-            preuTotal=cadires*preu;
+            preuTotal=event.numCadires*preu;
             pagat=true;
             cancelat=false;
           });
@@ -167,12 +166,12 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
             SnackBar(content: Text("Has cancelat l'acció")),
           );
           setState(() {
-            cadires--;
-            cadiresRestants+=cadires;
-            cadires=1;
+            event.numCadires--;
+            cadiresRestants+=event.numCadires;
+            event.numCadires=1;
             pagat=false;
             cancelat=true;
-            preuTotal=cadires*preu;
+            preuTotal=event.numCadires*preu;
           });
         }
       }
@@ -189,18 +188,18 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
   
   void augmentarNumTickets(){
     setState(() {
-      cadires++;
+      event.numCadires++;
       cadiresRestants--;
-      preuTotal=cadires*preu;
+      preuTotal=event.numCadires*preu;
       
     });
     
   }
   void decrementarNumTickets(){
     setState(() {
-      cadires--;
+      event.numCadires--;
       cadiresRestants++;
-      preuTotal=cadires*preu;
+      preuTotal=event.numCadires*preu;
       
     });
   }
