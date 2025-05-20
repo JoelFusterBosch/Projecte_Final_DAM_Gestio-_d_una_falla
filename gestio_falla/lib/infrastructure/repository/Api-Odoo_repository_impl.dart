@@ -25,7 +25,7 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   }
 */
   @override
-  Future<String> saluda() {
+  Future<Map<String, dynamic>> saluda() {
     return fakeApiOdooDataSource.saluda();
   }
 
@@ -186,6 +186,11 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   @override
   Future<void> borrarTicket({required String id}) {
     return fakeApiOdooDataSource.borrarTicket(id);
+  }
+  
+  @override
+  Future<bool> verificarUsuari({required nom, required valorPulsera}) async{
+    return await fakeApiOdooDataSource.verificarUsuari(nom, valorPulsera);
   }
   
 }

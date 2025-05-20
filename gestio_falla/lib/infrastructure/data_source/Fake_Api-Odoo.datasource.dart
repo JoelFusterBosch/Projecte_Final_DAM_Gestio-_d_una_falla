@@ -6,7 +6,7 @@ class FakeApiOdooDataSource {
   final String db;
 
   FakeApiOdooDataSource({required this.baseUrl, required this.db});
-  Future<String> saluda() async{
+  Future<Map<String,dynamic>> saluda() async{
     final url = Uri.parse('$baseUrl/');
 
     final response = await http.get(url);
@@ -404,4 +404,24 @@ class FakeApiOdooDataSource {
       throw Exception("Error a l'hora de borrar al cobrador");
     }
   } 
+
+  Future<bool> verificarUsuari(String nom, String valorPulsera) async {
+    final url = Uri.parse('$baseUrl/auth/verificar');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'nom': nom,
+        'valorPulsera': valorPulsera,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final body = jsonDecode(response.body);
+      return body['verificat'] == true;
+    } else {
+      return false;
+    }
+  }
 }

@@ -14,6 +14,7 @@ class Faller {
   Cobrador? cobrador;  
   String valorPulsera; 
   String? imatgeUrl;
+  bool estaLoguejat;
 
   Faller({
     this.id,
@@ -26,6 +27,7 @@ class Faller {
     this.cobrador,
     required this.valorPulsera,
     this.imatgeUrl,
+    required this.estaLoguejat,
   }) {
     if (!rolsValids.contains(rol)) {
       throw ArgumentError('Rol no vàlid: $rol');
@@ -69,7 +71,8 @@ class Faller {
       familia: json['familia'], 
       rol: json['rol'],
       valorPulsera: json['valorPulsera'],
-      imatgeUrl: json['imatgeUrl']
+      imatgeUrl: json['imatgeUrl'],
+      estaLoguejat: json['estaLoguejat']
     );
   }
 }

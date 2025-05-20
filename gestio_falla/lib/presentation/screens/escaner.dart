@@ -24,7 +24,7 @@ class EscanerState extends State<Escaner>{
   @override
   void initState(){
     super.initState();
-    faller=Faller(nom: "Joel", rol:"Faller",valorPulsera: "8430001000017", teLimit: false);
+    faller=Faller(nom: "Joel", rol:"Faller",valorPulsera: "8430001000017", teLimit: false, estaLoguejat: true);
     event=Event(nom: "Paella", dataInici:DateTime(2025,3,16,14,0), dataFi:DateTime(2025,3,16,17,0),numCadires: 10);
     indexPantallaActual=0;
     esFaller=true;

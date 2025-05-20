@@ -10,6 +10,7 @@ import 'package:gestio_falla/infrastructure/repository/mostraQR_repository_impl.
 import 'package:gestio_falla/infrastructure/repository/nfc_repository_impl.dart';
 import 'package:gestio_falla/infrastructure/repository/notificacions_repository_impl.dart';
 import 'package:gestio_falla/infrastructure/repository/qr_repository_impl.dart';
+import 'package:gestio_falla/presentation/screens/login_screen.dart';
 import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 import 'package:gestio_falla/provider/mostraQRProvider.dart';
 import 'package:gestio_falla/provider/nfcProvider.dart';
@@ -17,9 +18,13 @@ import 'package:gestio_falla/provider/notificacionsProvider.dart';
 import 'package:gestio_falla/provider/qrProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:gestio_falla/presentation/screens/principal_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
-void main(){
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
   final nfcDataSource = NfcDataSource();
   final nfcRepository = NfcRepositoryImpl(nfcDataSource);
   final qrDataSource = QrDataSource();
@@ -28,7 +33,7 @@ void main(){
   final mostraqrRepository= MostraqrRepositoryImpl(mostraqrDatasource);
   final notificacionsDataSource= NotificacionsDatasource();
   final notificacionsRepository= NotificacionsRepositoryImpl(notificacionsDataSource);
-  final fakeApiOdooDataSource=FakeApiOdooDataSource(baseUrl: "http://192.168.82.182:3000", db: "Projecte_Falla");
+  final fakeApiOdooDataSource=FakeApiOdooDataSource(baseUrl: "http://192.168.1.15:3000", db: "Projecte_Falla");
   final apiOdooRepository= ApiOdooRepositoryImpl(fakeApiOdooDataSource);
   runApp(MyApp(
     nfcRepositoryImpl: nfcRepository,
@@ -36,10 +41,12 @@ void main(){
     mostraqrRepositoryImpl: mostraqrRepository, 
     notificacionsRepositoryImpl: notificacionsRepository, 
     apiOdooRepositoryImpl: apiOdooRepository, 
+    isLoggedIn: isLoggedIn, 
     ));
 }
 
 class MyApp extends StatelessWidget {
+  final bool isLoggedIn;
   final NfcRepositoryImpl nfcRepositoryImpl;
   final QrRepositoryImpl qrRepositoryImpl;
   final MostraqrRepositoryImpl mostraqrRepositoryImpl;
@@ -52,7 +59,7 @@ class MyApp extends StatelessWidget {
     required this.mostraqrRepositoryImpl,
     required this.apiOdooRepositoryImpl, 
     required this.qrRepositoryImpl, 
-    
+    required this.isLoggedIn,
   });
 
   @override
@@ -67,7 +74,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Falla Portal',
         debugShowCheckedModeBanner: true,
-        home: PrincipalScreen(),
+        home: isLoggedIn ? PrincipalScreen() :LoginScreen(),
       ),
     ); 
   }

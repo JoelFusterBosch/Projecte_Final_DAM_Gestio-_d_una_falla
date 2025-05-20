@@ -19,7 +19,7 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
   late double preuTotal;
   bool pagat=false;
   bool cancelat=false;
-  Faller faller= Faller(nom: "Joel", rol: "Faller",valorPulsera: "8430001000017", teLimit: false);
+  Faller faller= Faller(nom: "Joel", rol: "Faller",valorPulsera: "8430001000017", teLimit: false, estaLoguejat: true);
 
   @override
   void initState() {

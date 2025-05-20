@@ -210,3 +210,9 @@ Quan ho hages modificat, aleshores ja podràs executar l'altre script:
  ```plaintext
  ./creaentorn.sh
  ```
+Quan l'executes per primera vegada et diu de reiniciar, per a reiniciar trns que posar el següent en el terminal:
+
+ ```
+ reboot
+ ```
+I després de reiniciar executa-lo 2 vegades més, en elles instal·lara el docker i els mòduls personalitzats.

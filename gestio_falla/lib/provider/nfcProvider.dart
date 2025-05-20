@@ -15,7 +15,7 @@ class NfcProvider with ChangeNotifier {
   String _nfcData = "Escaneja una etiqueta NFC";
   String get nfcData => _nfcData;
 
-  Faller faller = Faller(nom: "Joel", rol: "Faller", cobrador: Cobrador(rolCobrador: "Cadires"), valorPulsera: "8430001000017", teLimit: false);
+  Faller faller = Faller(nom: "Joel", rol: "Faller", cobrador: Cobrador(rolCobrador: "Cadires"), valorPulsera: "8430001000017", teLimit: false, estaLoguejat: true);
 
   Future<void> llegirEtiqueta(BuildContext context) async {
     _nfcData = "Acosta una etiqueta NFC perfavor";

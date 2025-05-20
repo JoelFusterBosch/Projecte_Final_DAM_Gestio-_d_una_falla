@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/presentation/screens/registrar_usuari.dart';
 import 'package:provider/provider.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/presentation/screens/principal_screen.dart';
 import 'package:gestio_falla/provider/nfcProvider.dart';
 import 'package:gestio_falla/provider/qrProvider.dart';
+import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,8 +19,8 @@ class LoginScreenState extends State<LoginScreen> {
 
   // Lista simulada de fallers
   final List<Faller> fallers = [
-    Faller(nom: 'joel', teLimit: false, rol: 'Faller', valorPulsera: '8430001000017'),
-    Faller(nom: 'maria', teLimit: false, rol: 'Faller', valorPulsera: '8430001000018'),
+    Faller(nom: 'joel', teLimit: false, rol: 'Faller', valorPulsera: '8430001000017', estaLoguejat: false),
+    Faller(nom: 'maria', teLimit: false, rol: 'Faller', valorPulsera: '8430001000018', estaLoguejat: false),
     // Añade más usuarios aquí
   ];
 
@@ -29,6 +31,7 @@ class LoginScreenState extends State<LoginScreen> {
       return null;
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -96,24 +99,82 @@ class LoginScreenState extends State<LoginScreen> {
                               return AlertDialog(
                                 title: const Text('Amb què vols verificar?'),
                                 actions: [
-                                  TextButton(
+                                  ElevatedButton(
                                     onPressed: () async {
-                                      Navigator.of(contextDialog).pop();
-                                      final nfcProvider = context.read<NfcProvider>();
-                                      await nfcProvider.llegirEtiqueta(context);
-
-                                      final valorEscanejat = nfcProvider.nfcData;
-                                      if (valorEscanejat.contains(faller.valorPulsera)) {
-                                        Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(builder: (_) => const PrincipalScreen()),
-                                        );
-                                      } else {
+                                      final usuari = _usuariController.text.trim();
+                                      if (usuari.isEmpty) {
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Text('Valor NFC incorrecte per a l\'usuari')),
+                                          const SnackBar(content: Text('Introdueix un nom d\'usuari')),
                                         );
+                                        return;
                                       }
+
+                                      final faller = buscarFallerPerNom(usuari);
+                                      if (faller == null) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(content: Text('Usuari no trobat')),
+                                        );
+                                        return;
+                                      }
+
+                                      // Mostrar diálogo para elegir NFC o QR
+                                      showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        builder: (BuildContext contextDialog) {
+                                          return AlertDialog(
+                                            title: const Text('Amb què vols verificar?'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () async {
+                                                  Navigator.of(contextDialog).pop();
+                                                  final nfcProvider = context.read<NfcProvider>();
+                                                  await nfcProvider.llegirEtiqueta(context);
+                                                  final valorEscanejat = nfcProvider.nfcData;
+
+                                                  final apiProvider = context.read<ApiOdooProvider>();
+                                                  final loginSuccess = await apiProvider.login(faller.nom, valorEscanejat);
+
+                                                  if (loginSuccess) {
+                                                    Navigator.of(context).pushReplacement(
+                                                      MaterialPageRoute(builder: (_) => const PrincipalScreen()),
+                                                    );
+                                                  } else {
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(content: Text(apiProvider.error ?? 'Error de verificació')),
+                                                    );
+                                                  }
+                                                },
+                                                child: const Text('NFC'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () async {
+                                                  Navigator.of(contextDialog).pop();
+                                                  final qrProvider = context.read<Qrprovider>();
+                                                  await qrProvider.llegirQR(context);
+                                                  final valorEscanejat = qrProvider.qrData;
+
+                                                  final apiProvider = context.read<ApiOdooProvider>();
+                                                  final loginSuccess = await apiProvider.login(faller.nom, valorEscanejat);
+
+                                                  if (loginSuccess) {
+                                                    Navigator.of(context).pushReplacement(
+                                                      MaterialPageRoute(builder: (_) => const PrincipalScreen()),
+                                                    );
+                                                  } else {
+                                                    ScaffoldMessenger.of(context).showSnackBar(
+                                                      SnackBar(content: Text(apiProvider.error ?? 'Error de verificació')),
+                                                    );
+                                                  }
+                                                },
+                                                child: const Text('QR'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                     },
-                                    child: const Text('NFC'),
+                                    child: const Text("Iniciar sessió"),
                                   ),
                                   TextButton(
                                     onPressed: () async {
@@ -142,10 +203,10 @@ class LoginScreenState extends State<LoginScreen> {
                         child: const Text("Iniciar sessió"),
                       ),
                       const SizedBox(height: 16),
-                      const Text("No tens un compte?"),
-                      GestureDetector(
+                     const Text("No tens un compte?"),
+                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, '/registrarUsuari'); // O como tengas la ruta
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrarUsuari())); 
                         },
                         child: const Text(
                           "Registrat ara",

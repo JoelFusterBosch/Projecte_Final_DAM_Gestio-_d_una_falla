@@ -14,7 +14,7 @@ class Qrprovider with ChangeNotifier{
   String _qrData = "Escaneja un QR";
   String get qrData => _qrData;
 
-  Faller faller = Faller(nom: "Joel", rol: "Faller", cobrador: Cobrador(rolCobrador: "Barra"), valorPulsera: '8430001000017', teLimit: false);
+  Faller faller = Faller(nom: "Joel", rol: "Faller", cobrador: Cobrador(rolCobrador: "Barra"), valorPulsera: '8430001000017', teLimit: false, estaLoguejat: true);
 
   Future<void> llegirQR(BuildContext context) async {
     _qrData="Llegint QR...";

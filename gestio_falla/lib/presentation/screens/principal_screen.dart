@@ -20,7 +20,8 @@ class PrincipalScreenState extends State<PrincipalScreen> {
     nom: "Joel",
     rol: "SuperAdmin",
     valorPulsera: "8430001000017",
-    teLimit: false
+    teLimit: false,
+    estaLoguejat: true
   );
 
   @override
@@ -64,10 +65,6 @@ class PrincipalScreenState extends State<PrincipalScreen> {
           NavigationDestination(
             icon: Icon(index == 1 ? Icons.account_circle : Icons.account_circle_outlined),
             label: 'Perfil',
-          ),
-          NavigationDestination(
-            icon: Icon(index == 2 ? Icons.login : Icons.login_outlined),
-            label: 'Login',
           ),
         ],
         titolsAppBar: const [

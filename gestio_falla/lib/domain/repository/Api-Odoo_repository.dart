@@ -5,7 +5,7 @@ abstract class ApiOdooRepository {
   
   Future<List<dynamic>?> getEvents(int uid, String password);
   */
-  Future<String> saluda();
+  Future<Map<String,dynamic>> saluda();
   //Fallers
   Future<List<dynamic>?> getFallers();
   Future<Map<String,dynamic>> getPerfil({required String id});
@@ -39,5 +39,5 @@ abstract class ApiOdooRepository {
   Future<List<dynamic>?> getCobradors();
   Future<Map<String,dynamic>> postCobrador({required String rolCobrador});
   Future<void> borrarCobrador({required String id});
-
+  Future<bool> verificarUsuari({required nom, required valorPulsera});
 }

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/repository/Api-Odoo_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiOdooProvider with ChangeNotifier {
   final ApiOdooRepository _apiOdooRepository;
 
   ApiOdooProvider(this._apiOdooRepository);
 
-  // Estado general
+  // Estat general
   String _message = "";
   int? _uid;
   bool _loading = false;
@@ -47,7 +48,8 @@ class ApiOdooProvider with ChangeNotifier {
   Future<void> saluda() async {
     _setLoading(true);
     try {
-      _message = await _apiOdooRepository.saluda();
+      final result = await _apiOdooRepository.saluda();
+      _setStatus(result['missatge']);
     } catch (e) {
       _setError(e.toString());
     } finally {
@@ -379,4 +381,21 @@ class ApiOdooProvider with ChangeNotifier {
       _setLoading(false);
     }
   }
+  Future<bool> login(String nom, String valorPulsera) async {
+  try {
+    final result = await _apiOdooRepository.verificarUsuari(nom: nom, valorPulsera: valorPulsera);
+    if (result) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isLoggedIn', true);
+      await prefs.setString('username', nom);
+      return true;
+    } else {
+      _setError('Verificació fallida');
+      return false;
+    }
+  } catch (e) {
+    _setError('Error del servidor');
+    return false;
+  }
+}
 }

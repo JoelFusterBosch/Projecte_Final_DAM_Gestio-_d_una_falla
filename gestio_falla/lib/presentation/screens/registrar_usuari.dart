@@ -13,7 +13,7 @@ class RegistrarUsuari extends StatefulWidget{
 class RegistrarUsuariState extends State<RegistrarUsuari>{
   final List<String> anys = List.generate(100, (index) => (2024 - index).toString());
   final List<String> rols=['Inserta un rol','Faller','Cobrador','Administrador'];
-  Faller faller = Faller(nom: "", teLimit: false, rol: "Faller", valorPulsera: '0');
+  Faller faller = Faller(nom: "", teLimit: false, rol: "Faller", valorPulsera: '0', estaLoguejat: true);
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
