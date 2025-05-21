@@ -115,10 +115,10 @@ router.put('/cambiaRol/:id', async (req, res) =>{
 Funcions amb DELETE
 */
 //Pantalla admin?: Borrar un faller
-router.delete('/borrar/:id', async (req,res) => {
+router.delete('/borrar/:valorPulsera', async (req,res) => {
   const {id} =req.params;
   try{
-    await pool.query('DELETE FROM faller WHERE id = $1'[id]);
+    await pool.query('DELETE FROM faller WHERE valorpulsera = $1'[valorPulsera]);
     res.json({missatge: 'Faller borrat'});
   }catch (err){
     res.status(500).json({error: err.message});

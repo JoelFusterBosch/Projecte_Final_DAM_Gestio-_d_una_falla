@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/domain/entities/familia.dart';
+import 'package:gestio_falla/infrastructure/data_source/Fake_Api-Odoo.datasource.dart';
+import 'package:gestio_falla/infrastructure/repository/Api-Odoo_repository_impl.dart';
 import 'package:gestio_falla/presentation/screens/afegir_membre.dart';
 import 'package:gestio_falla/presentation/screens/crear_familia.dart';
 import 'package:gestio_falla/presentation/screens/editar_perfil.dart';
 import 'package:gestio_falla/presentation/screens/login_screen.dart';
 import 'package:gestio_falla/presentation/screens/mostra_QR_screen.dart';
+import 'package:gestio_falla/provider/Api-OdooProvider.dart';
+
 
 class PerfilScreen extends StatefulWidget {
   const PerfilScreen({super.key});
@@ -15,6 +19,9 @@ class PerfilScreen extends StatefulWidget {
 }
 
 class PerfilScreenState extends State<PerfilScreen> {
+  late final FakeApiOdooDataSource fakeApiOdooDataSource;
+  late final ApiOdooRepositoryImpl apiOdooRepository;
+  late final ApiOdooProvider apiProvider;
   Faller faller = Faller(
     nom: "Joel",
     familia: Familia(nom: "Família de Joel"), 
@@ -23,6 +30,14 @@ class PerfilScreenState extends State<PerfilScreen> {
     teLimit: false,
     estaLoguejat: true,
   );
+
+  @override
+  void initState(){
+    super.initState();
+    fakeApiOdooDataSource = FakeApiOdooDataSource(baseUrl: "http://192.168.1.15:3000", db: "Projecte_Falla");
+    apiOdooRepository = ApiOdooRepositoryImpl(fakeApiOdooDataSource);
+    apiProvider = ApiOdooProvider(apiOdooRepository);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +113,7 @@ class PerfilScreenState extends State<PerfilScreen> {
                         SizedBox(height: 10),
                         OutlinedButton.icon(
                           onPressed: () {
-                          mostrarAlerta(context);
+                          tancarSessio(context);
                           },
                           icon: Icon(Icons.logout, color: Colors.red),
                           label: Text("Tancar sessió"),
@@ -115,40 +130,36 @@ class PerfilScreenState extends State<PerfilScreen> {
       ),
     );
   }
-  void mostrarAlerta(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Vols tancar sessió?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('Cancel·lar'),
-            ),
-            TextButton(
-              onPressed: () {
+  void tancarSessio(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Vols tancar sessió?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel·lar'),
+          ),
+          TextButton(
+            onPressed: () async {
+              // Crida al logout i després redirigeix
+              final provider = ApiOdooProvider(apiOdooRepository); 
+              await provider.tancaSessio();
+
+              if (context.mounted) {
                 Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
                   (route) => false,
                 );
-              },
-              child: Text('Tancar sessió'),
-            ),
-          ],
-        );
-      },
-    ).then((resultado) {
-      // Aquí manejas la respuesta del usuario
-      if (resultado != null && resultado) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Has tancat sessió")),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("No has tancat sessió")),
-        );
-      }
-    });
-  }
+              }
+            },
+            child: const Text('Tancar sessió'),
+          ),
+        ],
+      );
+    },
+  );
+}
+
 }

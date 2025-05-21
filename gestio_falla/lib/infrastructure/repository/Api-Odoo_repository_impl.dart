@@ -1,3 +1,4 @@
+import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/domain/repository/Api-Odoo_repository.dart';
 // import 'package:gestio_falla/infrastructure/data_source/Api-Odoo_datasource.dart';
 import 'package:gestio_falla/infrastructure/data_source/Fake_Api-Odoo.datasource.dart';
@@ -74,8 +75,8 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   }
 
   @override
-  Future<void> borrarFaller({required String id}) {
-    return fakeApiOdooDataSource.borrarFaller(id);
+  Future<void> borrarFaller({required String valorPulsera}) {
+    return fakeApiOdooDataSource.borrarFaller(valorPulsera);
   }
 
   /*
@@ -103,8 +104,8 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   }
 
   @override
-  Future<void> borrarEvent({required String id}) {
-    return fakeApiOdooDataSource.borrarEvent(id);
+  Future<void> borrarEvent({required String nom}) {
+    return fakeApiOdooDataSource.borrarEvent(nom);
   }
   
   /*
@@ -122,8 +123,8 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   }
 
   @override
-  Future<void> borrarFamilia({required String id}) {
-    return fakeApiOdooDataSource.borrarFamilia(id);
+  Future<void> borrarFamilia({required String nom}) {
+    return fakeApiOdooDataSource.borrarFamilia(nom);
   }
 
   /*
@@ -141,8 +142,8 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   }
 
   @override
-  Future<void> borrarCobrador({required String id}) {
-    return fakeApiOdooDataSource.borrarCobrador(id);
+  Future<void> borrarCobrador({required String nom}) {
+    return fakeApiOdooDataSource.borrarCobrador(nom);
   }
 
   /*
@@ -165,8 +166,8 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   }
 
   @override
-  Future<void> borrarProducte({required String id}) {
-    return fakeApiOdooDataSource.borrarProducte(id);
+  Future<void> borrarProducte({required String nom}) {
+    return fakeApiOdooDataSource.borrarProducte(nom);
   }
 
   /*
@@ -189,7 +190,7 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   }
   
   @override
-  Future<bool> verificarUsuari({required nom, required valorPulsera}) async{
+  Future<Faller?> verificarUsuari({required nom, required valorPulsera}) async{
     return await fakeApiOdooDataSource.verificarUsuari(nom, valorPulsera);
   }
   

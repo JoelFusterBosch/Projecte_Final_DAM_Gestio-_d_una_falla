@@ -27,15 +27,16 @@ router.post('/insertar', async (req,res) =>{
 Funcions amb DELETE
 */
 //Pantalla admin?; Borrar families
-router.delete('/borrar/:id', async (req,res) =>{
-  const {id} = req.params;
+router.delete('/borrar/:nom', async (req,res) =>{
+  const {nom} = req.params;
   try{
-    await pool.query('DELETE FROM familia WHERE id=$1',[id]);
+    await pool.query('DELETE FROM familia WHERE nom=$1',[nom]);
     res.json({missatge: "Familia borrada"});
   }catch(err){
     res.staus(500).json({error: "Error a l'hora de borrar a la familia"});
   }
 });
+
 module.exports = router;
 
 

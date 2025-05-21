@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:http/http.dart' as http;
 
 class FakeApiOdooDataSource {
@@ -137,8 +138,8 @@ class FakeApiOdooDataSource {
   }
 
   // Borra un faller (DELETE)
-  Future<void> borrarFaller(String id) async {
-    final url = Uri.parse('$baseUrl/fallers/borrar/$id');
+  Future<void> borrarFaller(String valorPulsera) async {
+    final url = Uri.parse('$baseUrl/fallers/borrar/$valorPulsera');
     final response = await http.delete(url);
     if (response.statusCode == 200) {
       return;
@@ -205,8 +206,8 @@ class FakeApiOdooDataSource {
   }
 
   // Borra un event (DELETE)
-  Future<void> borrarEvent(String id) async{
-    final url = Uri.parse('$baseUrl/events/borrar/$id');
+  Future<void> borrarEvent(String nom) async{
+    final url = Uri.parse('$baseUrl/events/borrar/$nom');
     final response = await http.delete(url);
     if(response.statusCode==200){
       return;
@@ -248,8 +249,8 @@ class FakeApiOdooDataSource {
   }
 
   // Borra una familia (DELETE)
-  Future <void> borrarFamilia(String id) async{
-    final url = Uri.parse('$baseUrl/families/borrar/$id');
+  Future <void> borrarFamilia(String nom) async{
+    final url = Uri.parse('$baseUrl/families/borrar/$nom');
     final response = await http.delete(url);
     if (response.statusCode == 200){
       return;
@@ -351,8 +352,8 @@ class FakeApiOdooDataSource {
   }
 
   // Borra un producte (DELETE)
-  Future <void> borrarProducte(String id) async {
-    final url = Uri.parse('$baseUrl/productes/borrar/$id');
+  Future <void> borrarProducte(String nom) async {
+    final url = Uri.parse('$baseUrl/productes/borrar/$nom');
     final response = await http.delete(url);
     if(response.statusCode == 200){
       return;
@@ -395,8 +396,8 @@ class FakeApiOdooDataSource {
   }
 
   // Borra un cobrador (DELETE)
-  Future <void> borrarCobrador(String id) async{
-    final url = Uri.parse('$baseUrl/cobrador/borrar/$id');
+  Future <void> borrarCobrador(String nom) async{
+    final url = Uri.parse('$baseUrl/cobrador/borrar/$nom');
     final response = await http.delete(url);
     if (response.statusCode == 200){
       return;
@@ -405,7 +406,7 @@ class FakeApiOdooDataSource {
     }
   } 
 
-  Future<bool> verificarUsuari(String nom, String valorPulsera) async {
+  Future<Faller?> verificarUsuari(String nom, String valorPulsera) async {
     final url = Uri.parse('$baseUrl/auth/verificar');
 
     final response = await http.post(
@@ -419,9 +420,22 @@ class FakeApiOdooDataSource {
 
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
-      return body['verificat'] == true;
+
+      if (body['verificat'] == true) {
+        // Assegura't que l'API et retorna les dades necessàries del faller
+        return Faller(
+          nom: body['nom'] ?? nom,
+          rol: body['rol'] ?? 'Faller',
+          valorPulsera: valorPulsera,
+          teLimit: body['teLimit'] ?? false,
+          estaLoguejat: true,
+        );
+      } else {
+        return null;
+      }
     } else {
-      return false;
+      return null;
     }
   }
+
 }

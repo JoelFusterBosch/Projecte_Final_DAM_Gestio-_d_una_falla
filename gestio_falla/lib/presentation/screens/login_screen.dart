@@ -16,10 +16,20 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usuariController = TextEditingController();
-
+  /*
+  final usuari = _usuariController.text.trim();
+  if (usuari.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Introdueix un nom d\'usuari')),
+    );
+    return;
+    }
+  */
+  Faller faller = Faller(nom: 'joel', teLimit: false, rol: 'SuperAdmin', valorPulsera: '8430001000017', estaLoguejat: false);
+  
   // Lista simulada de fallers
   final List<Faller> fallers = [
-    Faller(nom: 'joel', teLimit: false, rol: 'Faller', valorPulsera: '8430001000017', estaLoguejat: false),
+    Faller(nom: 'joel', teLimit: false, rol: 'SuperAdmin', valorPulsera: '8430001000017', estaLoguejat: false),
     Faller(nom: 'maria', teLimit: false, rol: 'Faller', valorPulsera: '8430001000018', estaLoguejat: false),
     // Añade más usuarios aquí
   ];
@@ -90,8 +100,9 @@ class LoginScreenState extends State<LoginScreen> {
                             );
                             return;
                           }
-
-                          // Mostrar diálogo para elegir NFC o QR
+                          
+                          
+                          // Mostrar diàleg per triar mètode
                           showDialog(
                             context: context,
                             barrierDismissible: false,
@@ -99,97 +110,51 @@ class LoginScreenState extends State<LoginScreen> {
                               return AlertDialog(
                                 title: const Text('Amb què vols verificar?'),
                                 actions: [
-                                  ElevatedButton(
+                                  TextButton(
                                     onPressed: () async {
-                                      final usuari = _usuariController.text.trim();
-                                      if (usuari.isEmpty) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Text('Introdueix un nom d\'usuari')),
+                                      Navigator.of(contextDialog).pop();
+
+                                      final nfcProvider = context.read<NfcProvider>();
+                                      await nfcProvider.llegirEtiqueta(context);
+                                      final valorEscanejat = nfcProvider.nfcData;
+
+                                      final apiProvider = context.read<ApiOdooProvider>();
+                                      final loginSuccess = await apiProvider.verificarUsuari(usuari, valorEscanejat);
+
+                                      if (loginSuccess!=null) {
+                                        if (!mounted) return;
+                                        Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(builder: (_) =>  PrincipalScreen(faller: faller,)),
+                                          (Route<dynamic> route) => false,
                                         );
-                                        return;
-                                      }
-
-                                      final faller = buscarFallerPerNom(usuari);
-                                      if (faller == null) {
+                                      } else {
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Text('Usuari no trobat')),
+                                          SnackBar(content: Text(apiProvider.error ?? 'Error de verificació')),
                                         );
-                                        return;
                                       }
-
-                                      // Mostrar diálogo para elegir NFC o QR
-                                      showDialog(
-                                        context: context,
-                                        barrierDismissible: false,
-                                        builder: (BuildContext contextDialog) {
-                                          return AlertDialog(
-                                            title: const Text('Amb què vols verificar?'),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () async {
-                                                  Navigator.of(contextDialog).pop();
-                                                  final nfcProvider = context.read<NfcProvider>();
-                                                  await nfcProvider.llegirEtiqueta(context);
-                                                  final valorEscanejat = nfcProvider.nfcData;
-
-                                                  final apiProvider = context.read<ApiOdooProvider>();
-                                                  final loginSuccess = await apiProvider.login(faller.nom, valorEscanejat);
-
-                                                  if (loginSuccess) {
-                                                    Navigator.of(context).pushReplacement(
-                                                      MaterialPageRoute(builder: (_) => const PrincipalScreen()),
-                                                    );
-                                                  } else {
-                                                    ScaffoldMessenger.of(context).showSnackBar(
-                                                      SnackBar(content: Text(apiProvider.error ?? 'Error de verificació')),
-                                                    );
-                                                  }
-                                                },
-                                                child: const Text('NFC'),
-                                              ),
-                                              TextButton(
-                                                onPressed: () async {
-                                                  Navigator.of(contextDialog).pop();
-                                                  final qrProvider = context.read<Qrprovider>();
-                                                  await qrProvider.llegirQR(context);
-                                                  final valorEscanejat = qrProvider.qrData;
-
-                                                  final apiProvider = context.read<ApiOdooProvider>();
-                                                  final loginSuccess = await apiProvider.login(faller.nom, valorEscanejat);
-
-                                                  if (loginSuccess) {
-                                                    Navigator.of(context).pushReplacement(
-                                                      MaterialPageRoute(builder: (_) => const PrincipalScreen()),
-                                                    );
-                                                  } else {
-                                                    ScaffoldMessenger.of(context).showSnackBar(
-                                                      SnackBar(content: Text(apiProvider.error ?? 'Error de verificació')),
-                                                    );
-                                                  }
-                                                },
-                                                child: const Text('QR'),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
                                     },
-                                    child: const Text("Iniciar sessió"),
+                                    child: const Text('NFC'),
                                   ),
                                   TextButton(
                                     onPressed: () async {
                                       Navigator.of(contextDialog).pop();
+
                                       final qrProvider = context.read<Qrprovider>();
                                       await qrProvider.llegirQR(context);
-
                                       final valorEscanejat = qrProvider.qrData;
-                                      if (valorEscanejat.contains(faller.valorPulsera)) {
-                                        Navigator.of(context).pushReplacement(
-                                          MaterialPageRoute(builder: (_) => const PrincipalScreen()),
+
+                                      final apiProvider = context.read<ApiOdooProvider>();
+                                      final loginSuccess = await apiProvider.verificarUsuari(usuari, valorEscanejat);
+
+                                      if (loginSuccess!=null) {
+                                        if (!mounted) return;
+                                        Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(builder: (_) =>  PrincipalScreen(faller: faller,)),
+                                          (Route<dynamic> route) => false,
                                         );
                                       } else {
                                         ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Text('Valor QR incorrecte per a l\'usuari')),
+                                          SnackBar(content: Text(apiProvider.error ?? 'Error de verificació')),
                                         );
                                       }
                                     },

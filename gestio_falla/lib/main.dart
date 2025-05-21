@@ -10,14 +10,13 @@ import 'package:gestio_falla/infrastructure/repository/mostraQR_repository_impl.
 import 'package:gestio_falla/infrastructure/repository/nfc_repository_impl.dart';
 import 'package:gestio_falla/infrastructure/repository/notificacions_repository_impl.dart';
 import 'package:gestio_falla/infrastructure/repository/qr_repository_impl.dart';
-import 'package:gestio_falla/presentation/screens/login_screen.dart';
+import 'package:gestio_falla/presentation/screens/splash_screen.dart';
 import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 import 'package:gestio_falla/provider/mostraQRProvider.dart';
 import 'package:gestio_falla/provider/nfcProvider.dart';
 import 'package:gestio_falla/provider/notificacionsProvider.dart';
 import 'package:gestio_falla/provider/qrProvider.dart';
 import 'package:provider/provider.dart';
-import 'package:gestio_falla/presentation/screens/principal_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -74,7 +73,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Falla Portal',
         debugShowCheckedModeBanner: true,
-        home: isLoggedIn ? PrincipalScreen() :LoginScreen(),
+        home: const SplashScreen(),
       ),
     ); 
   }

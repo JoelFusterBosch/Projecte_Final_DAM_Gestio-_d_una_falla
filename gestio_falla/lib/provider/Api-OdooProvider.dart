@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/domain/repository/Api-Odoo_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +14,7 @@ class ApiOdooProvider with ChangeNotifier {
   bool _loading = false;
   String? _error;
   String _status = "";
+  Faller? _usuariActual;
 
   // Datos cargados
   List<dynamic> fallers = [];
@@ -20,6 +22,7 @@ class ApiOdooProvider with ChangeNotifier {
   List<dynamic> families = [];
   List<dynamic> productes = [];
   List<dynamic> tickets = [];
+  List<dynamic> cobradors = [];
 
   // Getters
   String get message => _message;
@@ -27,6 +30,7 @@ class ApiOdooProvider with ChangeNotifier {
   bool get loading => _loading;
   String? get error => _error;
   String get status => _status;
+  Faller? get usuariActual => _usuariActual;
 
   // Funcions internes per al estat
   void _setStatus(String status) {
@@ -163,11 +167,11 @@ class ApiOdooProvider with ChangeNotifier {
     }
   }
 
-  Future<void> borrarFaller(String id) async {
+  Future<void> borrarFaller(String valorPulsera) async {
     _setLoading(true);
     _setStatus("Borrant faller...");
     try {
-      await _apiOdooRepository.borrarFaller(id: id);
+      await _apiOdooRepository.borrarFaller(valorPulsera: valorPulsera);
       _setStatus("Faller borrat");
     } catch (e) {
       _setError(e.toString());
@@ -234,11 +238,11 @@ class ApiOdooProvider with ChangeNotifier {
     }
   }
 
-  Future<void> borrarEvent(String id) async{
+  Future<void> borrarEvent(String nom) async{
     _setLoading(true);
     _setStatus("Borrant event...");
     try{
-      await _apiOdooRepository.borrarEvent(id: id);
+      await _apiOdooRepository.borrarEvent(nom: nom);
       _setStatus("Event borrat");
     }catch (e){
       _setError(e.toString());
@@ -275,11 +279,11 @@ class ApiOdooProvider with ChangeNotifier {
     }
   }
 
-  Future<void> borrarFamilia(String id) async{
+  Future<void> borrarFamilia(String nom) async{
     _setLoading(true);
     _setStatus("Borrant familia...");
     try{
-      await _apiOdooRepository.borrarFamilia(id: id);
+      await _apiOdooRepository.borrarFamilia(nom: nom);
       _setStatus("Familia borrada");
     }catch (e){
       _setError(e.toString());
@@ -329,11 +333,11 @@ class ApiOdooProvider with ChangeNotifier {
     }
   }
 
-  Future<void> borrarProducte(String id) async{
+  Future<void> borrarProducte(String nom) async{
     _setLoading(true);
     _setStatus("Borrant producte...");
     try{
-      await _apiOdooRepository.borrarProducte(id: id);
+      await _apiOdooRepository.borrarProducte(nom: nom);
       _setStatus("Producte borrat");
     } catch (e){
       _setError(e.toString());
@@ -381,21 +385,84 @@ class ApiOdooProvider with ChangeNotifier {
       _setLoading(false);
     }
   }
-  Future<bool> login(String nom, String valorPulsera) async {
-  try {
-    final result = await _apiOdooRepository.verificarUsuari(nom: nom, valorPulsera: valorPulsera);
-    if (result) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isLoggedIn', true);
-      await prefs.setString('username', nom);
-      return true;
-    } else {
-      _setError('Verificació fallida');
-      return false;
+
+  Future<void> getCobradors() async{
+    _setLoading(true);
+    _setStatus("Carregant cobradors");
+    try{
+      final result = await _apiOdooRepository.getCobradors();
+      cobradors = result ?? [];
+      _setStatus("Cobradors carregats:${cobradors.length}");
+    }catch(e){
+      _setError(e.toString());
+    }finally{
+      _setLoading(false);
     }
-  } catch (e) {
-    _setError('Error del servidor');
-    return false;
   }
-}
+
+  Future<void> postCobrador(String rolCobrador) async{
+    _setLoading(true);
+    _setStatus("Afegint cobrador...");
+    try{
+      await _apiOdooRepository.postCobrador(rolCobrador: rolCobrador);
+      _setStatus("Cobrador afegit");
+    }catch (e){
+      _setError(e.toString());
+    }finally{
+      _setLoading(false);
+    }
+  }
+
+  Future<void> borrarCobrador(String rolCobrador) async{
+    _setLoading(true);
+    _setStatus("Borrant cobrador");
+    try{
+      await _apiOdooRepository.borrarCobrador(nom: rolCobrador);
+      _setStatus("Cobrador borrat");
+    }catch (e){
+      _setError(e.toString());
+    }finally{
+      _setLoading(false);
+    }
+  }
+
+  Future<Faller?> verificarUsuari(String nom, String valorPulsera) async {
+    _setLoading(true);
+    _setStatus("loguejant...");
+
+    try {
+      final faller = await _apiOdooRepository.verificarUsuari(nom: nom, valorPulsera: valorPulsera);
+      
+      if (faller != null) {
+        _usuariActual = faller as Faller?;
+        _setStatus("loguejat");
+
+        //Guarda les dades a SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('estaLoguejat', true);
+        await prefs.setString('nom', faller.nom);
+        await prefs.setString('rol', faller.rol);
+        await prefs.setString('pulsera', faller.valorPulsera);
+        await prefs.setBool('teLimit', faller.teLimit);
+
+        notifyListeners();
+        return _usuariActual;
+      }
+
+      return null;
+    } catch (e) {
+      _error = e.toString();
+      return null;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> tancaSessio() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('nom');
+    await prefs.remove('valorPulsera');
+    _usuariActual = null;
+    notifyListeners();
+  }
 }

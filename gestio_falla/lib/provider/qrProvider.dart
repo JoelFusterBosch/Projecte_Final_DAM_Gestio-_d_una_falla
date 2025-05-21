@@ -14,54 +14,80 @@ class Qrprovider with ChangeNotifier{
   String _qrData = "Escaneja un QR";
   String get qrData => _qrData;
 
-  Faller faller = Faller(nom: "Joel", rol: "Faller", cobrador: Cobrador(rolCobrador: "Barra"), valorPulsera: '8430001000017', teLimit: false, estaLoguejat: true);
+  Faller faller = Faller(nom: "Joel", rol: "SuperAdmin", cobrador: Cobrador(rolCobrador: "Barra"), valorPulsera: '8430001000017', teLimit: false, estaLoguejat: false);
 
   Future<void> llegirQR(BuildContext context) async {
-    _qrData="Llegint QR...";
+    _qrData = "Llegint QR...";
     notifyListeners();
+
     qrRepository.llegirQR(
-      context: context, 
-      valorEsperat: faller.valorPulsera, 
-      onCoincidencia: (){
-        _qrData="Valor llegit ${faller.valorPulsera}";
-        if( faller.rol =="Cobrador"){
-        switch (faller.cobrador!.rolCobrador) {
-          case 'Cadires':
-            Navigator.push(
+      context: context,
+      valorEsperat: faller.valorPulsera,
+      onCoincidencia: () {
+        _qrData = "Valor llegit ${faller.valorPulsera}";
+
+        if (faller.rol == "Cobrador") {
+          if(!faller.estaLoguejat){
+            Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const DescomptaCadira()),
+              MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
             );
-            break;
-          case 'Barra':
-            Navigator.push(
+          }else{
+            switch (faller.cobrador!.rolCobrador) {
+              case 'Cadires':
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => const DescomptaCadira()),
+                );
+                break;
+              case 'Barra':
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => const Barra()),
+                );
+                break;
+              case 'Escudellar':
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => const Escudellar()),
+                );
+                break;
+            }
+          }
+          
+        } else if (faller.rol == "Faller") {
+          if(!faller.estaLoguejat){
+            Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => Barra()),
+              MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
             );
-            break;
-          case 'Escudellar':
-            Navigator.push(
+          }
+        }else if (faller.rol == "Admin") {
+          if(!faller.estaLoguejat){
+            Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => Escudellar()),
+              MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
             );
-            break;
-        } 
-        notifyListeners();
-        } else if(faller.rol == "Faller") {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => PrincipalScreen()),
-          );
-          notifyListeners();
+          }
+        }else if (faller.rol == "SuperAdmin") {
+          if(!faller.estaLoguejat){
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
+            );
+          }
         }
+        notifyListeners();
       },
       onError: () {
-        _qrData="Error al escanetjar el QR";
+        _qrData = "Error al escanejar el QR";
         notifyListeners();
       },
       onDiferent: (valorLlegit) {
-        _qrData= "Valor llegit $valorLlegit";
+        _qrData = "Valor llegit $valorLlegit";
         notifyListeners();
       },
     );
-    }
+  }
+
 }

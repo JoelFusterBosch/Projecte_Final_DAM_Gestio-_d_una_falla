@@ -32,13 +32,41 @@ class AdminScreen extends StatelessWidget {
                             apiOdooProvider.status,
                             style: const TextStyle(fontSize: 16),
                           ),
+                          Text("Fallers"),
                           const SizedBox(height: 30),
                           ElevatedButton.icon(
-                            icon: const Icon(Icons.cookie),
-                            label: const Text("Saluda"),
-                            onPressed: apiOdooProvider.saluda,
+                            icon: const Icon(Icons.post_add),
+                            label: const Text("Afegir faller"),
+                            onPressed:(){
+                              apiOdooProvider.postFaller(nom: "",rol: "",valorPulsera: "");
+                            },
                           ),
                           const SizedBox(height: 20),
+                          ElevatedButton.icon(
+                            onPressed: (){
+                              apiOdooProvider.borrarFaller("");
+                            },
+                            icon: const Icon(Icons.delete),
+                            label: const Text("Borrar faller"),
+                          ),
+                          Text("Events"),
+                          const SizedBox(height: 20),
+                          ElevatedButton.icon(
+                            onPressed: (){
+                              apiOdooProvider.postEvents(nom: "",dataFi: DateTime(2), dataInici: DateTime(2));
+                            }, 
+                            icon: Icon(Icons.post_add), 
+                            label: const Text("Afegir event"),
+                          ),
+                          const SizedBox(height: 20),
+                          ElevatedButton.icon(
+                            onPressed: (){
+                             apiOdooProvider.borrarEvent(""); 
+                            }, 
+                            icon: const Icon(Icons.delete), 
+                            label: const Text("Borrar event"),
+                          ),
+                          
                           /*
                           ElevatedButton.icon(
                             icon: const Icon(Icons.login),
@@ -48,7 +76,75 @@ class AdminScreen extends StatelessWidget {
                             },
                           ),
                           */
+                          Text("Families"),
                           const SizedBox(height: 20),
+                          ElevatedButton.icon(
+                            onPressed: (){
+                              apiOdooProvider.postFamilies("");
+                            },
+                            icon: const Icon(Icons.post_add),
+                            label: const Text("Afegir familia"),
+                          ),
+                          const SizedBox(height: 20),
+                          ElevatedButton.icon(
+                            onPressed: (){
+                              apiOdooProvider.borrarFamilia("");
+                            },
+                            icon: const Icon(Icons.delete), 
+                            label: const Text("Borrar familia"),
+                          ),
+                          Text("Productes"),
+                          const SizedBox(height: 20),
+                          ElevatedButton.icon(
+                            onPressed: (){
+                              apiOdooProvider.postProducte("", 1, 1, "");
+                            }, 
+                            icon: const Icon(Icons.post_add), 
+                            label: const Text("Afegir producte"),
+                          ),
+                          const SizedBox(height: 20,),
+                          ElevatedButton.icon(
+                            onPressed: (){
+                              apiOdooProvider.borrarProducte("");
+                            }, 
+                            icon: const Icon(Icons.delete), 
+                            label: const Text("Borrar producte"),
+                          ),
+                          Text("Cobradors"),
+                          const SizedBox(height: 20),
+                          ElevatedButton.icon(
+                            onPressed: (){
+                              apiOdooProvider.postCobrador("");
+                            },
+                            icon:const Icon(Icons.post_add),
+                            label: const Text("Afegir cobrador"),
+                          ),
+                          const SizedBox(height: 20,),
+                          ElevatedButton.icon(
+                            onPressed: (){
+                              apiOdooProvider.borrarCobrador("");
+                            }, 
+                            icon: Icon(Icons.delete),
+                            label: Text("Borrar cobrador"),
+                          ),
+                          Text("Tickets"),
+                          const SizedBox(height: 20),
+                          ElevatedButton.icon(
+                            onPressed: (){
+                              apiOdooProvider.postTickets(2, 2, false);
+                            },
+                            icon: Icon(Icons.post_add),
+                            label: const Text("Afegir ticket"),
+                          ),
+                          const SizedBox(height: 20,),
+                          ElevatedButton.icon(
+                            onPressed: (){
+                              apiOdooProvider.borrarTicket("");
+                            }, 
+                            icon: const Icon(Icons.delete),
+                            label: const Text("Borrar ticket"),
+                          ),
+                          //borrar?
                           ElevatedButton.icon(
                             icon: const Icon(Icons.download),
                             label: const Text("Obtindre Fallers"),

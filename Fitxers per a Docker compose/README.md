@@ -169,50 +169,45 @@ I sí quan poses el mencionat anteriorment apareix el següent, significa que ja
 # Executant un script
 ## 3.Pasar fitxers d'una màquina a altra
 **Advertencia**<br>
-*Aquests scripts estan pensats per a ser executats en sistemes de Linux, per ser més precisos Ubuntu*
+*Aquests scripts estan pensats per a ser executats en sistemes de Linux, per ser més precisos Ubuntu Server 24.04*
 Per a passar fitxers tant com en Windows com en Linux podem usar `scp` ací estan els comands:
   - Windows(PowerShell) 
     ```plaintext
-    scp C:\ruta\del\arxiu\script.sh usuariServidor@ipServidor:/home/usuariServidor/ 
+    scp C:\ruta\del\arxiu\creaentorn.sh usuariServidor@ipServidor:/home/usuariServidor/ 
     ```
   - Linux(Ubuntu)
     ```plaintext
-    scp /ruta/del/arxiu/script.sh usuariServidor@ipServidor:/home/usuariServidor/
+    scp /ruta/del/arxiu/creaentorn.sh usuariServidor@ipServidor:/home/usuariServidor/
     ```
 ## 4.Donar-li permis d'execució
 
-En els scripts que n'hi han en esta carpeta, tindreu que donar-los permís d'execució:
-  ```plaintext
-  chmod +x script.sh
-  ```
+En el script que n'hi han en esta carpeta, tindreu que donar-ls permís d'execució:
   ```plaintext
   chmod +x crearentorn.sh
   ```
 ## 5.Executant el script
-
-Ara quan tinguen els permisos d'execució executem el que es diu `script.sh` amb el següent comandament:
-  ```plaintext
-  ./script.sh
-  ```
-Quan execute anirem a l'Odoo posant el següent en el vostre navegador de confiança:
-  ```plaintext
-  http://IPServidor:8069
-  ```
-I se'ns obrira el següent:<br> <img src="../static/description/Instal·lació_Odoo/Pantalla principal de Odoo.png"><br>
-Plena amb totes les teues dades i quan li prems on diu `Create Database` torna a la teua màquina i modifica el següent del fitxer `creaentorn.sh`
-   ```sh
+Abans d'executar-lo tindras que cambiar aquestes linies si vols una base de dades personaliitzada
+```sh
    # VARIABLES
    ODOO_DB_NAME=falla # Canvia això pel nom de la base de dades
-   ODOO_DB_PASS='Pa$$w0rd'# Canvia això per la contrasenya que li hages posat a l'usuari
+   ODOO_DB_USER=admin
+   ODOO_DB_PASS='Pa$$w0rd'# Canvia això per la contrasenya que li hages posat al usuari
    ODOO_MASTER_PASS='Pa$$w0rd' # Canvia això per la "Master Password" que li hages ficat
   ```
-Quan ho hages modificat, aleshores ja podràs executar l'altre script:
- ```plaintext
- ./creaentorn.sh
- ```
-Quan l'executes per primera vegada et diu de reiniciar, per a reiniciar trns que posar el següent en el terminal:
+Ara quan tinga els permisos d'execució executem el que es diu `creaentorn.sh` amb el següent comandament:
+  ```plaintext
+  ./creaentorn.sh
+  ```
+Quan l'executes per primera vegada et dira de reiniciar, per a reiniciar tens que posar el següent en el terminal:
 
  ```
  reboot
  ```
 I després de reiniciar executa-lo 2 vegades més, en elles instal·lara el docker i els mòduls personalitzats.
+Quan acaben les dos execucions anirem a l'Odoo posant el següent en el vostre navegador de confiança:
+  ```plaintext
+  http://IPServidor:8069
+  ```
+I se'ns obrira el següent:<br> <img src="../static/description/Instal·lació_Odoo/Pantalla principal de Odoo.png"><br>
+Plena amb totes les teues dades i quan li prems on diu `Create Database` torna a la teua màquina i modifica el següent del fitxer `creaentorn.sh`
+

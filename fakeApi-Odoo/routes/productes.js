@@ -39,10 +39,10 @@ router.post('/insertar', async (req,res) =>{
 Funcions amb DELETE
 */
 //Pantalla de admin: Borrar un producte
-router.delete('/borrar/:id', async (req,res) =>{
-  const {id} = req.params;
+router.delete('/borrar/:nom', async (req,res) =>{
+  const {nom} = req.params;
   try{
-    await pool.query('DELETE FROM producte WHERE id=$1',[id]);
+    await pool.query('DELETE FROM producte WHERE nom=$1',[nom]);
     res.json({missatge:"Producte borrat"});
   }catch (err){
     res.status(500).json({error:"Error a l'hora de borrar un producte"});

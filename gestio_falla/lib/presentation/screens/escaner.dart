@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/cobrador.dart';
 import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/provider/nfcProvider.dart';
@@ -24,7 +25,7 @@ class EscanerState extends State<Escaner>{
   @override
   void initState(){
     super.initState();
-    faller=Faller(nom: "Joel", rol:"Faller",valorPulsera: "8430001000017", teLimit: false, estaLoguejat: true);
+    faller=Faller(nom: "Joel", rol:"Cobrador", cobrador: Cobrador(rolCobrador: "Cadires"),valorPulsera: "8430001000017", teLimit: false, estaLoguejat: true);
     event=Event(nom: "Paella", dataInici:DateTime(2025,3,16,14,0), dataFi:DateTime(2025,3,16,17,0),numCadires: 10);
     indexPantallaActual=0;
     esFaller=true;

@@ -42,10 +42,10 @@ router.put('/actualitza', async (req,res) =>{
 Funcions amb DELETE 
 */
 //Pantalla de admin: Borrar cobradors
-router.delete('/borrar/:id', async (req,res) =>{
-  const {id} = req.params;
+router.delete('/borrar/:rolCobrador', async (req,res) =>{
+  const {nom: rolCobrador} = req.params;
   try{
-    pool.query('DELETE cobrador WHERE id=$1',[id]);
+    pool.query('DELETE cobrador WHERE rolcobrador=$1',[rolCobrador]);
     res.json({missatge:"Cobrador borrat"});
   }catch (err){
     res.status(500).json({error: "Error a l'hora de borrar un cobrador"});

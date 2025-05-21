@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/domain/entities/cobrador.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/domain/repository/nfc_repository.dart';
 import 'package:gestio_falla/presentation/screens/barra_screen.dart';
@@ -15,7 +14,7 @@ class NfcProvider with ChangeNotifier {
   String _nfcData = "Escaneja una etiqueta NFC";
   String get nfcData => _nfcData;
 
-  Faller faller = Faller(nom: "Joel", rol: "Faller", cobrador: Cobrador(rolCobrador: "Cadires"), valorPulsera: "8430001000017", teLimit: false, estaLoguejat: true);
+  Faller faller = Faller(nom: "Joel", rol: "Faller", valorPulsera: "8430001000017", teLimit: false, estaLoguejat: false);
 
   Future<void> llegirEtiqueta(BuildContext context) async {
     _nfcData = "Acosta una etiqueta NFC perfavor";
@@ -23,39 +22,55 @@ class NfcProvider with ChangeNotifier {
 
     final valorLlegit = await _nfcRepository.llegirNfc(
       valorEsperat: faller.valorPulsera,
-      onCoincidencia: () {
-        _nfcData = "Acció realitzada per valor NFC: ${faller.valorPulsera}";
-        
-        if(faller.rol=="Cobrador"){
-          switch (faller.cobrador!.rolCobrador) {
-          case 'Cadires':
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const DescomptaCadira()),
-            );
-            break;
-          case 'Barra':
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Barra()),
-            );
-            break;
-          case 'Escudellar':
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Escudellar()),
-            );
-            break;
-        }
-        notifyListeners();
-        } else if(faller.rol == "Faller") {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => PrincipalScreen()),
-          );
+        onCoincidencia: () {
+          _nfcData = "Acció realitzada per valor NFC: ${faller.valorPulsera}";
+          
+          if(faller.rol=="Cobrador"){
+            if(!faller.estaLoguejat){
+              switch (faller.cobrador!.rolCobrador) {
+            case 'Cadires':
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const DescomptaCadira()),
+              );
+              break;
+            case 'Barra':
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Barra()),
+              );
+              break;
+            case 'Escudellar':
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Escudellar()),
+              );
+              break;
+          }
           notifyListeners();
-        }
-        
+          }
+        } else if (faller.rol == "Faller") {
+          if(!faller.estaLoguejat){
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
+            );
+          }
+        }else if (faller.rol == "Admin") {
+          if(!faller.estaLoguejat){
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
+            );
+          }
+        }else if (faller.rol == "SuperAdmin") {
+          if(!faller.estaLoguejat){
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
+            );
+          }
+        }     
       },
       onError: () {
         _nfcData = "Valor llegit no coincideix o error";
