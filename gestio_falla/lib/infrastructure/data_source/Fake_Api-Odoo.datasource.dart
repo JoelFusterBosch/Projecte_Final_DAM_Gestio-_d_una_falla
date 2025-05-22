@@ -396,8 +396,8 @@ class FakeApiOdooDataSource {
   }
 
   // Borra un cobrador (DELETE)
-  Future <void> borrarCobrador(String nom) async{
-    final url = Uri.parse('$baseUrl/cobrador/borrar/$nom');
+  Future <void> borrarCobrador(String rolCobrador) async{
+    final url = Uri.parse('$baseUrl/cobrador/borrar/$rolCobrador');
     final response = await http.delete(url);
     if (response.statusCode == 200){
       return;

@@ -1,24 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/entities/event.dart';
-import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/presentation/screens/event_detallat_screen.dart';
 
 
 class EventsScreen extends StatefulWidget{
-  const EventsScreen({super.key});
+  final List<Event> totsElsEvents;
+  const EventsScreen({super.key, required this.totsElsEvents});
   
   @override
   State<EventsScreen> createState() => EventsScreenState();
 }
 class EventsScreenState extends State<EventsScreen>{
-  Faller faller= Faller(nom: "Joel", rol: "Faller", valorPulsera: "8430001000017", teLimit: false, estaLoguejat: true);
-  List<Event> totsElsEvents=[
-    Event(nom: "Paella", dataInici:DateTime(2025,3,16,14,0), dataFi:DateTime(2025,3,16,17,0),numCadires: 10),
-    Event(nom: "Cremà", dataInici:DateTime(2025,3,20,20,0), dataFi:DateTime(2025,3,21,2,0),numCadires: 10),
-    Event(nom: "Jocs", dataInici:DateTime(2025,3,15,9,0), dataFi:DateTime(2025,3,16,19,0),numCadires: 10),
-    Event(nom: "Despedida", dataInici:DateTime(2025,3,19,16,0), dataFi:DateTime(2025,3,19,18,0),numCadires: 10),
-    Event(nom: "Caminata", dataInici:DateTime(2025,3,19,16,0), dataFi:DateTime(2025,3,19,18,0),numCadires: 10),
-  ];
+
   List<Event> eventsFiltrats=[];
   int eventSeleccionat=0; 
   final TextEditingController _searchController = TextEditingController();
@@ -31,7 +24,7 @@ class EventsScreenState extends State<EventsScreen>{
   void eventsFiltratsBusqueda() {
       setState(() {
         String query = _searchController.text.toLowerCase();
-        eventsFiltrats = totsElsEvents
+        eventsFiltrats = widget.totsElsEvents
             .where((Event) => Event.nom.toLowerCase().contains(query))
             .toList();
       });
@@ -41,7 +34,7 @@ class EventsScreenState extends State<EventsScreen>{
        eventSeleccionat= tabIndex;
       if (eventSeleccionat == 0) {
         // Mostrar pantalla principal
-        eventsFiltrats = List.from(totsElsEvents);
+        eventsFiltrats = List.from(widget.totsElsEvents);
       }
     });
 
@@ -49,7 +42,7 @@ class EventsScreenState extends State<EventsScreen>{
   void filtrarEvents() {
     setState(() {
       String query = _searchController.text.toLowerCase();
-      eventsFiltrats = totsElsEvents
+      eventsFiltrats = widget.totsElsEvents
           .where((Event) => Event.nom.toLowerCase().contains(query))
           .toList();
     });
@@ -81,7 +74,7 @@ class EventsScreenState extends State<EventsScreen>{
                 GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: eventsFiltrats.isNotEmpty ? eventsFiltrats.length : totsElsEvents.length,
+                  itemCount: eventsFiltrats.isNotEmpty ? eventsFiltrats.length : widget.totsElsEvents.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,
@@ -89,7 +82,7 @@ class EventsScreenState extends State<EventsScreen>{
                     childAspectRatio: aspectRatio,
                   ),
                   itemBuilder: (context, index) {
-                    final event = eventsFiltrats.isNotEmpty ? eventsFiltrats[index] : totsElsEvents[index];
+                    final event = eventsFiltrats.isNotEmpty ? eventsFiltrats[index] : widget.totsElsEvents[index];
                     return Card(
                       color: Colors.white,
                       child: Padding(
@@ -107,7 +100,7 @@ class EventsScreenState extends State<EventsScreen>{
                               onPressed: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => EventDetallatScreen()),
+                                  MaterialPageRoute(builder: (context) => EventDetallatScreen(event: event,)),
                                 );
                               },
                               child: const Text("Més detalls"),
@@ -125,5 +118,4 @@ class EventsScreenState extends State<EventsScreen>{
       ),
     );
   }
-
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/domain/entities/faller.dart';
+import 'package:gestio_falla/domain/entities/producte.dart';
 import 'package:gestio_falla/domain/repository/nfc_repository.dart';
 import 'package:gestio_falla/presentation/screens/barra_screen.dart';
 import 'package:gestio_falla/presentation/screens/descompta_cadira_screen.dart';
@@ -8,13 +8,17 @@ import 'package:gestio_falla/presentation/screens/principal_screen.dart';
 
 class NfcProvider with ChangeNotifier {
   final NfcRepository _nfcRepository;
-
-  NfcProvider(this._nfcRepository);
+  final faller;
+  NfcProvider(this._nfcRepository, this.faller);
 
   String _nfcData = "Escaneja una etiqueta NFC";
   String get nfcData => _nfcData;
-
-  Faller faller = Faller(nom: "Joel", rol: "Faller", valorPulsera: "8430001000017", teLimit: false, estaLoguejat: false);
+  List <Producte>totsElsProductes=[
+    Producte(nom: "Aigua 500ml", preu: 1 ,stock: 20),
+    Producte(nom: "Cervesa 33cl", preu: 1.5, stock: 33),
+    Producte(nom: "Coca-Cola", preu: 1.30, stock: 0),
+    Producte(nom: "Pepsi", preu: 1.25, stock: 77),  
+  ];
 
   Future<void> llegirEtiqueta(BuildContext context) async {
     _nfcData = "Acosta una etiqueta NFC perfavor";
@@ -37,7 +41,7 @@ class NfcProvider with ChangeNotifier {
             case 'Barra':
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Barra()),
+                MaterialPageRoute(builder: (context) => Barra(faller: faller,totsElsProductes: totsElsProductes,)),
               );
               break;
             case 'Escudellar':

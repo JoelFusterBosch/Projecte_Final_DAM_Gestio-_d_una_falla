@@ -1,42 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
-import 'package:gestio_falla/domain/entities/familia.dart';
-import 'package:gestio_falla/infrastructure/data_source/Fake_Api-Odoo.datasource.dart';
-import 'package:gestio_falla/infrastructure/repository/Api-Odoo_repository_impl.dart';
 import 'package:gestio_falla/presentation/screens/afegir_membre.dart';
 import 'package:gestio_falla/presentation/screens/crear_familia.dart';
 import 'package:gestio_falla/presentation/screens/editar_perfil.dart';
 import 'package:gestio_falla/presentation/screens/login_screen.dart';
 import 'package:gestio_falla/presentation/screens/mostra_QR_screen.dart';
 import 'package:gestio_falla/provider/Api-OdooProvider.dart';
-
+import 'package:provider/provider.dart';
 
 class PerfilScreen extends StatefulWidget {
-  const PerfilScreen({super.key});
+  final Faller faller;
+  const PerfilScreen({super.key, required this.faller});
 
   @override
   State<PerfilScreen> createState() => PerfilScreenState();
 }
 
 class PerfilScreenState extends State<PerfilScreen> {
-  late final FakeApiOdooDataSource fakeApiOdooDataSource;
-  late final ApiOdooRepositoryImpl apiOdooRepository;
-  late final ApiOdooProvider apiProvider;
-  Faller faller = Faller(
-    nom: "Joel",
-    familia: Familia(nom: "Família de Joel"), 
-    rol: "Cap de familia",
-    valorPulsera: "8430001000017",
-    teLimit: false,
-    estaLoguejat: true,
-  );
+  late ApiOdooProvider apiProvider;
+  bool _isApiProviderInitialized = false;
 
   @override
-  void initState(){
-    super.initState();
-    fakeApiOdooDataSource = FakeApiOdooDataSource(baseUrl: "http://192.168.1.15:3000", db: "Projecte_Falla");
-    apiOdooRepository = ApiOdooRepositoryImpl(fakeApiOdooDataSource);
-    apiProvider = ApiOdooProvider(apiOdooRepository);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isApiProviderInitialized) {
+      apiProvider = Provider.of<ApiOdooProvider>(context);
+      _isApiProviderInitialized = true;
+    }
   }
 
   @override
@@ -62,49 +52,51 @@ class PerfilScreenState extends State<PerfilScreen> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          faller.nom,
+                          widget.faller.nom,
                           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          faller.rol,
+                          widget.faller.rol,
                           style: TextStyle(fontSize: 18),
                         ),
                         Text(
-                          faller.familia!=null ? faller.familia!.nom : "Familia no assignada",
+                          widget.faller.familia != null ? widget.faller.familia!.nom : "Familia no assignada",
                           style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
                         SizedBox(height: 20),
                         Offstage(
-                          offstage: faller.rol!="Cap de familia" && faller.familia==null,
-                          child: ElevatedButton(onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>AfegirMembre()));
-                          }, 
-                          child: Text("Agregar membre")
+                          offstage: widget.faller.rol != "Cap de familia" && widget.faller.familia == null,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => AfegirMembre()));
+                            },
+                            child: Text("Agregar membre"),
                           ),
                         ),
                         Offstage(
-                          offstage: faller.rol=="Cap de familia" && faller.familia!=null,
-                          child: ElevatedButton(onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>CrearFamilia()));
-                          }, 
-                          child: Text("Crear familia")
+                          offstage: widget.faller.familia != null,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => CrearFamilia()));
+                            },
+                            child: Text("Crear familia"),
                           ),
                         ),
                         ElevatedButton.icon(
                           onPressed: () {
-                          Navigator.push(
-                            context, 
-                            MaterialPageRoute(builder: (context) => EditarPerfil())
-                          );
-                        },
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => EditarPerfil()),
+                            );
+                          },
                           icon: Icon(Icons.edit),
                           label: Text("Editar Perfil"),
                         ),
                         ElevatedButton.icon(
                           onPressed: () {
                             Navigator.push(
-                              context, 
-                              MaterialPageRoute(builder: (context) => MostraQrScreen(faller:faller))
+                              context,
+                              MaterialPageRoute(builder: (context) => MostraQrScreen(faller: widget.faller)),
                             );
                           },
                           icon: Icon(Icons.qr_code),
@@ -113,7 +105,7 @@ class PerfilScreenState extends State<PerfilScreen> {
                         SizedBox(height: 10),
                         OutlinedButton.icon(
                           onPressed: () {
-                          tancarSessio(context);
+                            tancarSessio(context);
                           },
                           icon: Icon(Icons.logout, color: Colors.red),
                           label: Text("Tancar sessió"),
@@ -130,36 +122,43 @@ class PerfilScreenState extends State<PerfilScreen> {
       ),
     );
   }
-  void tancarSessio(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Vols tancar sessió?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel·lar'),
-          ),
-          TextButton(
-            onPressed: () async {
-              // Crida al logout i després redirigeix
-              final provider = ApiOdooProvider(apiOdooRepository); 
-              await provider.tancaSessio();
 
-              if (context.mounted) {
+  void tancarSessio(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Vols tancar sessió?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel·lar'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await apiProvider.tancaSessio();
+
+                if (!context.mounted) return;
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Sessió tancada correctament'),
+                    duration: Duration(seconds: 2),
+                  ),
+                );
+
+                await Future.delayed(const Duration(milliseconds: 600));
+
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => const LoginScreen()),
                   (route) => false,
                 );
-              }
-            },
-            child: const Text('Tancar sessió'),
-          ),
-        ],
-      );
-    },
-  );
-}
-
+              },
+              child: const Text('Tancar sessió'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

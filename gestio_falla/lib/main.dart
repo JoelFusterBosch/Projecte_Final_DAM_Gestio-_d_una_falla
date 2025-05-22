@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/faller.dart';
+import 'package:gestio_falla/domain/entities/familia.dart';
 // import 'package:gestio_falla/infrastructure/data_source/Api-Odoo_datasource.dart';
 import 'package:gestio_falla/infrastructure/data_source/Fake_Api-Odoo.datasource.dart';
 import 'package:gestio_falla/infrastructure/data_source/mostraQR_datasource.dart';
@@ -32,7 +34,7 @@ void main() async{
   final mostraqrRepository= MostraqrRepositoryImpl(mostraqrDatasource);
   final notificacionsDataSource= NotificacionsDatasource();
   final notificacionsRepository= NotificacionsRepositoryImpl(notificacionsDataSource);
-  final fakeApiOdooDataSource=FakeApiOdooDataSource(baseUrl: "http://192.168.1.15:3000", db: "Projecte_Falla");
+  final fakeApiOdooDataSource=FakeApiOdooDataSource(baseUrl: "http://192.168.1.22:3000", db: "Projecte_Falla");
   final apiOdooRepository= ApiOdooRepositoryImpl(fakeApiOdooDataSource);
   runApp(MyApp(
     nfcRepositoryImpl: nfcRepository,
@@ -45,13 +47,14 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
+  final faller = Faller(nom: "Joel", teLimit: false, rol: "SuperAdmin",familia:Familia(nom: "Familia de Joel"), valorPulsera: "8430001000017", estaLoguejat: false);
   final bool isLoggedIn;
   final NfcRepositoryImpl nfcRepositoryImpl;
   final QrRepositoryImpl qrRepositoryImpl;
   final MostraqrRepositoryImpl mostraqrRepositoryImpl;
   final NotificacionsRepositoryImpl notificacionsRepositoryImpl;
   final ApiOdooRepositoryImpl apiOdooRepositoryImpl;
-  const MyApp({
+  MyApp({
     super.key, 
     required this.nfcRepositoryImpl, 
     required this.notificacionsRepositoryImpl, 
@@ -64,8 +67,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(providers:[
-      ChangeNotifierProvider(create: (context) => NfcProvider(nfcRepositoryImpl)),
-      ChangeNotifierProvider(create: (context) => Qrprovider(qrRepositoryImpl)),
+      ChangeNotifierProvider(create: (context) => NfcProvider(nfcRepositoryImpl,faller)),
+      ChangeNotifierProvider(create: (context) => Qrprovider(qrRepositoryImpl,faller)),
       ChangeNotifierProvider(create: (context) => Mostraqrprovider(mostraqrRepositoryImpl)),
       ChangeNotifierProvider(create: (context) => NotificacionsProvider(notificacionsRepositoryImpl)),
       ChangeNotifierProvider(create: (context) => ApiOdooProvider(apiOdooRepositoryImpl))

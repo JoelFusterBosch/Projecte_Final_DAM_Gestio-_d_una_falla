@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/cobrador.dart';
 import 'package:gestio_falla/presentation/screens/registrar_usuari.dart';
 import 'package:provider/provider.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
@@ -6,6 +9,7 @@ import 'package:gestio_falla/presentation/screens/principal_screen.dart';
 import 'package:gestio_falla/provider/nfcProvider.dart';
 import 'package:gestio_falla/provider/qrProvider.dart';
 import 'package:gestio_falla/provider/Api-OdooProvider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +20,7 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usuariController = TextEditingController();
+  bool _isLoading = false;
   /*
   final usuari = _usuariController.text.trim();
   if (usuari.isEmpty) {
@@ -29,7 +34,7 @@ class LoginScreenState extends State<LoginScreen> {
   
   // Lista simulada de fallers
   final List<Faller> fallers = [
-    Faller(nom: 'joel', teLimit: false, rol: 'SuperAdmin', valorPulsera: '8430001000017', estaLoguejat: false),
+    Faller(nom: 'joel', teLimit: false, rol: 'SuperAdmin',cobrador:Cobrador(rolCobrador: 'Barra'), valorPulsera: '8430001000017', estaLoguejat: false),
     Faller(nom: 'maria', teLimit: false, rol: 'Faller', valorPulsera: '8430001000018', estaLoguejat: false),
     // Añade más usuarios aquí
   ];
@@ -41,7 +46,6 @@ class LoginScreenState extends State<LoginScreen> {
       return null;
     }
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -83,90 +87,97 @@ class LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          final usuari = _usuariController.text.trim();
-                          if (usuari.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Introdueix un nom d\'usuari')),
-                            );
-                            return;
-                          }
-
-                          final faller = buscarFallerPerNom(usuari);
-                          if (faller == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Usuari no trobat')),
-                            );
-                            return;
-                          }
-                          
-                          
-                          // Mostrar diàleg per triar mètode
-                          showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (BuildContext contextDialog) {
-                              return AlertDialog(
-                                title: const Text('Amb què vols verificar?'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () async {
-                                      Navigator.of(contextDialog).pop();
-
-                                      final nfcProvider = context.read<NfcProvider>();
-                                      await nfcProvider.llegirEtiqueta(context);
-                                      final valorEscanejat = nfcProvider.nfcData;
-
-                                      final apiProvider = context.read<ApiOdooProvider>();
-                                      final loginSuccess = await apiProvider.verificarUsuari(usuari, valorEscanejat);
-
-                                      if (loginSuccess!=null) {
-                                        if (!mounted) return;
-                                        Navigator.of(context).pushAndRemoveUntil(
-                                          MaterialPageRoute(builder: (_) =>  PrincipalScreen(faller: faller,)),
-                                          (Route<dynamic> route) => false,
-                                        );
-                                      } else {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text(apiProvider.error ?? 'Error de verificació')),
-                                        );
-                                      }
-                                    },
-                                    child: const Text('NFC'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      Navigator.of(contextDialog).pop();
-
-                                      final qrProvider = context.read<Qrprovider>();
-                                      await qrProvider.llegirQR(context);
-                                      final valorEscanejat = qrProvider.qrData;
-
-                                      final apiProvider = context.read<ApiOdooProvider>();
-                                      final loginSuccess = await apiProvider.verificarUsuari(usuari, valorEscanejat);
-
-                                      if (loginSuccess!=null) {
-                                        if (!mounted) return;
-                                        Navigator.of(context).pushAndRemoveUntil(
-                                          MaterialPageRoute(builder: (_) =>  PrincipalScreen(faller: faller,)),
-                                          (Route<dynamic> route) => false,
-                                        );
-                                      } else {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text(apiProvider.error ?? 'Error de verificació')),
-                                        );
-                                      }
-                                    },
-                                    child: const Text('QR'),
-                                  ),
-                                ],
+                      _isLoading
+                      ? const CircularProgressIndicator()
+                      : ElevatedButton(
+                          onPressed: () async {
+                            final usuari = _usuariController.text.trim();
+                            if (usuari.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Introdueix un nom d\'usuari')),
                               );
-                            },
-                          );
-                        },
-                        child: const Text("Iniciar sessió"),
-                      ),
+                              return;
+                            }
+
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext contextDialog) {
+                                return AlertDialog(
+                                  title: const Text('Amb què vols verificar?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () async {
+                                        Navigator.of(contextDialog).pop();
+                                        setState(() => _isLoading = true);
+
+                                        final nfcProvider = context.read<NfcProvider>();
+                                        await nfcProvider.llegirEtiqueta(context);
+                                        final valorEscanejat = nfcProvider.nfcData;
+
+                                        final apiProvider = context.read<ApiOdooProvider>();
+                                        final faller = await apiProvider.verificarUsuari(usuari, valorEscanejat);
+
+                                        setState(() => _isLoading = false);
+
+                                        if (faller != null) {
+                                          final prefs = await SharedPreferences.getInstance();
+                                          await prefs.setBool('isLoggedIn', true);
+                                          await prefs.setString('faller', jsonEncode(faller.toJSON()));
+
+                                          if (!mounted) return;
+                                          Navigator.of(context).pushAndRemoveUntil(
+                                            MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
+                                            (Route<dynamic> route) => false,
+                                          );
+                                        }
+                                        else {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text(apiProvider.error ?? 'Error de verificació')),
+                                          );
+                                        }
+                                      },
+                                      child: const Text('NFC'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        Navigator.of(contextDialog).pop();
+                                        setState(() => _isLoading = true);
+
+                                        final qrProvider = context.read<Qrprovider>();
+                                        await qrProvider.llegirQR(context);
+                                        final valorEscanejat = qrProvider.qrData;
+
+                                        final apiProvider = context.read<ApiOdooProvider>();
+                                        final faller = await apiProvider.verificarUsuari(usuari, valorEscanejat);
+
+                                        setState(() => _isLoading = false);
+
+                                        if (faller != null) {
+                                          final prefs = await SharedPreferences.getInstance();
+                                          await prefs.setBool('isLoggedIn', true);
+                                          await prefs.setString('faller', jsonEncode(faller.toJSON()));
+
+                                          if (!mounted) return;
+                                          Navigator.of(context).pushAndRemoveUntil(
+                                            MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
+                                            (Route<dynamic> route) => false,
+                                          );
+                                        } else {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text(apiProvider.error ?? 'Error de verificació')),
+                                          );
+                                        }
+                                      },
+                                      child: const Text('QR'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: const Text("Iniciar sessió"),
+                        ),
                       const SizedBox(height: 16),
                      const Text("No tens un compte?"),
                        GestureDetector(

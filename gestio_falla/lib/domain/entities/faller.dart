@@ -75,4 +75,19 @@ class Faller {
       estaLoguejat: json['estaLoguejat']
     );
   }
+  Map<String, dynamic> toJSON() {
+    return {
+      'id': id,
+      'nom': nom,
+      'teLimit': teLimit,
+      'limit': limit,
+      'saldo': saldo,
+      'familia': familia?.toJson(),
+      'rol': rol,
+      'cobrador': cobrador?.toJSON(),
+      'valorPulsera': valorPulsera,
+      'imatgeUrl': imatgeUrl,
+      'estaLoguejat': estaLoguejat,
+    };
+  }
 }

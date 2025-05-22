@@ -1,5 +1,5 @@
 class Cobrador {
-  final String rolCobrador; // sols permet certs valors
+  final String rolCobrador;
 
   static const List<String> rolsValids = ['Cadires', 'Barra', 'Escudellar'];
 
@@ -8,7 +8,14 @@ class Cobrador {
       throw ArgumentError('Rol no vàlid: $rolCobrador');
     }
   }
-  factory Cobrador.fromJSON(Map<String, dynamic> json){
-    return Cobrador(rolCobrador: json["rolCobrador"]);
+
+  factory Cobrador.fromJSON(Map<String, dynamic> json) {
+    return Cobrador(rolCobrador: json['rolCobrador']);
+  }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      'rolCobrador': rolCobrador,
+    };
   }
 }

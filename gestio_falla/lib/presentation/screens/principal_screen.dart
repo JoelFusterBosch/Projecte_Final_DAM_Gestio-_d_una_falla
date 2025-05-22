@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/presentation/screens/admin_screen.dart';
 import 'package:gestio_falla/presentation/screens/escaner.dart';
@@ -16,6 +17,13 @@ class PrincipalScreen extends StatefulWidget {
 }
 
 class PrincipalScreenState extends State<PrincipalScreen> {
+  List<Event> totsElsEvents = [
+    Event(nom: "Paella", dataInici: DateTime(2025, 3, 16, 14, 0), dataFi: DateTime(2025, 3, 16, 17, 0), numCadires: 10),
+    Event(nom: "Cremà", dataInici: DateTime(2025, 3, 20, 20, 0), dataFi: DateTime(2025, 3, 21, 2, 0), numCadires: 10),
+    Event(nom: "Jocs", dataInici: DateTime(2025, 3, 15, 9, 0), dataFi: DateTime(2025, 3, 16, 19, 0), numCadires: 10),
+    Event(nom: "Despedida", dataInici: DateTime(2025, 3, 19, 16, 0), dataFi: DateTime(2025, 3, 19, 18, 0), numCadires: 10),
+    Event(nom: "Caminata", dataInici: DateTime(2025, 3, 19, 16, 0), dataFi: DateTime(2025, 3, 19, 18, 0), numCadires: 10),
+  ];
   int indexPantallaActual = 0;
 
   @override
@@ -46,9 +54,9 @@ class PrincipalScreenState extends State<PrincipalScreen> {
   _ConfiguracioVista _getConfiguracioPerRol(String rol, int index) {
     if (rol == "Faller" || rol == "Cap de familia") {
       return _ConfiguracioVista(
-        pantalles: const [
-          EventsScreen(),
-          PerfilScreen(),
+        pantalles: [
+          EventsScreen(totsElsEvents: totsElsEvents),
+          PerfilScreen(faller: widget.faller), // Provider accedirà dins de PerfilScreen
         ],
         navegacio: [
           NavigationDestination(
@@ -67,9 +75,9 @@ class PrincipalScreenState extends State<PrincipalScreen> {
       );
     } else if (rol == "Cobrador") {
       return _ConfiguracioVista(
-        pantalles: const [
+        pantalles: [
           Escaner(),
-          PerfilScreen()
+          PerfilScreen(faller: widget.faller), // Provider accedirà dins de PerfilScreen
         ],
         navegacio: [
           NavigationDestination(
@@ -77,22 +85,22 @@ class PrincipalScreenState extends State<PrincipalScreen> {
             label: 'Escaner',
           ),
           NavigationDestination(
-            icon:Icon(index == 1 ? Icons.account_circle : Icons.account_circle_outlined),
+            icon: Icon(index == 1 ? Icons.account_circle : Icons.account_circle_outlined),
             label: 'Perfil',
           ),
         ],
         titolsAppBar: const [
           Text("Escaner"),
           Text("Perfil"),
-          ],
+        ],
       );
     } else if (rol == "Administrador") {
       return _ConfiguracioVista(
-        pantalles: const [
-          EventsScreen(),
+        pantalles: [
+          EventsScreen(totsElsEvents: totsElsEvents),
           AdminScreen(),
-          PerfilScreen(),
-          ],
+          PerfilScreen(faller: widget.faller),
+        ],
         navegacio: [
           NavigationDestination(
             icon: Icon(index == 0 ? Icons.event : Icons.event_outlined),
@@ -104,20 +112,20 @@ class PrincipalScreenState extends State<PrincipalScreen> {
           ),
           NavigationDestination(
             icon: Icon(index == 2 ? Icons.account_circle : Icons.account_circle_outlined),
-            label: 'Perfil'
-          )
+            label: 'Perfil',
+          ),
         ],
         titolsAppBar: const [
           Text("Events"),
           Text("Admin"),
-          Text("Perfil"),  
+          Text("Perfil"),
         ],
       );
     } else if (rol == "SuperAdmin") {
       return _ConfiguracioVista(
-        pantalles: const [
-          EventsScreen(),
-          PerfilScreen(),
+        pantalles: [
+          EventsScreen(totsElsEvents: totsElsEvents),
+          PerfilScreen(faller: widget.faller),
           Escaner(),
           AdminScreen(),
         ],

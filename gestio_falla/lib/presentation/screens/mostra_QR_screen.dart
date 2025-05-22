@@ -15,6 +15,7 @@ class MostraQrScreen extends StatefulWidget {
 
 class _MostraQrScreenState extends State<MostraQrScreen> {
   bool estaCarregat = false;
+  
 
   @override
   void didChangeDependencies() {

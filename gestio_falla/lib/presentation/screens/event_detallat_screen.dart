@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/entities/event.dart';
-import 'package:gestio_falla/domain/entities/ticket.dart';
 
 class EventDetallatScreen extends StatefulWidget{
-  const EventDetallatScreen({super.key});
+  final Event event;
+  const EventDetallatScreen({super.key, required this.event});
   
   @override
   State<EventDetallatScreen> createState() => EventDetallatScreenState();
 }
 class EventDetallatScreenState extends State<EventDetallatScreen>{
-  Event event=Event(nom: "Cremà de la Falla Portal", dataInici: DateTime(2025,3,16,15,0), dataFi: DateTime(2025,3,16,15,0),ticket:Ticket(id: 1, preu: 1.2, quantitat: 1, maxim: false), urlImatge: "lib/assets/perfil.jpg",numCadires: 10);
 
   @override
   void initState() {
@@ -19,6 +18,7 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
   
   @override
   Widget build(BuildContext context) {
+    final event = widget.event;
     return Scaffold(
       appBar: AppBar(
         title: Text("Pantalla d'events"),

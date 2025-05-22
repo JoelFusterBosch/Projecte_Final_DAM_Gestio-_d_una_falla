@@ -40,6 +40,7 @@ abstract class ApiOdooRepository {
   //Cobrador
   Future<List<dynamic>?> getCobradors();
   Future<Map<String,dynamic>> postCobrador({required String rolCobrador});
-  Future<void> borrarCobrador({required String nom});
+  Future<void> borrarCobrador({required String rolCobrador});
+  //Verificar usuari
   Future<Faller?> verificarUsuari({required nom, required valorPulsera});
 }

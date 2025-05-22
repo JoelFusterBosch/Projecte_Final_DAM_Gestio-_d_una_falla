@@ -142,8 +142,8 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   }
 
   @override
-  Future<void> borrarCobrador({required String nom}) {
-    return fakeApiOdooDataSource.borrarCobrador(nom);
+  Future<void> borrarCobrador({required String rolCobrador}) {
+    return fakeApiOdooDataSource.borrarCobrador(rolCobrador);
   }
 
   /*

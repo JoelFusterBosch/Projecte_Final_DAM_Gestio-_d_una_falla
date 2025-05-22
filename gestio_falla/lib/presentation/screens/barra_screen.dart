@@ -5,7 +5,9 @@ import 'package:gestio_falla/provider/notificacionsProvider.dart';
 import 'package:provider/provider.dart';
 
 class Barra extends StatefulWidget{
-  const Barra({super.key});
+  final Faller faller;
+  final List<Producte> totsElsProductes;
+  const Barra({super.key, required this.faller, required this.totsElsProductes});
 
   @override
   State<Barra> createState() => BarraState();
@@ -14,18 +16,11 @@ class Barra extends StatefulWidget{
 
 class BarraState extends State<Barra>{
   late double preuTotal;
-  Faller faller= Faller(nom: "Joel", rol: "Faller",valorPulsera: "8430001000017", teLimit: false, estaLoguejat: true);
-  List <Producte>totsElsProductes=[
-    Producte(nom: "Aigua 500ml", preu: 1 ,stock: 20),
-    Producte(nom: "Cervesa 33cl", preu: 1.5, stock: 33),
-    Producte(nom: "Coca-Cola", preu: 1.30, stock: 0),
-    Producte(nom: "Pepsi", preu: 1.25, stock: 77),  
-  ];
   Map<Producte, int> quantitatsSeleccionades = {};
   @override
   void initState() {
     preuTotal=0;
-    for (var p in totsElsProductes) {
+    for (var p in widget.totsElsProductes) {
     quantitatsSeleccionades[p] = 0;
   }
     super.initState();
@@ -54,7 +49,7 @@ class BarraState extends State<Barra>{
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: GridView.builder(
-                      itemCount: totsElsProductes.length,
+                      itemCount: widget.totsElsProductes.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 10,
@@ -62,7 +57,7 @@ class BarraState extends State<Barra>{
                         childAspectRatio: 2.3 / 3,
                       ),
                       itemBuilder: (context, index) {
-                        final producte = totsElsProductes[index];
+                        final producte = widget.totsElsProductes[index];
                         final quantitat = quantitatsSeleccionades[producte] ?? 0;
                         final disponible = producte.stock - quantitat;
 
@@ -176,7 +171,7 @@ class BarraState extends State<Barra>{
       if (resultado != null && resultado) {
         Provider.of<NotificacionsProvider>(context, listen: false).showNotification(
           title: 'Barra',
-          body: 'Pagament realitzat pel usuari ${faller.nom} amb preu de $preuTotal€ pagat de forma correcta',
+          body: 'Pagament realitzat pel usuari ${widget.faller.nom} amb preu de $preuTotal€ pagat de forma correcta',
         );
         setState(() {
           quantitatsSeleccionades.forEach((producte, quantitat) {

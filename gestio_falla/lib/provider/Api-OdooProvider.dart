@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/domain/repository/Api-Odoo_repository.dart';
@@ -417,7 +419,7 @@ class ApiOdooProvider with ChangeNotifier {
     _setLoading(true);
     _setStatus("Borrant cobrador");
     try{
-      await _apiOdooRepository.borrarCobrador(nom: rolCobrador);
+      await _apiOdooRepository.borrarCobrador(rolCobrador: rolCobrador);
       _setStatus("Cobrador borrat");
     }catch (e){
       _setError(e.toString());
@@ -465,4 +467,10 @@ class ApiOdooProvider with ChangeNotifier {
     _usuariActual = null;
     notifyListeners();
   }
+
+Future<void> guardarFaller(Faller faller) async {
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setString('usuariLoguejat', jsonEncode(faller.toJSON()));
+}
+
 }
