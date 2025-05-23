@@ -26,6 +26,8 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  final fakeApiOdooDataSource=FakeApiOdooDataSource(baseUrl: "http://192.168.1.22:3000", db: "Projecte_Falla");
+  final apiOdooRepository= ApiOdooRepositoryImpl(fakeApiOdooDataSource);
   final nfcDataSource = NfcDataSource();
   final nfcRepository = NfcRepositoryImpl(nfcDataSource);
   final qrDataSource = QrDataSource();
@@ -34,14 +36,12 @@ void main() async{
   final mostraqrRepository= MostraqrRepositoryImpl(mostraqrDatasource);
   final notificacionsDataSource= NotificacionsDatasource();
   final notificacionsRepository= NotificacionsRepositoryImpl(notificacionsDataSource);
-  final fakeApiOdooDataSource=FakeApiOdooDataSource(baseUrl: "http://192.168.1.22:3000", db: "Projecte_Falla");
-  final apiOdooRepository= ApiOdooRepositoryImpl(fakeApiOdooDataSource);
   runApp(MyApp(
+    apiOdooRepositoryImpl: apiOdooRepository, 
     nfcRepositoryImpl: nfcRepository,
     qrRepositoryImpl: qrRepository,
     mostraqrRepositoryImpl: mostraqrRepository, 
     notificacionsRepositoryImpl: notificacionsRepository, 
-    apiOdooRepositoryImpl: apiOdooRepository, 
     isLoggedIn: isLoggedIn, 
     ));
 }
@@ -49,17 +49,18 @@ void main() async{
 class MyApp extends StatelessWidget {
   final faller = Faller(nom: "Joel", teLimit: false, rol: "SuperAdmin",familia:Familia(nom: "Familia de Joel"), valorPulsera: "8430001000017", estaLoguejat: false);
   final bool isLoggedIn;
+    final ApiOdooRepositoryImpl apiOdooRepositoryImpl;
   final NfcRepositoryImpl nfcRepositoryImpl;
   final QrRepositoryImpl qrRepositoryImpl;
   final MostraqrRepositoryImpl mostraqrRepositoryImpl;
   final NotificacionsRepositoryImpl notificacionsRepositoryImpl;
-  final ApiOdooRepositoryImpl apiOdooRepositoryImpl;
+
   MyApp({
     super.key, 
+    required this.apiOdooRepositoryImpl,
     required this.nfcRepositoryImpl, 
     required this.notificacionsRepositoryImpl, 
     required this.mostraqrRepositoryImpl,
-    required this.apiOdooRepositoryImpl, 
     required this.qrRepositoryImpl, 
     required this.isLoggedIn,
   });
@@ -67,11 +68,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(providers:[
-      ChangeNotifierProvider(create: (context) => NfcProvider(nfcRepositoryImpl,faller)),
-      ChangeNotifierProvider(create: (context) => Qrprovider(qrRepositoryImpl,faller)),
+      ChangeNotifierProvider(create: (context) => ApiOdooProvider(apiOdooRepositoryImpl)),
+      ChangeNotifierProvider(create: (context) => NfcProvider(nfcRepositoryImpl,faller,Provider.of<ApiOdooProvider>(context, listen: false))),
+      ChangeNotifierProvider(create: (context) => Qrprovider(qrRepositoryImpl,faller,Provider.of<ApiOdooProvider>(context, listen: false))),
       ChangeNotifierProvider(create: (context) => Mostraqrprovider(mostraqrRepositoryImpl)),
       ChangeNotifierProvider(create: (context) => NotificacionsProvider(notificacionsRepositoryImpl)),
-      ChangeNotifierProvider(create: (context) => ApiOdooProvider(apiOdooRepositoryImpl))
     ],
       child: MaterialApp(
         title: 'Falla Portal',

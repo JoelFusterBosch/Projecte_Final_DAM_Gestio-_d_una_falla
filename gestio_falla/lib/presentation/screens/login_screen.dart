@@ -30,7 +30,6 @@ class LoginScreenState extends State<LoginScreen> {
     return;
     }
   */
-  Faller faller = Faller(nom: 'joel', teLimit: false, rol: 'SuperAdmin', valorPulsera: '8430001000017', estaLoguejat: false);
   
   // Lista simulada de fallers
   final List<Faller> fallers = [

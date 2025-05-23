@@ -5,7 +5,9 @@ import 'package:gestio_falla/provider/notificacionsProvider.dart';
 import 'package:provider/provider.dart';
 
 class Escudellar extends StatefulWidget{
-  const Escudellar({super.key});
+  final Faller faller;
+  final Producte? producte;
+  const Escudellar({super.key, required this.faller, required this.producte});
 
   @override
   State<Escudellar> createState() => EscudellarState();
@@ -13,13 +15,11 @@ class Escudellar extends StatefulWidget{
 }
 
 class EscudellarState extends State<Escudellar>{
-  Producte producte = Producte(nom: "Hamburguesa", preu: 2.5, stock: 10);
   int numProductes=1;
   double preuTotal=0;
   bool maxProductes=false;
   bool pagat=false;
   bool cancelat=false;
-  Faller faller= Faller(nom: "Joel", rol: "Faller",valorPulsera: "8430001000017", teLimit: false, estaLoguejat: true);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,8 +42,8 @@ class EscudellarState extends State<Escudellar>{
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text("Quantitat de ${producte.nom}: $numProductes"),
-                          Text("${producte.nom} restants: ${producte.stock}"),
+                          Text("Quantitat de ${widget.producte!.nom}: $numProductes"),
+                          Text("${widget.producte!.nom} restants: ${widget.producte!.stock}"),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -65,19 +65,19 @@ class EscudellarState extends State<Escudellar>{
                                 ),
                                 IconButton(
                                   icon: Icon(Icons.add, color: Colors.green),
-                                  onPressed: producte.stock == 0 ? null : augmentarNumTickets,
+                                  onPressed: widget.producte!.stock == 0 ? null : augmentarNumTickets,
                                 ),
                               ],
                             ),
                           Text("Preu total: $preuTotal€"),
                           ElevatedButton(
                             onPressed: () {
-                              producte.stock >= 0 && maxProductes == false ? pagar(context) : null;
+                              widget.producte!.stock >= 0 && maxProductes == false ? pagar(context) : null;
                             },
                             child: Text("Pagar"),
                           ),
                           Text(
-                            maxProductes ? "Ja no queda ${producte.nom} per a eixe event" : "",
+                            maxProductes ? "Ja no queda ${widget.producte!.nom} per a eixe event" : "",
                             style: TextStyle(
                               color: maxProductes ? Colors.red : Colors.white,
                             ),
@@ -134,9 +134,9 @@ class EscudellarState extends State<Escudellar>{
           );
           setState(() {
             if(numProductes==1){
-              producte.stock--;
+              widget.producte!.stock--;
             }
-            if (producte.stock==0){
+            if (widget.producte!.stock==0){
               numProductes=0;
               maxProductes=true;   
               Text("",
@@ -147,7 +147,7 @@ class EscudellarState extends State<Escudellar>{
             }else{
               numProductes=1;
             }
-            preuTotal=numProductes*producte.preu;
+            preuTotal=numProductes*widget.producte!.preu;
             pagat=true;
             cancelat=false;
           });
@@ -158,11 +158,11 @@ class EscudellarState extends State<Escudellar>{
           );
           setState(() {
             numProductes--;
-            producte.stock+=numProductes;
+            widget.producte!.stock+=numProductes;
             numProductes=1;
             pagat=false;
             cancelat=true;
-            preuTotal=numProductes*producte.preu;
+            preuTotal=numProductes*widget.producte!.preu;
           });
         }
       }
@@ -171,8 +171,8 @@ class EscudellarState extends State<Escudellar>{
 
   Future<void> notificacio() async {
     Provider.of<NotificacionsProvider>(context, listen: false).showNotification(
-      title: producte.nom,
-      body: '${producte.nom} per al usuari ${faller.nom} reservada correctament',
+      title: widget.producte!.nom,
+      body: '${widget.producte!.nom} per al usuari ${widget.faller.nom} reservada correctament',
     );
   }
 
@@ -180,8 +180,8 @@ class EscudellarState extends State<Escudellar>{
   void augmentarNumTickets(){
     setState(() {
       numProductes++;
-      producte.stock--;
-      preuTotal=numProductes*producte.preu;
+      widget.producte!.stock--;
+      preuTotal=numProductes*widget.producte!.preu;
       
     });
     
@@ -189,8 +189,8 @@ class EscudellarState extends State<Escudellar>{
   void decrementarNumTickets(){
     setState(() {
       numProductes--;
-      producte.stock++;
-      preuTotal=numProductes*producte.preu;
+      widget.producte!.stock++;
+      preuTotal=numProductes*widget.producte!.preu;
       
     });
   }

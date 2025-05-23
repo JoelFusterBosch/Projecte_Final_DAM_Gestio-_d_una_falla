@@ -6,6 +6,9 @@ import 'package:gestio_falla/presentation/screens/escaner.dart';
 import 'package:gestio_falla/presentation/screens/events_screen.dart';
 import 'package:gestio_falla/presentation/screens/login_screen.dart';
 import 'package:gestio_falla/presentation/screens/perfil_screen.dart';
+/*
+import 'package:gestio_falla/provider/Api-OdooProvider.dart';
+import 'package:provider/provider.dart';*/
 
 class PrincipalScreen extends StatefulWidget {
   final Faller faller;
@@ -18,18 +21,29 @@ class PrincipalScreen extends StatefulWidget {
 
 class PrincipalScreenState extends State<PrincipalScreen> {
   List<Event> totsElsEvents = [
-    Event(nom: "Paella", dataInici: DateTime(2025, 3, 16, 14, 0), dataFi: DateTime(2025, 3, 16, 17, 0), numCadires: 10),
-    Event(nom: "Cremà", dataInici: DateTime(2025, 3, 20, 20, 0), dataFi: DateTime(2025, 3, 21, 2, 0), numCadires: 10),
-    Event(nom: "Jocs", dataInici: DateTime(2025, 3, 15, 9, 0), dataFi: DateTime(2025, 3, 16, 19, 0), numCadires: 10),
-    Event(nom: "Despedida", dataInici: DateTime(2025, 3, 19, 16, 0), dataFi: DateTime(2025, 3, 19, 18, 0), numCadires: 10),
-    Event(nom: "Caminata", dataInici: DateTime(2025, 3, 19, 16, 0), dataFi: DateTime(2025, 3, 19, 18, 0), numCadires: 10),
+    Event(nom: "Paella", dataInici: DateTime(2025, 3, 16, 14, 0), dataFi: DateTime(2025, 3, 16, 17, 0), numCadires: 10,prodEspecific: false),
+    Event(nom: "Cremà", dataInici: DateTime(2025, 3, 20, 20, 0), dataFi: DateTime(2025, 3, 21, 2, 0), numCadires: 10,prodEspecific: false),
+    Event(nom: "Jocs", dataInici: DateTime(2025, 3, 15, 9, 0), dataFi: DateTime(2025, 3, 16, 19, 0), numCadires: 10,prodEspecific: false),
+    Event(nom: "Despedida", dataInici: DateTime(2025, 3, 19, 16, 0), dataFi: DateTime(2025, 3, 19, 18, 0), numCadires: 10,prodEspecific: false),
+    Event(nom: "Caminata", dataInici: DateTime(2025, 3, 19, 16, 0), dataFi: DateTime(2025, 3, 19, 18, 0), numCadires: 10,prodEspecific: false),
   ];
   int indexPantallaActual = 0;
-
+  /*
+  @override
+  void initState() {
+    super.initState();
+    // Esperem fins que el context estiga disponible
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<ApiOdooProvider>(context, listen: false);
+      provider.getLlistaEvents();
+    });
+  }
+  */
   @override
   Widget build(BuildContext context) {
-    final config = _getConfiguracioPerRol(widget.faller.rol, indexPantallaActual);
-
+    //final apiOdooProvider = Provider.of<ApiOdooProvider>(context);
+    final config = _getConfiguracioPerRol(widget.faller.rol, indexPantallaActual/*, apiOdooProvider*/);
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
@@ -51,11 +65,11 @@ class PrincipalScreenState extends State<PrincipalScreen> {
     );
   }
 
-  _ConfiguracioVista _getConfiguracioPerRol(String rol, int index) {
+  _ConfiguracioVista _getConfiguracioPerRol(String rol, int index, /*ApiOdooProvider apiOdooProvider*/) {
     if (rol == "Faller" || rol == "Cap de familia") {
       return _ConfiguracioVista(
         pantalles: [
-          EventsScreen(totsElsEvents: totsElsEvents),
+          EventsScreen(totsElsEvents: totsElsEvents /*apiOdooProvider.events*/ ),
           PerfilScreen(faller: widget.faller), // Provider accedirà dins de PerfilScreen
         ],
         navegacio: [

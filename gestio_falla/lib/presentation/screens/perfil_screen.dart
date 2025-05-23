@@ -86,7 +86,7 @@ class PerfilScreenState extends State<PerfilScreen> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => EditarPerfil()),
+                              MaterialPageRoute(builder: (context) => EditarPerfil(faller: widget.faller,)),
                             );
                           },
                           icon: Icon(Icons.edit),

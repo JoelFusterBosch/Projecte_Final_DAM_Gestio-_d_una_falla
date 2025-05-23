@@ -1,3 +1,4 @@
+import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 
 abstract class ApiOdooRepository {
@@ -21,7 +22,7 @@ abstract class ApiOdooRepository {
   //Events
   Future<List<dynamic>?> getEvents();
   Future<Map<String,dynamic>> getEventsDetallats({required String id});
-  Future<List<dynamic>?> getLlistaEvents();
+  Future<List<Event>?> getLlistaEvents();
   Future<Map<String,dynamic>> postEvents({required String nom, required DateTime dataInici, required DateTime dataFi, String? desc});
   Future<void> borrarEvent({required String nom});
   //Families

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/domain/repository/Api-Odoo_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,7 +21,7 @@ class ApiOdooProvider with ChangeNotifier {
 
   // Datos cargados
   List<dynamic> fallers = [];
-  List<dynamic> events = [];
+  List<Event> events = [];
   List<dynamic> families = [];
   List<dynamic> productes = [];
   List<dynamic> tickets = [];
@@ -122,7 +123,6 @@ class ApiOdooProvider with ChangeNotifier {
     _setStatus("Creant faller...");
     try {
       await _apiOdooRepository.postFaller(nom: nom, rol: rol, valorPulsera: valorPulsera);
-      await getFallers();
     } catch (e) {
       _setError(e.toString());
     } finally {
@@ -135,20 +135,29 @@ class ApiOdooProvider with ChangeNotifier {
     _setStatus("Canviant nom...");
     try {
       await _apiOdooRepository.canviaNom(id: id, nouNom: nouNom);
-      await getFallers();
     } catch (e) {
       _setError(e.toString());
     } finally {
       _setLoading(false);
     }
   }
+  Future<String?> getFallerValorPulseraByName(String nom) async {
+    try {
+      final fallers = await _apiOdooRepository.getFallers();
+      final faller = fallers!.firstWhere((f) => f.nom.toLowerCase() == nom.toLowerCase(), orElse: () => null);
+      return faller?.id?.toString();
+    } catch (e) {
+      _setError("Error buscant faller: $e");
+      return null;
+    }
+  }
+
 
   Future<void> canviaRol({required String id, required String rol}) async {
     _setLoading(true);
     _setStatus("Canviant rol...");
     try {
       await _apiOdooRepository.canviaRol(id: id, rol: rol);
-      await getFallers();
     } catch (e) {
       _setError(e.toString());
     } finally {
@@ -161,7 +170,6 @@ class ApiOdooProvider with ChangeNotifier {
     _setStatus("Assignant familia...");
     try {
       await _apiOdooRepository.assignarFamilia(id: id, idFamilia: idFamilia);
-      await getFallers();
     } catch (e) {
       _setError(e.toString());
     } finally {
@@ -189,7 +197,7 @@ class ApiOdooProvider with ChangeNotifier {
 
     try {
       final result = await _apiOdooRepository.getEvents();
-      events = result ?? [];
+      events = (result ?? []).cast<Event>();
       _setStatus("Events carregats: ${events.length}");
     } catch (e) {
       _setError(e.toString());
@@ -217,7 +225,7 @@ class ApiOdooProvider with ChangeNotifier {
 
     try {
       final result = await _apiOdooRepository.getEvents();
-      events = result ?? [];
+      events = (result ?? []).cast<Event>();
       _setStatus("Events carregats: ${events.length}");
     } catch (e) {
       _setError(e.toString());

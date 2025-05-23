@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // Esperem 1 segon abans de continuar
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 5), () {
       _comprovarSessio();
     });
   }
@@ -49,9 +49,43 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
+    return Scaffold(
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'lib/assets/FallaPortal.png',
+                        fit: BoxFit.fill,
+                      ),
+                      Text(
+                        "Benvingut a l'app de la Falla Portal",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      Text(
+                        "Un moment perfavor...",
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      CircularProgressIndicator(),
+                    ],
+                  ), 
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

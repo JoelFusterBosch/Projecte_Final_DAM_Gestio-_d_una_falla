@@ -190,8 +190,8 @@ Abans d'executar-lo tindras que cambiar aquestes linies si vols una base de dade
 ```sh
    # VARIABLES
    ODOO_DB_NAME=falla # Canvia això pel nom de la base de dades
-   ODOO_DB_USER=admin
-   ODOO_DB_PASS='Pa$$w0rd'# Canvia això per la contrasenya que li hages posat al usuari
+   ODOO_DB_USER=admin # Canva això pel nom de l'usuari que vullgues
+   ODOO_DB_PASS='Pa$$w0rd' # Canvia això per la contrasenya que li hages posat al usuari
    ODOO_MASTER_PASS='Pa$$w0rd' # Canvia això per la "Master Password" que li hages ficat
   ```
 Ara quan tinga els permisos d'execució executem el que es diu `creaentorn.sh` amb el següent comandament:

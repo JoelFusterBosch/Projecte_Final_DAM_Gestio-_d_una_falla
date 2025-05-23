@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/presentation/screens/login_screen.dart';
+import 'package:gestio_falla/provider/Api-OdooProvider.dart';
+import 'package:provider/provider.dart';
 
 class RegistrarUsuari extends StatefulWidget{
   const RegistrarUsuari({super.key});
@@ -11,12 +13,11 @@ class RegistrarUsuari extends StatefulWidget{
 }
 
 class RegistrarUsuariState extends State<RegistrarUsuari>{
-  final List<String> anys = List.generate(100, (index) => (2024 - index).toString());
   final List<String> rols=['Inserta un rol','Faller','Cobrador','Administrador'];
   Faller faller = Faller(nom: "", teLimit: false, rol: "Faller", valorPulsera: '0', estaLoguejat: true);
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    final apiOdooProvider = Provider.of<ApiOdooProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Registrar usuari"),

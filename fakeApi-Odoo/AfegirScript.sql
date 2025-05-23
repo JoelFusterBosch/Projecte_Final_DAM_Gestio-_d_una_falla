@@ -52,29 +52,7 @@ CREATE TABLE ticket(
 INSERT INTO ticket (id, quantitat, preu, maxim)
 VALUES (1, 20, 1, false);
 
--- Crea la taula 'events'
-CREATE TABLE events(
-  id BIGSERIAL PRIMARY KEY,
-  nom TEXT NOT NULL,
-  descripcio TEXT,
-  ticket_id BIGINT,
-  dataInici TIMESTAMP,
-  dataFi TIMESTAMP,
-  urlImatge TEXT,
-  FOREIGN KEY (ticket_id) REFERENCES ticket(id)
-);
 
---Insertar events sense tickets
-INSERT INTO events (nom, dataInici, dataFi, urlImatge)
-VALUES 
-('Cremà', '2025-03-20 20:00:00', '2025-03-21 02:00:00','/img/Events/Cremà.png'),
-('Jocs', '2025-03-15 09:00:00', '2025-03-16 19:00:00','/img/Events/Castell_unflable.png'),
-('Despedida', '2025-03-19 16:00:00', '2025-03-19 18:00:00','/img/Events/Despedida.png'),
-('Caminata', '2025-03-19 16:00:00', '2025-03-19 18:00:00','/img/Events/Despedida.png');
-
---Insertar events AMB tickets
-INSERT INTO events (nom, dataInici, dataFi, ticket_id, urlImatge)
-VALUES ('Paella', '2025-03-16 14:00:00', '2025-03-16 17:00:00', 1, '/img/Events/Paella.png');
 
 -- Crea la taula 'faller'
 CREATE TABLE faller (
@@ -131,7 +109,8 @@ CREATE TABLE producte(
  descripcio TEXT,
  preu BIGINT,
  stock INTEGER NOT NULL,
- urlImatge TEXT
+ urlImatge TEXT,
+ eventEspecific BOOLEAN
 );
 
 INSERT INTO producte(nom,preu,stock,urlImatge)
@@ -140,3 +119,30 @@ VALUES
 ('Cervesa 33cl', 1.5, 33, 'img/Productes/Cervesa.png'),
 ('Coca-Cola', 1.30, 0, 'img/Productes/Coca-Cola.png'),
 ('Pepsi', 1.25, 77, 'img/Productes/Pepsi.png');
+
+-- Crea la taula 'events'
+CREATE TABLE events(
+  id BIGSERIAL PRIMARY KEY,
+  nom TEXT NOT NULL,
+  descripcio TEXT,
+  ticket_id BIGINT,
+  dataInici TIMESTAMP,
+  dataFi TIMESTAMP,
+  urlImatge TEXT,
+  prodEspecific BOOLEAN,
+  producte_id BIGINT,
+  FOREIGN KEY (producte_id) REFERENCES producte(id),
+  FOREIGN KEY (ticket_id) REFERENCES ticket(id)
+);
+
+--Insertar events sense tickets
+INSERT INTO events (nom, dataInici, dataFi, urlImatge)
+VALUES 
+('Cremà', '2025-03-20 20:00:00', '2025-03-21 02:00:00','/img/Events/Cremà.png'),
+('Jocs', '2025-03-15 09:00:00', '2025-03-16 19:00:00','/img/Events/Castell_unflable.png'),
+('Despedida', '2025-03-19 16:00:00', '2025-03-19 18:00:00','/img/Events/Despedida.png'),
+('Caminata', '2025-03-19 16:00:00', '2025-03-19 18:00:00','/img/Events/Despedida.png');
+
+--Insertar events AMB tickets
+INSERT INTO events (nom, dataInici, dataFi, ticket_id, urlImatge)
+VALUES ('Paella', '2025-03-16 14:00:00', '2025-03-16 17:00:00', 1, '/img/Events/Paella.png');

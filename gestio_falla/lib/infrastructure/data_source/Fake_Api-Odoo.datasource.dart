@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:http/http.dart' as http;
 
@@ -174,7 +175,7 @@ class FakeApiOdooDataSource {
   }
 
   // Obté la llista d'events (GET)
-  Future <List<dynamic>?> getLlistaEvents() async{
+  Future <List<Event>?> getLlistaEvents() async{
     final url = Uri.parse('$baseUrl/events/llista');
     final response = await http.get(url);
     if(response.statusCode == 200){

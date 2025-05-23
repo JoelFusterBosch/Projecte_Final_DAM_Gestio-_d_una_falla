@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 import 'package:gestio_falla/provider/nfcProvider.dart';
 import 'package:gestio_falla/provider/qrProvider.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class AfegirMembreState extends State<AfegirMembre> {
 
   @override
   Widget build(BuildContext context) {
+    final apiOdooProvider = Provider.of<ApiOdooProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Afegir membre"),

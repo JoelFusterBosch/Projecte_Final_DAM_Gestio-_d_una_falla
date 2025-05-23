@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 import 'package:gestio_falla/provider/nfcProvider.dart';
 import 'package:gestio_falla/provider/qrProvider.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,7 @@ class CrearFamilia extends StatefulWidget{
 class CrearFamiliaState extends State<CrearFamilia>{
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    final apiOdooProvider = Provider.of<ApiOdooProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Crear familia"),

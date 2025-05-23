@@ -27,7 +27,7 @@ router.get('/detallat/:id', async (req, res) => {
 //Escaner? i pantalla d'events: Un SELECT amb id,nom,dataInici,dataFi
 router.get('/llista', async (req, res) => {
   try{
-    const result = await pool.query('SELECT id, nom, datainici, datafi FROM events');
+    const result = await pool.query('SELECT id, nom, datainici, datafi FROM events');/*queda prodEspecific=false */
     res.json(result.rows);
   }catch (err){
     res.status(500).json({error:"Error a l'hora d'obtindre la llista d'events"});

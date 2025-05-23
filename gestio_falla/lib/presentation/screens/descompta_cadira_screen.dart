@@ -5,13 +5,14 @@ import 'package:gestio_falla/provider/notificacionsProvider.dart';
 import 'package:provider/provider.dart';
 
 class DescomptaCadira extends StatefulWidget{
-  const DescomptaCadira({super.key});
+  final Faller faller;
+  const DescomptaCadira({super.key, required this.faller});
   
   @override
   State<DescomptaCadira> createState() => DescomptaCadiraState();
 }
 class DescomptaCadiraState extends State<DescomptaCadira>{
-  Event event= Event(nom: "Paella", dataInici: DateTime(2025,3,16,14,0,0), dataFi:DateTime(2025,3,16,17,0,0),numCadires: 10);
+  Event event= Event(nom: "Paella", dataInici: DateTime(2025,3,16,14,0,0), dataFi:DateTime(2025,3,16,17,0,0),numCadires: 10, prodEspecific: false);
   int cadiresAssignades=1;
   int cadiresRestants=10;
   bool maxCadires=false;
@@ -19,7 +20,6 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
   late double preuTotal;
   bool pagat=false;
   bool cancelat=false;
-  Faller faller= Faller(nom: "Joel", rol: "Faller",valorPulsera: "8430001000017", teLimit: false, estaLoguejat: true);
 
   @override
   void initState() {
@@ -181,7 +181,7 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
   Future<void> notificacio() async {
     Provider.of<NotificacionsProvider>(context, listen: false).showNotification(
       title: 'Cadires',
-      body: 'Cadires al usuari ${faller.nom} reservades correctament',
+      body: 'Cadires al usuari ${widget.faller.nom} reservades correctament',
     );
   }
 

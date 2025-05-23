@@ -36,7 +36,7 @@ class AdminScreen extends StatelessWidget {
     );
   }
 
-  void showForm({
+  void mostrarFormulari({
     required BuildContext context,
     required String title,
     required List<Widget> fields,
@@ -76,10 +76,6 @@ class AdminScreen extends StatelessWidget {
     final api = Provider.of<ApiOdooProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Menú d\'Administrador'),
-        backgroundColor: Colors.deepOrange,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: GridView.count(
@@ -92,7 +88,7 @@ class AdminScreen extends StatelessWidget {
               label: 'Afegir faller',
               onTap: () {
                 String nom = '', rol = '', valor = '';
-                showForm(
+                mostrarFormulari(
                   context: context,
                   title: 'Afegir Faller',
                   fields: [
@@ -110,7 +106,7 @@ class AdminScreen extends StatelessWidget {
               color: Colors.red,
               onTap: () {
                 String valorPolsera = '';
-                showForm(
+                mostrarFormulari(
                   context: context,
                   title: 'Borrar Faller',
                   fields: [
@@ -127,7 +123,7 @@ class AdminScreen extends StatelessWidget {
                 String nomEvent = '';
                 DateTime dataInici = DateTime.now();
                 DateTime dataFi = DateTime.now();
-                showForm(
+                mostrarFormulari(
                   context: context,
                   title: 'Afegir Event',
                   fields: [
@@ -143,7 +139,7 @@ class AdminScreen extends StatelessWidget {
               color: Colors.red,
               onTap: () {
                 String nomEventBorrar = '';
-                showForm(
+                mostrarFormulari(
                   context: context,
                   title: 'Borrar Event',
                   fields: [
@@ -158,7 +154,7 @@ class AdminScreen extends StatelessWidget {
               label: 'Afegir família',
               onTap: () {
                 String nom = '';
-                showForm(
+                mostrarFormulari(
                   context: context,
                   title: 'Afegir Família',
                   fields: [
@@ -174,7 +170,7 @@ class AdminScreen extends StatelessWidget {
               color: Colors.red,
               onTap: () {
                 String nomFamilia = '';
-                showForm(
+                mostrarFormulari(
                   context: context,
                   title: 'Borrar Família',
                   fields: [
@@ -189,7 +185,7 @@ class AdminScreen extends StatelessWidget {
               label: 'Afegir producte',
               onTap: () {
                 String nom = '', unitat = '', preu = '';
-                showForm(
+                mostrarFormulari(
                   context: context,
                   title: 'Afegir Producte',
                   fields: [
@@ -207,7 +203,7 @@ class AdminScreen extends StatelessWidget {
               color: Colors.red,
               onTap: () {
                 String nomProducte = '';
-                showForm(
+                mostrarFormulari(
                   context: context,
                   title: 'Borrar Producte',
                   fields: [
@@ -222,7 +218,7 @@ class AdminScreen extends StatelessWidget {
               label: 'Afegir cobrador',
               onTap: () {
                 String rolCobrador = '';
-                showForm(
+                mostrarFormulari(
                   context: context,
                   title: 'Afegir Cobrador',
                   fields: [
@@ -238,7 +234,7 @@ class AdminScreen extends StatelessWidget {
               color: Colors.red,
               onTap: () {
                 String rolCobrador = '';
-                showForm(
+                mostrarFormulari(
                   context: context,
                   title: 'Borrar Cobrador',
                   fields: [
@@ -253,7 +249,7 @@ class AdminScreen extends StatelessWidget {
               label: 'Afegir ticket',
               onTap: () {
                 String fallerId = '', eventId = '';
-                showForm(
+                mostrarFormulari(
                   context: context,
                   title: 'Afegir Ticket',
                   fields: [
@@ -270,7 +266,7 @@ class AdminScreen extends StatelessWidget {
               color: Colors.red,
               onTap: () {
                 String id = '';
-                showForm(
+                mostrarFormulari(
                   context: context,
                   title: 'Borrar Ticket',
                   fields: [

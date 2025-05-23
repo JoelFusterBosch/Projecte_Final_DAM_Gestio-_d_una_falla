@@ -1,3 +1,4 @@
+import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/domain/repository/Api-Odoo_repository.dart';
 // import 'package:gestio_falla/infrastructure/data_source/Api-Odoo_datasource.dart';
@@ -94,7 +95,7 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   }
 
   @override
-  Future<List?> getLlistaEvents() {
+  Future<List<Event>?> getLlistaEvents() {
     return fakeApiOdooDataSource.getLlistaEvents();
   }
 
