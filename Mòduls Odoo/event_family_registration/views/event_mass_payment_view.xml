@@ -1,0 +1,28 @@
+<odoo>
+    <!-- Acció servidor per processar pagaments massius -->
+    <record id="action_process_event_mass_payment" model="ir.actions.server">
+        <field name="name">Processar Pagaments amb Saldo</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">model.env['event.mass.payment'].process_mass_payments()</field>
+    </record>
+
+    <!-- Acció de finestra per cridar el model fictici -->
+    <record id="action_event_mass_payment_dummy" model="ir.actions.act_window">
+        <field name="name">Executar Processament</field>
+        <field name="res_model">event.mass.payment</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Menú nou dins de Vendes -->
+    <menuitem id="menu_event_mass_payment_root"
+              name="Pagaments Massius"
+              parent="sale.sale_order_menu"
+              sequence="999"/>
+
+    <menuitem id="menu_event_mass_payment_action"
+              name="Executar Processament"
+              parent="menu_event_mass_payment_root"
+              action="action_event_mass_payment_dummy"/>
+</odoo>

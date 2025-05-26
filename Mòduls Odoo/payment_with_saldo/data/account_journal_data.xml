@@ -1,38 +1,35 @@
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
 
-        <!--
-            ✅ Definició del diari "BancFalla"
-            Aquest diari es fa servir exclusivament per als pagaments amb saldo,
-            i s'associa a la línia de mètode de pagament "Pagament amb saldo".
-        -->
-
-        <record id="account_journal_bancfalla" model="account.journal">
-            <!-- Nom del diari que apareixerà a la interfície d'usuari -->
-            <field name="name">BancFalla</field>
-
-            <!-- Codi intern del diari (s'ha d’usar en el teu codi Python) -->
-            <field name="code">BNK1</field>
-
-            <!-- Tipus de diari: "bank" = compta bancària -->
-            <field name="type">bank</field>
-
-            <!-- Assignació a l'empresa principal (important per multicompanies) -->
+        <!-- Compte d’ingressos -->
+        <record id="account_profit_saldo" model="account.account">
+            <field name="name">Ingressos per pagament amb saldo</field>
+            <field name="code">700SALDO</field>
+            <field name="account_type">income</field>
+            <field name="reconcile" eval="True"/>
             <field name="company_id" ref="base.main_company"/>
+        </record>
 
-            <!-- Assignació de la moneda (euro per defecte) -->
+        <!-- Compte de despeses -->
+        <record id="account_loss_saldo" model="account.account">
+            <field name="name">Despeses per pagament amb saldo</field>
+            <field name="code">600SALDO</field>
+            <field name="account_type">expense</field>
+            <field name="reconcile" eval="True"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!-- Diari de metàl·lic -->
+        <record id="account_journal_cash" model="account.journal" forcecreate="1">
+            <field name="name">Metàl·lic</field>
+            <field name="code">CASH</field>
+            <field name="type">cash</field>
+            <field name="company_id" ref="base.main_company"/>
             <field name="currency_id" ref="base.EUR"/>
+            <field name="default_account_id" ref="payment_with_saldo.account_profit_saldo"/>
+            <field name="profit_account_id" ref="payment_with_saldo.account_profit_saldo"/>
+            <field name="loss_account_id" ref="payment_with_saldo.account_loss_saldo"/>
         </record>
 
     </data>
 </odoo>
-<!--
-    Aquest fitxer defineix un diari bancari anomenat "BancFalla" que es fa servir per registrar
-    pagaments interns amb saldo. El diari està associat a l'empresa principal i utilitza
-    euros com a moneda. Assegura't que el codi tècnic (code) sigui únic i no es repeteixi
-    en altres diaris o mètodes de pagament.
-    Si necessites més diaris o mètodes de pagament, pots duplicar aquest registre i modificar
-    els camps necessaris (com el nom, el codi, etc.).
-    Gràcies per utilitzar Odoo i el mòdul de pagament amb saldo!
-    ✅ Fi del fitxer XML
--->

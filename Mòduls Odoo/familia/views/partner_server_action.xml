@@ -1,12 +1,18 @@
 <odoo>
-    <record id="action_crear_membres_familia" model="ir.actions.server">
-        <field name="name">🧩 Vincular a Família</field>
+    <record id="action_vincular_familia_i_portal" model="ir.actions.server">
+        <field name="name">🏡 Vincular Família + Portal</field>
         <field name="model_id" ref="base.model_res_partner"/>
         <field name="state">code</field>
         <field name="binding_model_id" ref="base.model_res_partner"/>
         <field name="binding_type">action</field>
         <field name="code"><![CDATA[
-            model.crear_membres_familia_des_de_numero()
+model.vincular_familia_i_assignar_portal()
+action = {
+    'type': 'ir.actions.act_window',
+    'res_model': 'familia.familia',
+    'view_mode': 'tree,form',
+    'target': 'current',
+}
         ]]></field>
     </record>
 </odoo>

@@ -1,0 +1,10 @@
+<odoo>
+    <record id="action_cancel_and_delete_invoices" model="ir.actions.server">
+        <field name="name">Anul·lar i Eliminar Factures</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="state">code</field>
+        <field name="code">records.action_cancel_and_delete_massive()</field>
+        <field name="binding_view_types">list</field>
+    </record>
+</odoo>

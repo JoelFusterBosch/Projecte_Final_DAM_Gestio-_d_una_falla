@@ -69,7 +69,7 @@ class NfcProvider with ChangeNotifier {
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
             );
           }
-        }else if (faller.rol == "Admin") {
+        }else if (faller.rol == "Administrador") {
           if(!faller.estaLoguejat){
             Navigator.pushReplacement(
               context,

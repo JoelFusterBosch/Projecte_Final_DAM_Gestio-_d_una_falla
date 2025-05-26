@@ -1,0 +1,44 @@
+<odoo>
+    <template id="replace_accept_sign_button_in_portal" inherit_id="sale.sale_order_portal_template" priority="10">
+        <xpath expr="//a[@data-bs-target='#modalaccept']" position="replace">
+            <t t-if="sale_order.state in ('draft', 'sent')">
+                <div class="d-grid justify-content-center mt-2">
+                    <!--
+                    <button type="button"
+                            id="confirm_button"
+                            class="btn btn-primary"
+                            t-att-data-order-id="sale_order.id"
+                            t-att-data-partner-saldo="sale_order.partner_id.saldo_a_favor"
+                            t-att-data-order-total="sale_order.amount_total">
+                        <i class="fa fa-check"></i> Confirmar
+                    </button>
+                    -->
+                    <input type="hidden" name="order_id" t-att-value="sale_order.id"/>
+                    <input type="hidden" name="payment_option_id" value="20"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
+
+
+<!-- <odoo>
+    <template id="replace_accept_sign_button_in_portal" inherit_id="sale.sale_order_portal_template" priority="10">
+        <xpath expr="//a[@data-bs-target='#modalaccept']" position="replace">
+            <t t-if="sale_order.state in ('draft', 'sent')">
+                <div class="d-grid justify-content-center mt-2">
+                    <button type="button"
+                            id="confirm_button"
+                            class="btn btn-primary"
+                            t-att-data-order-id="sale_order.id"
+                            t-att-data-partner-saldo="sale_order.partner_id.saldo_a_favor"
+                            t-att-data-order-total="sale_order.amount_total">
+                        <i class="fa fa-check"></i> Confirmar
+                    </button>
+                    <input type="hidden" name="order_id" t-att-value="sale_order.id"/>
+                    <input type="hidden" name="payment_option_id" value="20"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo> -->

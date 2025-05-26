@@ -1,0 +1,8 @@
+<odoo>
+    <data noupdate="1">
+        <record id="pos_payment_method_saldo" model="pos.payment.method">
+            <field name="name">Saldo</field>
+            <field name="is_cash_count" eval="False"/>
+        </record>
+    </data>
+</odoo>

@@ -64,11 +64,13 @@ class EscanerState extends State<Escaner>{
                             );
                           },
                         ),
-                        ElevatedButton(onPressed:eventCorrecte? () => {context.read<NfcProvider>().llegirEtiqueta(context)}:null, 
-                        child: Text("Escàner NFC")
+                        ElevatedButton.icon(onPressed:eventCorrecte? () => {context.read<NfcProvider>().llegirEtiqueta(context)}:null, 
+                        icon: Icon(Icons.nfc),
+                        label: Text("Escàner NFC")
                         ),
-                        ElevatedButton(onPressed: eventCorrecte? () => {context.read<Qrprovider>().llegirQR(context)}:null,
-                        child: Text("Escàner QR")
+                        ElevatedButton.icon(onPressed: eventCorrecte? () => {context.read<Qrprovider>().llegirQR(context)}:null,
+                        icon: Icon(Icons.qr_code),
+                        label: Text("Escàner QR")
                         ),
                         Consumer<Qrprovider>(
                           builder: (context, provider, child){

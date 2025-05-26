@@ -52,7 +52,7 @@ odoo.define('event_family_registration.event_registration_status', function (req
                 if (!eventId) return;
 
                 this._rpc({
-                    route: '/event/registration_status',
+                    route: '/event/registration_info',
                     params: { event_id: parseInt(eventId) },
                 }).then(data => {
                     // 🔄 Elimina qualsevol cinta anterior

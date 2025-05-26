@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="event_family_registration.custom_family_registration_form">
+        <t t-call="website.layout">
+            <t t-call="website_event.registration_template">
+                <t t-set="selected_ticket_quantities" t-value="selected_ticket_quantities if selected_ticket_quantities else {}"/>
+                <xpath expr="//div[@id='o_wevent_tickets_collapse']//div[contains(@class, 'o_wevent_ticket_selector')]" position="replace">
+                    <div id="ticket_selection" class="o_wevent_ticket_selector">
+                        <t t-foreach="event.ticket_ids" t-as="ticket">
+                            <div class="o_wevent_ticket mb-3">
+                                <div class="o_wevent_ticket_content d-flex justify-content-between align-items-center">
+                                    <div class="o_wevent_ticket_name">
+                                        <h6 class="mb-1"><t t-esc="ticket.name"/></h6>
+                                        <small class="text-muted"><t t-esc="'%.2f €' % ticket.price"/></small>
+                                    </div>
+                                    <div class="o_wevent_ticket_quantity">
+                                        <input type="number"
+                                            class="form-control form-control-sm ticket-quantity"
+                                            t-att-id="'ticket_' + str(ticket.id)"
+                                            t-att-data-ticket-id="ticket.id"
+                                            t-att-data-ticket-max="ticket.seats_max"
+                                            value="0"
+                                            min="0"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </xpath>
+            </t>
+        </t>
+    </t>
+</templates>

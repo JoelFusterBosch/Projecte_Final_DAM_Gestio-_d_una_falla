@@ -1,232 +1,11 @@
-# from odoo import models, fields, api
-# from odoo.exceptions import ValidationError
-# from datetime import datetime, timedelta, timezone
-
-# from typing import Tuple, Dict
-
-# class EventEvent(models.Model):
-#     _inherit = 'event.event'
-
-#     product_id = fields.Many2one(
-#         'product.product',
-#         string="Producto Asociado",
-#         help="El producto que representa este evento o tickets de este evento."
-#     )
-
-#     event_cost = fields.Float(
-#         string="Coste del Evento",
-#         help="Este campo representa el coste del evento por ticket.",
-#         default=0.0
-#     )
-
-#     ticket_ids = fields.One2many(
-#         'event.event.ticket', 'event_id', string="Tickets"
-#     )
-
-#     button_state = fields.Selection([
-#         ('enabled', 'Enabled'),
-#         ('disabled', 'Disabled')
-#     ], string="Button State", compute="_get_custom_button_state")
-
-#     allow_family_registration = fields.Boolean(string="Permitir Registro Familiar")
-
-    
-
-#     def _get_custom_button_state(self):
-#         for event in self:
-#             if event.allow_family_registration and event.state != 'done':
-#                 event.button_state = 'enabled'
-#             else:
-#                 event.button_state = 'disabled'
-
-#     def _calculate_total_amount_due(self, total_tickets_selected: int) -> float:
-#         return self.event_cost * total_tickets_selected
-
-#     def _find_or_create_sale_order(self, partner, ticket_quantities: Dict[int, int]) -> 'sale.order':
-#         """
-#         Encuentra una orden de venta en estado 'draft' o 'sent' para el partner, relacionada con el evento,
-#         o crea una nueva si no existe.
-#         """
-#         # Buscar si ya existe una orden de venta para el partner en estado 'draft' o 'sent', vinculada a este evento
-#         sale_order = self.env['sale.order'].sudo().search([
-#             ('partner_id', '=', partner.id),
-#             ('state', 'in', ['draft', 'sent']),  # Estado 'draft' o 'sent'
-#             ('order_line.event_id', '=', self.id)  # Filtrar por el evento actual
-#         ], limit=1)
-
-#         if not sale_order:
-#             # Si no existe, crear una nueva orden de venta
-#             sale_order = self.env['sale.order'].sudo().create({
-#                 'partner_id': partner.id,
-#                 'order_line': [],  # Inicialmente sin líneas, se añadirán después
-#                 'state': 'draft',  # Inicialmente en borrador
-#             })
-
-#         # Validar límit global seats_max per cada tiquet
-#         for ticket_id, qty in ticket_quantities.items():
-#             ticket = self.env['event.event.ticket'].sudo().browse(ticket_id)
-#             total_reserved = sum(ticket.registration_ids.mapped('ticket_qty'))
-
-#             if ticket.seats_max and total_reserved + qty > ticket.seats_max:
-#                 available = ticket.seats_max - total_reserved
-#                 if available <= 0:
-#                     raise ValidationError(
-#                         f"No queden places disponibles per al tiquet '{ticket.name}'. El límit màxim de {ticket.seats_max} ja s'ha assolit."
-#                     )
-#                 raise ValidationError(
-#                     f"Només queden {available} places per al tiquet '{ticket.name}', però estàs intentant registrar {qty}. El màxim permés és {ticket.seats_max}."
-#                 )
-
-
-#         # Actualizar o agregar las líneas de productos para los tickets seleccionados
-#         for ticket_id, qty in ticket_quantities.items():
-#             ticket = self.env['event.event.ticket'].sudo().browse(ticket_id)
-#             if not ticket.product_id:
-#                 # Crear un producto asociado al ticket si no existe
-#                 product_name = f"Ticket {ticket.name} para {self.name}"
-#                 product = self.env['product.product'].sudo().create({
-#                     'name': product_name,
-#                     'type': 'service',
-#                     'list_price': ticket.price,
-#                     'sale_ok': True,
-#                 })
-#                 ticket.product_id = product.id
-#             else:
-#                 product = ticket.product_id
-
-#             # Buscar si ya existe una línea de pedido para este producto y evento en el presupuesto
-#             existing_order_line = sale_order.order_line.filtered(lambda line: line.product_id == product and line.event_id == self)
-
-#             if existing_order_line:
-#                 # Si ya existe una línea para este producto, actualizar la cantidad
-#                 existing_order_line.sudo().write({
-#                     'product_uom_qty': existing_order_line.product_uom_qty + qty
-#                 })
-#             else:
-#                 # Si no existe, agregar una nueva línea de pedido
-#                 sale_order.sudo().write({
-#                     'order_line': [(0, 0, {
-#                         'product_id': product.id,
-#                         'product_uom_qty': qty,
-#                         'price_unit': ticket.price,
-#                         'name': product.name,
-#                         'event_id': self.id  # Vincular la línea de pedido con el evento actual
-#                     })]
-#                 })
-
-#         # Cambiar el estado a 'sent' (enviado) si está en borrador
-#         if sale_order.state == 'draft':
-#             sale_order.sudo().action_quotation_send()
-
-#         return sale_order
-
-#     def _validate_family_tickets(self, partner, ticket_quantities: Dict[int, int]) -> None:
-#         EventTicket = self.env['event.event.ticket'].sudo()
-
-#         # Filtra només els tiquets amb max_faller=True
-#         max_faller_ticket_ids = [
-#             ticket_id for ticket_id in ticket_quantities
-#             if EventTicket.browse(ticket_id).max_faller
-#         ]
-
-#         if not max_faller_ticket_ids:
-#             # Si no hi ha cap tiquet amb max_faller, no cal fer cap validació familiar
-#             return
-
-#         # Validació: ha de ser membre d'una família
-#         miembro_familia = self.env['familia.miembro'].sudo().search([
-#             ('partner_id', '=', partner.id)
-#         ], limit=1)
-
-#         if not miembro_familia:
-#             raise ValidationError("No puedes seleccionar tiquets con restricción de familia ('Máximo Fallers') ya que no perteneces a una familia.")
-
-#         # Comptar membres familiars
-#         family_member_count = len(miembro_familia.familia_id.miembros_ids)
-
-#         # Comptar ja registrats amb max_faller
-#         registered_tickets = self.env['event.registration'].sudo().search([
-#             ('partner_id', '=', partner.id),
-#             ('event_id', '=', self.id),
-#             ('ticket_id.max_faller', '=', True)
-#         ])
-#         total_registered_tickets = sum(reg.ticket_qty for reg in registered_tickets)
-
-#         # Comptar els nous seleccionats amb max_faller
-#         total_new_tickets_selected = sum(
-#             qty for ticket_id, qty in ticket_quantities.items()
-#             if EventTicket.browse(ticket_id).max_faller
-#         )
-
-#         if total_registered_tickets + total_new_tickets_selected > family_member_count:
-#             raise ValidationError(
-#                 f"No pots seleccionar més de {family_member_count} tiquets amb la restricció de 'Membre de la Falla'. "
-#                 f"Com a membre de la teua falla, el nombre màxim de tiquets ha de coincidir amb els membres registrats de la família. "
-#                 f"Ja tens {total_registered_tickets} registrats i estàs intentant afegir {total_new_tickets_selected} més."
-#             )
-
-
-
-#     def register_family(self, partner_id: int, event_id: int, ticket_quantities: Dict[int, int], use_saldo: bool=False) -> int:
-#         partner = self.env['res.partner'].sudo().browse(partner_id)
-#         event = self.browse(event_id)
-
-#         self._validate_family_tickets(partner, ticket_quantities)
-#         total_tickets_selected = sum(ticket_quantities.values())
-#         total_amount_due = self._calculate_total_amount_due(total_tickets_selected)
-#         # Al crear la comanda
-#         expiration = (datetime.now(timezone.utc) + timedelta(hours=0, minutes=2)).replace(tzinfo=None)
-#         sale_order = self.env['sale.order'].sudo().create({
-#             'partner_id': partner.id,
-#             'order_line': [],
-#             'state': 'draft',
-#             'expiration_datetime': expiration,
-#         })
-
-#         # Buscar o crear una orden de venta (presupuesto) y actualizarla
-#         sale_order = self._find_or_create_sale_order(partner, ticket_quantities)
-
-#         sale_order_id = sale_order.id  # Obtener el ID de la orden de venta
-
-#         for ticket_id, qty in ticket_quantities.items():
-#             # Buscar si ya existe un registro para este partner y ticket
-#             existing_registration = self.env['event.registration'].sudo().search([
-#                 ('event_id', '=', event.id),
-#                 ('partner_id', '=', partner.id),
-#                 ('ticket_id', '=', ticket_id)
-#             ], limit=1)
-
-#             if existing_registration:
-#                 # Si ya existe, actualizar la cantidad de tickets
-#                 existing_registration.sudo().write({
-#                     'ticket_qty': existing_registration.ticket_qty + qty
-#                 })
-#             else:
-#                 # Si no existe, crear uno nuevo
-#                 self.env['event.registration'].sudo().create({
-#                     'event_id': event.id,
-#                     'partner_id': partner.id,
-#                     'ticket_id': ticket_id,
-#                     'payment_status': 'pending',  # Estado inicial de pago pendiente
-#                     'sale_order_id': sale_order.id,
-#                     'ticket_qty': qty,
-#                 })
-
-#         # Cambiar el estado a 'sent' si no se ha enviado para permitir la firma
-#         if sale_order.state == 'draft':
-#             sale_order.sudo().action_quotation_send()
-
-#         # Marcar el estado como enviado para permitir firmar o rechazar
-#         sale_order.state = 'sent'
-
-#         return sale_order_id  # Retornar el ID de la orden de venta
-
-
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from datetime import datetime, timedelta, timezone
 
 from typing import Dict
+import logging
+_logger = logging.getLogger(__name__)
+
 
 class EventEvent(models.Model):
     _inherit = 'event.event'
@@ -264,38 +43,227 @@ class EventEvent(models.Model):
     def _calculate_total_amount_due(self, total_tickets_selected: int) -> float:
         return self.event_cost * total_tickets_selected
 
-    def _find_or_create_sale_order(self, partner, ticket_quantities: Dict[int, int]) -> 'sale.order':
-        sale_order = self.env['sale.order'].sudo().search([
-            ('partner_id', '=', partner.id),
-            ('state', 'in', ['draft', 'sent']),
-            ('order_line.event_id', '=', self.id)
-        ], limit=1)
+    # def _find_or_create_sale_order(self, partner, ticket_quantities: Dict[int, int], order_id: int=None) -> 'sale.order':
+    #     SaleOrder = self.env['sale.order'].sudo()
 
+    #     sale_order = False
+
+    #     if order_id:
+    #         candidate = SaleOrder.browse(order_id)
+    #         if candidate.exists() and candidate.partner_id.id == partner.id and candidate.event_id.id == self.id:
+    #             sale_order = candidate
+    #             _logger.info(f"[MV-DEBUG] Reutilitzant la comanda passada {sale_order.name} (ID {order_id}).")
+    #         else:
+    #             _logger.warning(f"[MV-DEBUG] L'order_id rebut ({order_id}) no és vàlid per a aquest partner/event.")
+
+    #     if not sale_order:
+    #         sale_order = SaleOrder.search([
+    #             ('partner_id', '=', partner.id),
+    #             ('state', 'in', ['draft', 'sent', 'sale', 'done']),
+    #             ('event_id', '=', self.id)
+    #         ], limit=1)
+    #         if sale_order:
+    #             _logger.info(f"[MV-DEBUG] Reutilitzant la comanda {sale_order.name} trobada automàticament.")
+
+    #     if sale_order:
+    #         if sale_order.state in ['sent', 'sale', 'done']:
+    #             _logger.info(f"[MV-DEBUG] Tornant {sale_order.name} a 'draft' per poder reutilitzar.")
+    #             sale_order.sudo().action_draft()
+
+    #         # 🧹 Eliminar línies antigues (o posar quantitat a 0 si està confirmada)
+    #         lines_to_remove = sale_order.order_line.filtered(lambda l: l.event_id == self)
+    #         for line in lines_to_remove:
+    #             if line.order_id.state in ['sale', 'done']:
+    #                 _logger.info(f"[MV-DEBUG] No podem esborrar línia {line.id}, posant quantitat 0 perquè la comanda està en estat '{line.order_id.state}'.")
+    #                 line.sudo().write({'product_uom_qty': 0})
+    #             else:
+    #                 _logger.info(f"[MV-DEBUG] Eliminant línia {line.id} de comanda {line.order_id.name}.")
+    #                 line.sudo().unlink()
+    #     else:
+    #         _logger.info("[MV-DEBUG] Creant nova comanda perquè no n'hi ha cap existent o s'ha cancel·lat.")
+    #         expiration = (datetime.now(timezone.utc) + timedelta(minutes=2)).replace(tzinfo=None)
+    #         sale_order = SaleOrder.create({
+    #             'partner_id': partner.id,
+    #             'order_line': [],
+    #             'state': 'draft',
+    #             'expiration_datetime': expiration,
+    #             'event_id': self.id,
+    #         })
+
+    #     # El codi per afegir línies de tickets seguiria a partir d'ací...   
+
+
+    # ### Vol
+
+    #     # sale_order = self.env['sale.order'].sudo().search([
+    #     #     ('partner_id', '=', partner.id),
+    #     #     ('state', 'in', ['draft', 'sent', 'sale', 'done']),
+    #     #     ('event_id', '=', self.id)
+    #     # ], limit=1)
+
+    #     if sale_order:
+    #         _logger.info(f"[MV-DEBUG] Reutilitzant la comanda {sale_order.name} encara que estiga en estat '{sale_order.state}'.")
+    #         if sale_order.state in ['sent', 'sale', 'done']:
+    #             _logger.info(f"[MV-DEBUG] Tornant {sale_order.name} a 'draft' per poder reutilitzar.")
+    #             sale_order.sudo().action_draft()
+
+    #         # 🧹 Eliminar línies antigues (o posar quantitat a 0 si està confirmada)
+    #         lines_to_remove = sale_order.order_line.filtered(lambda l: l.event_id == self)
+    #         for line in lines_to_remove:
+    #             if line.order_id.state in ['sale', 'done']:
+    #                 _logger.info(f"[MV-DEBUG] No podem esborrar línia {line.id}, posant quantitat 0 perquè la comanda està en estat '{line.order_id.state}'.")
+    #                 line.sudo().write({'product_uom_qty': 0})
+    #             else:
+    #                 _logger.info(f"[MV-DEBUG] Eliminant línia {line.id} de comanda {line.order_id.name}.")
+    #                 line.sudo().unlink()
+    #     else:
+    #         _logger.info("[MV-DEBUG] Creant nova comanda perquè no n'hi ha cap existent o s'ha cancel·lat.")
+    #         expiration = (datetime.now(timezone.utc) + timedelta(minutes=2)).replace(tzinfo=None)
+    #         sale_order = self.env['sale.order'].sudo().create({
+    #             'partner_id': partner.id,
+    #             'order_line': [],
+    #             'state': 'draft',
+    #             'expiration_datetime': expiration,
+    #             'event_id': self.id,
+    #         })
+
+    #     # 🧹 Eliminar inscripcions anteriors amb altres tiquets del mateix esdeveniment
+    #     old_regs = self.env['event.registration'].sudo().search([
+    #         ('partner_id', '=', partner.id),
+    #         ('event_id', '=', self.id),
+    #         ('ticket_id', 'not in', list(ticket_quantities.keys())),
+    #     ])
+
+    #     for reg in old_regs:
+    #         if reg.sale_order_id:
+    #             old_order = reg.sale_order_id
+    #             _logger.info(f"[MV-DEBUG] Cancel·lant inscripció antiga: ticket_id={reg.ticket_id.id} (comanda {old_order.name})")
+
+    #             if old_order.state in ['draft', 'sent']:
+    #                 old_order.sudo().action_cancel()
+    #                 old_order.sudo().unlink()
+    #             elif old_order.state in ['sale']:
+    #                 _logger.warning(f"[MV-DEBUG] La comanda {old_order.name} ja està venuda. No podem cancel·lar, però desvinculem la inscripció.")
+
+    #         reg.sudo().unlink()
+
+    #     # ➡️ Crear o afegir les noves línies per als tickets actuals
+    #     for ticket_id, qty in ticket_quantities.items():
+    #         ticket = self.env['event.event.ticket'].sudo().browse(ticket_id)
+
+    #         if not ticket.product_id:
+    #             product = self.env['product.product'].sudo().create({
+    #                 'name': f"Ticket {ticket.name} per a {self.name}",
+    #                 'type': 'service',
+    #                 'list_price': ticket.price,
+    #                 'sale_ok': True,
+    #             })
+    #             ticket.product_id = product.id
+    #         else:
+    #             product = ticket.product_id
+
+    #         sale_order.sudo().write({
+    #             'order_line': [(0, 0, {
+    #                 'product_id': product.id,
+    #                 'product_uom_qty': qty,
+    #                 'price_unit': ticket.price,
+    #                 'name': product.name,
+    #                 'event_id': self.id,
+    #             })]
+    #         })
+
+    #     if sale_order.order_line:
+    #         _logger.info(f"[MV-DEBUG] Comanda {sale_order.name} té {len(sale_order.order_line)} línies.")
+    #         sale_order.sudo().action_quotation_send()
+    #         sale_order.state = 'sent'
+    #     else:
+    #         _logger.info(f"[MV-DEBUG] Comanda {sale_order.name} sense línies: cancel·lant...")
+    #         sale_order.sudo().action_cancel()
+    #         sale_order.unlink()
+    #         sale_order = False
+
+    #     return sale_order
+
+    def _find_or_create_sale_order(self, partner, ticket_quantities: Dict[int, int], order_id: int=None) -> 'sale.order':
+        SaleOrder = self.env['sale.order'].sudo()
+        
+        sale_order = None
+
+        # 1. Primer, si ve order_id, intentar reusar-lo
+        if order_id:
+            candidate = SaleOrder.browse(order_id)
+            if candidate.exists() and candidate.partner_id.id == partner.id and candidate.event_id.id == self.id:
+                sale_order = candidate
+                _logger.info(f"[MV-DEBUG] Reutilitzant comanda passada {sale_order.name} (ID {order_id}).")
+            else:
+                _logger.warning(f"[MV-DEBUG] order_id rebut ({order_id}) no vàlid per aquest partner/event.")
+
+        # 2. Si no hi ha sale_order, buscar-ne una existent
         if not sale_order:
+            sale_order = SaleOrder.search([
+                ('partner_id', '=', partner.id),
+                ('event_id', '=', self.id),
+                ('state', 'in', ['draft', 'sent', 'sale', 'done']),
+            ], limit=1)
+            if sale_order:
+                _logger.info(f"[MV-DEBUG] Reutilitzant comanda existent {sale_order.name}.")
+
+        
+        # 🔁 Cancel·lem i eliminem comandes anteriors EXCEPTE la que volem reutilitzar
+        old_orders = self.env['sale.order'].sudo().search([
+            ('partner_id', '=', partner.id),
+            ('event_id', '=', self.id),
+            ('state', 'in', ['draft', 'sent']),
+        ])
+        for old in old_orders:
+            # Si és la comanda que volem reutilitzar, la deixem estar
+            if sale_order and old.id == sale_order.id:
+                _logger.info(f"[MV-DEBUG] Conservant la comanda actual: {old.name}")
+                continue
+
+            _logger.info(f"[MV-DEBUG] Revisant i eliminant comanda antiga: {old.name}")
+
+            # Eliminem inscripcions vinculades
+            registrations = self.env['event.registration'].sudo().search([
+                ('sale_order_id', '=', old.id),
+            ])
+            for reg in registrations:
+                if reg.state != 'cancel':
+                    _logger.info(f"[MV-DEBUG] Cancel·lant inscripció {reg.id} vinculada a {old.name}")
+                    reg.sudo().write({'state': 'cancel'})
+                reg.sudo().unlink()
+
+            # Cancel·lem i eliminem la comanda
+            old.sudo().action_cancel()
+            old.sudo().unlink()
+
+ 
+        
+        # 3. Si encara no hi ha res, crear una nova
+        if not sale_order:
+            _logger.info("[MV-DEBUG] Creant nova comanda perquè no n'hi ha cap.")
             expiration = (datetime.now(timezone.utc) + timedelta(minutes=2)).replace(tzinfo=None)
-            sale_order = self.env['sale.order'].sudo().create({
+            sale_order = SaleOrder.create({
                 'partner_id': partner.id,
                 'order_line': [],
                 'state': 'draft',
                 'expiration_datetime': expiration,
                 'event_id': self.id,
             })
-        elif not sale_order.expiration_datetime:
-            sale_order.expiration_datetime = datetime.now(timezone.utc) + timedelta(minutes=2)
 
+        # 🔵 Ara ja tens una comanda vàlida
+
+        # 🧹 Netegem línies antigues (o posem quantitat 0 si ja està venuda)
+        lines_to_remove = sale_order.order_line.filtered(lambda l: l.event_id == self)
+        for line in lines_to_remove:
+            if sale_order.state in ['sale', 'done']:
+                line.sudo().write({'product_uom_qty': 0})
+            else:
+                line.sudo().unlink()
+
+        # ➡️ Afegir noves línies de tiquets
         for ticket_id, qty in ticket_quantities.items():
             ticket = self.env['event.event.ticket'].sudo().browse(ticket_id)
-            total_reserved = sum(ticket.registration_ids.mapped('ticket_qty'))
-
-            if ticket.seats_max and total_reserved + qty > ticket.seats_max:
-                available = ticket.seats_max - total_reserved
-                if available <= 0:
-                    raise ValidationError(
-                        f"No queden places disponibles per al tiquet '{ticket.name}'. El límit màxim de {ticket.seats_max} ja s'ha assolit."
-                    )
-                raise ValidationError(
-                    f"Només queden {available} places per al tiquet '{ticket.name}', però estàs intentant registrar {qty}."
-                )
 
             if not ticket.product_id:
                 product = self.env['product.product'].sudo().create({
@@ -308,26 +276,29 @@ class EventEvent(models.Model):
             else:
                 product = ticket.product_id
 
-            existing_line = sale_order.order_line.filtered(lambda line: line.product_id == product and line.event_id == self)
-            if existing_line:
-                existing_line.sudo().write({
-                    'product_uom_qty': existing_line.product_uom_qty + qty
-                })
-            else:
-                sale_order.sudo().write({
-                    'order_line': [(0, 0, {
-                        'product_id': product.id,
-                        'product_uom_qty': qty,
-                        'price_unit': ticket.price,
-                        'name': product.name,
-                        'event_id': self.id
-                    })]
-                })
+            sale_order.sudo().write({
+                'order_line': [(0, 0, {
+                    'product_id': product.id,
+                    'product_uom_qty': qty,
+                    'price_unit': ticket.price,
+                    'name': product.name,
+                    'event_id': self.id,
+                })]
+            })
 
-        if sale_order.state == 'draft':
-            sale_order.sudo().action_quotation_send()
+        # Si té línies, enviar pressupost
+        if sale_order.order_line:
+            if sale_order.state == 'draft':
+                sale_order.sudo().action_quotation_send()
+                sale_order.state = 'sent'
+        else:
+            _logger.info(f"[MV-DEBUG] Comanda {sale_order.name} sense línies: cancel·lant...")
+            sale_order.sudo().action_cancel()
+            sale_order.unlink()
+            sale_order = False
 
         return sale_order
+
 
     def _validate_family_tickets(self, partner, ticket_quantities: Dict[int, int]) -> None:
         EventTicket = self.env['event.event.ticket'].sudo()
@@ -363,7 +334,9 @@ class EventEvent(models.Model):
                 f"El nombre total de tiquets amb restricció familiar ({total_registered + total_new}) excedix els {family_member_count} membres de la teua família."
             )
 
-    def register_family(self, partner_id: int, event_id: int, ticket_quantities: Dict[int, int], use_saldo: bool=False) -> int:
+
+    def register_family(self, partner_id: int, event_id: int, ticket_quantities: Dict[int, int], use_saldo: bool=False, order_id: int=None) -> int:
+
         partner = self.env['res.partner'].sudo().browse(partner_id)
         event = self.browse(event_id)
 
@@ -371,32 +344,28 @@ class EventEvent(models.Model):
         total_tickets = sum(ticket_quantities.values())
         self._calculate_total_amount_due(total_tickets)
 
-        sale_order = self._find_or_create_sale_order(partner, ticket_quantities)
+        sale_order = self._find_or_create_sale_order(partner, ticket_quantities, order_id=order_id)
+
+
+        _logger.info(f"[MV-DEBUG] Partner ID: {partner_id}, Event ID: {event_id}")
+        _logger.info(f"[MV-DEBUG] Tiquets rebuts: {ticket_quantities}")
 
         for ticket_id, qty in ticket_quantities.items():
-            existing_registration = self.env['event.registration'].sudo().search([
-                ('event_id', '=', event.id),
-                ('partner_id', '=', partner.id),
-                ('ticket_id', '=', ticket_id)
-            ], limit=1)
+            _logger.info(f"[MV-DEBUG] Gestionant ticket_id={ticket_id}, qty={qty}")
 
-            if existing_registration:
-                existing_registration.sudo().write({
-                    'ticket_qty': existing_registration.ticket_qty + qty
-                })
-            else:
-                self.env['event.registration'].sudo().create({
-                    'event_id': event.id,
-                    'partner_id': partner.id,
-                    'ticket_id': ticket_id,
-                    'payment_status': 'pending',
-                    'sale_order_id': sale_order.id,
-                    'ticket_qty': qty,
-                })
+            self.env['event.registration'].sudo().add_or_update_registration(
+                partner_id=partner.id,
+                event_id=event.id,
+                ticket_id=ticket_id,
+                ticket_qty=qty,
+                sale_order_id=sale_order.id
+            )
 
-        if sale_order.state == 'draft':
+        if sale_order and sale_order.state == 'draft':
             sale_order.sudo().action_quotation_send()
+            sale_order.state = 'sent'
+        elif sale_order and sale_order.state == 'sale':
+            _logger.info(f"[MV-DEBUG] La comanda {sale_order.name} ja està confirmada, no es torna a enviar ni es canvia l'estat.")
 
-        sale_order.state = 'sent'
 
         return sale_order.id

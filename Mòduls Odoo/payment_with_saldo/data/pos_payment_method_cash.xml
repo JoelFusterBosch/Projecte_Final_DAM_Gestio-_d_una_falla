@@ -1,0 +1,11 @@
+<odoo>
+    <data noupdate="1">
+        <record id="pos_payment_method_cash" model="pos.payment.method">
+            <field name="name">Efectiu</field>
+            <field name="use_payment_terminal" eval="False"/>
+            <field name="is_cash_count" eval="True"/>
+            <field name="split_transactions" eval="False"/>
+            <field name="journal_id" ref="payment_with_saldo.account_journal_cash"/>
+        </record>
+    </data>
+</odoo>

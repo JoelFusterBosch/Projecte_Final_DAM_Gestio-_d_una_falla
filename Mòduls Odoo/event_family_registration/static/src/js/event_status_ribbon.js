@@ -34,7 +34,7 @@ odoo.define('event_family_registration.event_status_ribbon', function (require) 
             // Oculta l'etiqueta original
             this.el.querySelectorAll(".o_wevent_badge").forEach(e => e.style.display = "none");
 
-            ajax.jsonRpc('/event/registration_status', 'call', {
+            ajax.jsonRpc('/event/ribbon_status', 'call', {
                 event_id: parseInt(eventId),
             }).then(data => {
                 if (data.label && data.color) {

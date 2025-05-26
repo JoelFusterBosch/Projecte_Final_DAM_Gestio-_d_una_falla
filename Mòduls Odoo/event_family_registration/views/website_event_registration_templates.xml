@@ -1,18 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Heredar la plantilla del botón de registro -->
-    <template id="custom_event_registration_button" inherit_id="website_event.registration_template">
-        <!-- Modificar el botón de registro existente -->
-        <xpath expr="//button[contains(@class, 'a-submit')]" position="replace">
+    <!-- Heretar la plantilla del botón de registro -->
+    <template id="custom_event_registration_button" inherit_id="website_event.registration_template" priority="19999">
+        <!-- ✅ Substituir el botó de registre -->
+        <xpath expr="//form[@id='registration_form']//button[contains(@class, 'a-submit')]" position="replace">
+            <!-- DEBUG: plantilla aplicada a tots els esdeveniments -->
             <button type="button" class="btn btn-primary register-btn"
-                    t-att-data-partner-id="request.env.user.id"
-                    t-att-data-event-id="event.id">Registrar</button>
+                    t-att-data-user-id="request.env.user.id"
+                    t-att-data-partner-id="request.env.user.partner_id.id"
+                    t-att-data-event-id="event.id"
+                    t-att-data-saldo="request.env.user.partner_id.saldo_a_favor"
+                    t-att-data-order-id="order.id if order else ''">
+                Registrar-se
+            </button>
+            <!-- DEBUG: plantilla injectada -->
         </xpath>
     </template>
 
-    <!-- Heredar la plantilla del formulario de registro -->
-    <template id="custom_event_registration_form" inherit_id="website_event.registration_template">
-        <!-- Modificar la selección de tickets existente -->
-        <xpath expr="//*[@id='o_wevent_tickets_collapse']//div[contains(@class, 'o_wevent_ticket_selector')]" position="replace">
+    <!-- Heretar la plantilla del formulari de registre -->
+    <template id="custom_event_registration_form" inherit_id="website_event.registration_template" priority="19999">
+        <!-- ✅ Substituir la selecció de tiquets -->
+        <xpath expr="//div[@id='o_wevent_tickets_collapse']//div[contains(@class, 'o_wevent_ticket_selector')]" position="replace">
             <!-- Aquí reemplazamos la estructura de tickets existente para evitar duplicaciones -->
             <div id="ticket_selection" style="padding: 10px;">
                 <!-- Iterar sobre los tickets disponibles -->
@@ -22,12 +30,14 @@
                             <t t-esc="ticket.name"/> - <t t-esc="'%.2f €' % ticket.price"/>
                         </label>
                         <div class="col-2">
+                            <t t-set="ticket_qty" t-value="selected_ticket_quantities.get(ticket.id, 0) if selected_ticket_quantities else 0"/>
                             <input type="number"
-                                class="form-control form-control-sm ticket-quantity"
-                                t-att-id="'ticket_' + str(ticket.id) if ticket.id else ''"
-                                t-att-data-ticket-id="ticket.id"
-                                t-att-data-ticket-max="ticket.seats_max"
-                                value="0" min="0"/>
+                                   class="form-control form-control-sm ticket-quantity"
+                                   t-att-id="'ticket_' + str(ticket.id) if ticket.id else ''"
+                                   t-att-data-ticket-id="ticket.id"
+                                   t-att-data-ticket-max="ticket.seats_max"
+                                   t-att-value="ticket_qty"
+                                   min="0"/>
                         </div>
                     </div>
                 </t>
@@ -35,3 +45,4 @@
         </xpath>
     </template>
 </odoo>
+

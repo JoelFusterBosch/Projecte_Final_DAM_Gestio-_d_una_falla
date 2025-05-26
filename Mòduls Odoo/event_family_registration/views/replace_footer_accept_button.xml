@@ -1,0 +1,7 @@
+<odoo>
+    <template id="remove_footer_accept_button" inherit_id="sale.sale_order_portal_template" priority="30">
+        <xpath expr="//div[@class='col-sm-auto mt8']/a[@data-bs-target='#modalaccept']" position="replace">
+            <!-- No res: eliminem completament el botó -->
+        </xpath>
+    </template>
+</odoo>

@@ -87,29 +87,84 @@ class ResPartnerFaller(models.Model):
                 partner.categoria_faller = 'major'
 
 
+    # @api.model
+    # def crear_membres_familia_des_de_numero(self):
+    #     for partner in self.search([('numero_familia', '!=', False)]):
+    #         familia = self.env['familia.familia'].search([
+    #             ('numero_familia', '=', partner.numero_familia)
+    #         ], limit=1)
+
+    #         if not familia:
+    #             familia = self.env['familia.familia'].create({
+    #                 'name': f"Família {partner.numero_familia}",
+    #                 'numero_familia': partner.numero_familia,
+    #             })
+    #             _logger.info(f"Creada família {familia.name} amb número {familia.numero_familia}")
+
+    #         existeix = self.env['familia.miembro'].search([
+    #             ('partner_id', '=', partner.id)
+    #         ])
+    #         if not existeix:
+    #             self.env['familia.miembro'].create({
+    #                 'partner_id': partner.id,
+    #                 'familia_id': familia.id,
+    #             })
+    #             _logger.info(f"Afegit {partner.name} a la família {familia.numero_familia}")
+
     @api.model
     def crear_membres_familia_des_de_numero(self):
-        for partner in self.search([('numero_familia', '!=', False)]):
-            familia = self.env['familia.familia'].search([
+        Family = self.env['familia.familia']
+        Miembro = self.env['familia.miembro']
+
+        # 👉 PRIMER PAS: amb numero_familia
+        partners = self.search([('numero_familia', '!=', False)])
+        for partner in partners:
+            familia = Family.search([
                 ('numero_familia', '=', partner.numero_familia)
             ], limit=1)
 
             if not familia:
-                familia = self.env['familia.familia'].create({
+                familia = Family.create({
                     'name': f"Família {partner.numero_familia}",
                     'numero_familia': partner.numero_familia,
                 })
                 _logger.info(f"Creada família {familia.name} amb número {familia.numero_familia}")
 
-            existeix = self.env['familia.miembro'].search([
-                ('partner_id', '=', partner.id)
-            ])
+            existeix = Miembro.search([('partner_id', '=', partner.id)])
             if not existeix:
-                self.env['familia.miembro'].create({
+                Miembro.create({
                     'partner_id': partner.id,
                     'familia_id': familia.id,
                 })
                 _logger.info(f"Afegit {partner.name} a la família {familia.numero_familia}")
+
+        # 👉 SEGON PAS: sense numero_familia
+        max_fam = Family.search([], order="numero_familia desc", limit=1)
+        try:
+            max_fam_num = int(max_fam.numero_familia)
+        except:
+            max_fam_num = 100  # punt de partida si els valors no són numèrics
+
+        without_number = self.search([('numero_familia', '=', False)])
+        for partner in without_number:
+            if Miembro.search([('partner_id', '=', partner.id)]):
+                continue
+
+            max_fam_num += 1
+            numero = str(max_fam_num)
+            familia = Family.create({
+                'name': f"Família {numero}",
+                'numero_familia': numero,
+            })
+            _logger.info(f"[AUTO] Creada família nova per {partner.name}: Família {numero}")
+
+            partner.numero_familia = numero
+            Miembro.create({
+                'partner_id': partner.id,
+                'familia_id': familia.id,
+            })
+            _logger.info(f"[AUTO] Assignat {partner.name} a Família {numero}")
+
 
     @api.onchange('nom_faller', 'cognoms_faller')
     def _onchange_nom_cognoms(self):
@@ -162,3 +217,36 @@ class ResPartnerFaller(models.Model):
                 if title:
                     vals['title'] = title.id
         return super().write(vals)
+
+
+    @api.model
+    def vincular_familia_i_assignar_portal(self):
+        self.crear_membres_familia_des_de_numero()
+        self.search([('alta', '=', True)]).assignar_acces_portal()
+        return True
+
+
+    def assignar_acces_portal(self, contrasenya_per_defecte='Pa$$w0rd'):
+        portal_group = self.env.ref('base.group_portal')
+        User = self.env['res.users']
+
+        for partner in self:
+            if not partner.email:
+                _logger.warning(f"{partner.name} no té email. No es pot crear usuari.")
+                continue
+
+            usuari_existent = User.search([('login', '=', partner.email)], limit=1)
+            if usuari_existent:
+                _logger.info(f"Usuari ja existent per a {partner.name} ({partner.email})")
+                continue
+
+            nou_usuari = User.create({
+                'name': partner.name,
+                'login': partner.email,
+                'email': partner.email,
+                'partner_id': partner.id,
+                'groups_id': [(6, 0, [portal_group.id])],
+                'password': contrasenya_per_defecte,
+            })
+            _logger.info(f"Creat usuari portal per a {partner.name} amb email {partner.email}")
+

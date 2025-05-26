@@ -31,7 +31,7 @@ class Faller {
   }) {
     if (!rolsValids.contains(rol)) {
       throw ArgumentError('Rol no vàlid: $rol');
-    } else if (rol == 'Cobrador') {
+    } else if (rol == 'Cobrador' || rol == 'SuperAdmin') {
       if (cobrador == null) {
         throw ArgumentError('El rol "Cobrador" requereix una instància de Cobrador.');
       }

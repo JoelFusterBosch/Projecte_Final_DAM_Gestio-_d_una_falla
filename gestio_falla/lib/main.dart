@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/cobrador.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/domain/entities/familia.dart';
 // import 'package:gestio_falla/infrastructure/data_source/Api-Odoo_datasource.dart';
@@ -47,7 +48,7 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
-  final faller = Faller(nom: "Joel", teLimit: false, rol: "SuperAdmin",familia:Familia(nom: "Familia de Joel"), valorPulsera: "8430001000017", estaLoguejat: false);
+  final faller = Faller(nom: "Joel", teLimit: false, rol: "SuperAdmin", cobrador: Cobrador(rolCobrador: "Cadires"),familia:Familia(nom: "Familia de Joel"), valorPulsera: "8430001000017", estaLoguejat: false);
   final bool isLoggedIn;
     final ApiOdooRepositoryImpl apiOdooRepositoryImpl;
   final NfcRepositoryImpl nfcRepositoryImpl;

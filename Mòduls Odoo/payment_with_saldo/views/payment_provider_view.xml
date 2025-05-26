@@ -1,8 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <!-- Mètode de pagament en metàl·lic -->
+    <record id="payment_provider_cash" model="payment.provider">
+        <field name="name">Pagament en metàl·lic</field>
+        <field name="state">enabled</field>
+        <field name="fees_active">False</field>
+        <field name="color">2</field>
+        <field name="journal_id" ref="payment_with_saldo.account_journal_cash"/>
+    </record>
+
+    <!-- Mètode de pagament amb saldo -->
     <record id="payment_provider_saldo" model="payment.provider">
-        <field name="name">Pago con saldo</field>
+        <field name="name">Pago amb saldo</field>
         <field name="state">enabled</field>
         <field name="fees_active">False</field>
         <field name="color">5</field>
+        <field name="journal_id" ref="payment_with_saldo.account_journal_cash"/>
     </record>
+
 </odoo>
