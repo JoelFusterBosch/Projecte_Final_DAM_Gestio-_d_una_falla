@@ -55,6 +55,11 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
     return fakeApiOdooDataSource.getMostraMembres(idFamilia);
   }
 
+    @override
+  Future<Faller?> getFallerPerNom({required String nom}) {
+    return fakeApiOdooDataSource.getFallerPerNom(nom);
+  }
+
   @override
   Future<Map<String, dynamic>> postFaller({required String nom, required String rol, required String valorPulsera}) {
     return fakeApiOdooDataSource.postFaller(nom: nom, rol: rol, valorPulsera: valorPulsera);

@@ -18,12 +18,44 @@ router.get('/', async (req, res) => {
 router.get('/perfil/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const result = await pool.query('SELECT * FROM faller WHERE id = $1', [id]);
+    const result = await pool.query(`
+      SELECT 
+        f.id, f.nom, f.teLimit, f.llimit AS limit, f.saldo,
+        f.rol, f.valorPulsera, f.estaLoguejat, f.imatgeUrl,
+        fam.id AS familia_id, fam.nom AS familia_nom, fam.saldo_total
+      FROM faller f
+      LEFT JOIN familia fam ON f.familia_id = fam.id
+      WHERE f.id = $1
+    `, [id]);
+
     if (result.rows.length === 0) {
       return res.status(404).json({ error: "Perfil no trobat" });
     }
-    res.json(result.rows[0]);
+
+    const row = result.rows[0];
+
+    // Construeix l'objecte Faller amb familia dins
+    const faller = {
+      id: row.id,
+      nom: row.nom,
+      teLimit: row.teLimit,
+      limit: row.limit,
+      saldo: row.saldo,
+      rol: row.rol,
+      valorPulsera: row.valorpulsera,
+      estaLoguejat: row.estaloguejat,
+      imatgeUrl: row.imatgeurl,
+      familia: row.familia_id ? {
+        id: row.familia_id,
+        nom: row.familia_nom,
+        saldoTotal: row.saldo_total,
+        membres: null  // opcional, s'ompliria en altra consulta si vols
+      } : null
+    };
+
+    res.json(faller);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: "Error a l'hora de mostrar el perfil" });
   }
 });
@@ -32,7 +64,7 @@ router.get('/perfil/:id', async (req, res) => {
 router.get('/mostraQR/:id', async (req,res) =>{
   const { id } = req.params;
   try{
-    const result = await pool.query('SELECT nom,valor_pulsera from faller WHERE id=$1',[id] );
+    const result = await pool.query('SELECT nom,valorpulsera from faller WHERE id=$1',[id] );
     if(result.rows.length === 0){
       return res.status(404).json({ error: "Faller no trobat" });
     }
@@ -55,6 +87,51 @@ router.get('/mostraMembres/:idFamilia', async (req,res)=>{
     res.status(500).json({error:"Error a l'hora de mostrar els membres de la familia"});
   }
 });
+
+router.get('/buscarNom/:nom', async (req, res) => {
+  const { nom } = req.params;
+  try {
+    const result = await pool.query(`
+      SELECT 
+        f.id AS faller_id, f.nom AS faller_nom, f.te_limit, f.limit, f.saldo,
+        f.rol, f.valorPulsera, f.imatgeUrl,
+        f.familia_id, 
+        fam.nom AS familia_nom, fam.saldo_total
+      FROM faller f
+      LEFT JOIN familia fam ON f.familia_id = fam.id
+      WHERE f.nom = $1
+    `, [nom]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Faller no trobat" });
+    }
+
+    const row = result.rows[0];
+    const faller = {
+      id: row.faller_id,
+      nom: row.faller_nom,
+      teLimit: row.te_limit,
+      limit: row.limit,
+      saldo: row.saldo,
+      rol: row.rol,
+      valorPulsera: row.valorpulsera,
+      imatgeUrl: row.imatgeurl,
+      estaLoguejat: true, // o false per defecte si no ho saps
+
+      familia: row.familia_id ? {
+        id: row.familia_id,
+        nom: row.familia_nom,
+        saldoTotal: row.saldo_total,
+        membres: [] // o null si no vols incloure'ls
+      } : null
+    };
+
+    res.json(faller);
+  } catch (err) {
+    res.status(500).json({ error: "Error a l'hora de buscar el faller" });
+  }
+});
+
 /*
 Funcions amb POST
 */

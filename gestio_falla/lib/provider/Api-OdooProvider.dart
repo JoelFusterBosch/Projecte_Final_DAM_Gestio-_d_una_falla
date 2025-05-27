@@ -113,6 +113,16 @@ class ApiOdooProvider with ChangeNotifier {
       _setLoading(false);
     }
   }
+  Future<Faller?> getFallerPerNom(String nom) async {
+    try {
+      final faller = await _apiOdooRepository.getFallerPerNom(nom:nom); 
+      return faller;
+    } catch (e) {
+      _setError("No s'ha trobat el faller amb nom $nom");
+      return null;
+    }
+  }
+
 
   Future<void> postFaller({
     required String nom,

@@ -73,6 +73,19 @@ class FakeApiOdooDataSource {
     }
   }
 
+  Future<Faller?> getFallerPerNom(String nom) async {
+    final response = await http.get(Uri.parse('$baseUrl/faller/buscarNom/$nom'));
+
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body);
+      return Faller.fromJSON(json);
+    } else if (response.statusCode == 404) {
+      return null;
+    } else {
+      throw Exception("Error buscant faller per nom");
+    }
+  }
+
   // Inserta un faller nou (POST)
   Future<Map<String, dynamic>> postFaller(
     {required String nom, required String rol, required String valorPulsera}) async {

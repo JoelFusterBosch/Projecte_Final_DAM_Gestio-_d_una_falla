@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 import 'package:gestio_falla/provider/nfcProvider.dart';
 import 'package:gestio_falla/provider/qrProvider.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +24,6 @@ class AfegirMembreState extends State<AfegirMembre> {
 
   @override
   Widget build(BuildContext context) {
-    final apiOdooProvider = Provider.of<ApiOdooProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Afegir membre"),
@@ -168,4 +166,73 @@ class AfegirMembreState extends State<AfegirMembre> {
       },
     );
   }
+  /*
+  void verificar(BuildContext context) {
+    final provider = Provider.of<ApiOdooProvider>(context, listen: false);
+    final nom = _nomController.text.trim();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Amb què vols verificar?"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  final faller = await provider.getFallerPerNom(nom);
+
+                  if (faller != null) {
+                    final faller = await provider.getFallerPerNom(nom);
+                    if (faller != null && faller.familia?.id != null) {
+                      await provider.assignarFamilia(
+                        id: faller.id.toString(),
+                        idFamilia: faller.familia!.id.toString(),
+                      );
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Faller assignat correctament!")),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Faller no trobat!")),
+                    );
+                  }
+
+                  // Continua amb NFC
+                  context.read<NfcProvider>().llegirEtiqueta(context);
+                },
+                child: Text("Verificar amb NFC"),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  final faller = await provider.getFallerPerNom(nom);
+
+                  if (faller != null) {
+                    await provider.assignarFamilia(id: faller.id.toString(), idFamilia: "1");
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Faller assignat correctament!")),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Faller no trobat!")),
+                    );
+                  }
+
+                  // Continua amb QR
+                  context.read<Qrprovider>().llegirQR(context);
+                },
+                child: Text("Verificar amb QR"),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+  */
 }

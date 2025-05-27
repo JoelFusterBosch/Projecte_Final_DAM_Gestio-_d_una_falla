@@ -61,18 +61,17 @@ class Faller {
 
   factory Faller.fromJSON(Map<String, dynamic> json) {
     return Faller(
-      id: json['id'],
+      id: (json['id'] as num?)?.toDouble(),
       nom: json['nom'],
       teLimit: json['teLimit'],
-      limit: json['limit'],
-      saldo: (json['saldo'] is int)
-          ? (json['saldo'] as int).toDouble()
-          : json['saldo'],
-      familia: json['familia'], 
+      limit: (json['limit'] as num?)?.toDouble(),
+      saldo: (json['saldo'] as num?)?.toDouble(),
+      familia: json['familia'] != null ? Familia.fromJSON(json['familia']) : null,
       rol: json['rol'],
+      cobrador: json['cobrador'] != null ? Cobrador.fromJSON(json['cobrador']) : null,
       valorPulsera: json['valorPulsera'],
       imatgeUrl: json['imatgeUrl'],
-      estaLoguejat: json['estaLoguejat']
+      estaLoguejat: json['estaLoguejat'],
     );
   }
   Map<String, dynamic> toJSON() {
