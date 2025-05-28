@@ -45,7 +45,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (_) => const EditarUsuari()),
+                              MaterialPageRoute(builder: (_) => EditarUsuari(faller: widget.faller,)),
                             );
                           },
                           icon: const Icon(Icons.edit),
@@ -58,7 +58,6 @@ class _EditarPerfilState extends State<EditarPerfil> {
                             ),
                           ),
                         ),
-                        // Aquí pots afegir més opcions si vols, mantenint el mateix estil
                       ],
                     ),
                   ),

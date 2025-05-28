@@ -38,6 +38,3 @@ router.delete('/borrar/:nom', async (req,res) =>{
 });
 
 module.exports = router;
-
-
-

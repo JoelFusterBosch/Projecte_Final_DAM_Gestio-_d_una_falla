@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as httpClient;
 
 class FakeApiOdooDataSource {
   final String baseUrl;
@@ -83,6 +84,31 @@ class FakeApiOdooDataSource {
       return null;
     } else {
       throw Exception("Error buscant faller per nom");
+    }
+  }
+  Future<Faller?> getMembrePerValorPolsera(String valorPolsera) async{
+    try {
+      // Exemple: crida GET a l’endpoint que filtra per 'valorpulsera' igual a valorPolsera
+      final response = await httpClient.get(
+        Uri.parse('$baseUrl/fallers/buscarPerPulsera/$valorPolsera'),
+        headers: {
+          'Authorization': 'Bearer token_o_auth',
+          'Content-Type': 'application/json',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+
+        if (data != null && data['results'] != null && data['results'].isNotEmpty) {
+          // Convertir el primer resultat a entitat Faller
+          return Faller.fromJSON(data['results'][0]);
+        }
+      }
+      return null;
+    } catch (e) {
+      print("Error obtenint faller per valorpolsera: $e");
+      return null;
     }
   }
 
@@ -440,9 +466,9 @@ class FakeApiOdooDataSource {
         return Faller(
           nom: body['nom'] ?? nom,
           rol: body['rol'] ?? 'Faller',
-          valorPulsera: valorPulsera,
-          teLimit: body['teLimit'] ?? false,
-          estaLoguejat: true,
+          valorpulsera: valorPulsera,
+          telimit: body['teLimit'] ?? false,
+          estaloguejat: true,
         );
       } else {
         return null;

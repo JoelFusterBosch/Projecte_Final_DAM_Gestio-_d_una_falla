@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/faller.dart';
+import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 import 'package:gestio_falla/provider/nfcProvider.dart';
 import 'package:gestio_falla/provider/qrProvider.dart';
 import 'package:provider/provider.dart';
 
 class AfegirMembre extends StatefulWidget {
-  const AfegirMembre({super.key});
+  final Faller faller;
+  const AfegirMembre({super.key, required this.faller});
 
   @override
   State<AfegirMembre> createState() => AfegirMembreState();
@@ -138,6 +141,10 @@ class AfegirMembreState extends State<AfegirMembre> {
   }
 
   void verificar(BuildContext context) {
+    final apiProvider = Provider.of<ApiOdooProvider>(context, listen: false);
+    final nfcProvider = Provider.of<NfcProvider>(context, listen: false);
+    final qrProvider = Provider.of<Qrprovider>(context, listen: false);
+
     showDialog(
       context: context,
       builder: (context) {
@@ -147,16 +154,106 @@ class AfegirMembreState extends State<AfegirMembre> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   Navigator.pop(context);
-                  context.read<NfcProvider>().llegirEtiqueta(context);
+                  // Llegir NFC i obtenir valor polsera
+                  try {
+                    final valorPolsera = await nfcProvider.llegirEtiquetaRetornantValor(context);
+                    if (valorPolsera == null || valorPolsera.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("No s'ha llegit cap valor NFC.")),
+                      );
+                      return;
+                    }
+
+                    // Consultar l'API per obtenir faller per valor polsera
+                    final fallerNou = await apiProvider.getMembrePerValorPolsera(valorPolsera);
+                    if (fallerNou == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Faller no trobat per la polsera NFC!")),
+                      );
+                      return;
+                    }
+
+                    // Assignar família si cal
+                    final familiaPerfil = widget.faller.familia_id?.id;
+                    if (familiaPerfil == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("El faller perfil no té família assignada!")),
+                      );
+                      return;
+                    }
+
+                    if (fallerNou.familia_id == null || fallerNou.familia_id!.id == null) {
+                      await apiProvider.assignarFamilia(
+                        id: fallerNou.id.toString(),
+                        idFamilia: familiaPerfil.toString(),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Família assignada correctament al nou faller!")),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("El faller ja té família assignada.")),
+                      );
+                    }
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Error: ${e.toString()}")),
+                    );
+                  }
                 },
                 child: Text("Verificar amb NFC"),
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   Navigator.pop(context);
-                  context.read<Qrprovider>().llegirQR(context);
+                  // Llegir QR i obtenir valor polsera
+                  try {
+                    final valorPolsera = await qrProvider.llegirQRRetornantValor(context);
+                    if (valorPolsera == null || valorPolsera.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("No s'ha llegit cap valor QR.")),
+                      );
+                      return;
+                    }
+
+                    // Consultar l'API per obtenir faller per valor polsera
+                    final fallerNou = await apiProvider.getMembrePerValorPolsera(valorPolsera);
+                    if (fallerNou == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Faller no trobat per la polsera QR!")),
+                      );
+                      return;
+                    }
+
+                    // Assignar família si cal
+                    final familiaPerfil = widget.faller.familia_id?.id;
+                    if (familiaPerfil == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("El faller perfil no té família assignada!")),
+                      );
+                      return;
+                    }
+
+                    if (fallerNou.familia_id == null || fallerNou.familia_id!.id == null) {
+                      await apiProvider.assignarFamilia(
+                        id: fallerNou.id.toString(),
+                        idFamilia: familiaPerfil.toString(),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Família assignada correctament al nou faller!")),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("El faller ja té família assignada.")),
+                      );
+                    }
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Error: ${e.toString()}")),
+                    );
+                  }
                 },
                 child: Text("Verificar amb QR"),
               ),
@@ -166,11 +263,10 @@ class AfegirMembreState extends State<AfegirMembre> {
       },
     );
   }
-  /*
-  void verificar(BuildContext context) {
-    final provider = Provider.of<ApiOdooProvider>(context, listen: false);
-    final nom = _nomController.text.trim();
+}
 
+/*
+  void verificar(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) {
@@ -180,50 +276,15 @@ class AfegirMembreState extends State<AfegirMembre> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ElevatedButton(
-                onPressed: () async {
+                onPressed: () {
                   Navigator.pop(context);
-                  final faller = await provider.getFallerPerNom(nom);
-
-                  if (faller != null) {
-                    final faller = await provider.getFallerPerNom(nom);
-                    if (faller != null && faller.familia?.id != null) {
-                      await provider.assignarFamilia(
-                        id: faller.id.toString(),
-                        idFamilia: faller.familia!.id.toString(),
-                      );
-                    }
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Faller assignat correctament!")),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Faller no trobat!")),
-                    );
-                  }
-
-                  // Continua amb NFC
                   context.read<NfcProvider>().llegirEtiqueta(context);
                 },
                 child: Text("Verificar amb NFC"),
               ),
               ElevatedButton(
-                onPressed: () async {
+                onPressed: () {
                   Navigator.pop(context);
-                  final faller = await provider.getFallerPerNom(nom);
-
-                  if (faller != null) {
-                    await provider.assignarFamilia(id: faller.id.toString(), idFamilia: "1");
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Faller assignat correctament!")),
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Faller no trobat!")),
-                    );
-                  }
-
-                  // Continua amb QR
                   context.read<Qrprovider>().llegirQR(context);
                 },
                 child: Text("Verificar amb QR"),
@@ -235,4 +296,3 @@ class AfegirMembreState extends State<AfegirMembre> {
     );
   }
   */
-}

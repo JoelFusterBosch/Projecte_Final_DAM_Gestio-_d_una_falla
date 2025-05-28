@@ -32,7 +32,7 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
             mainAxisAlignment:MainAxisAlignment.center,
             children: [
               const SizedBox(height: 80),
-              Image.network(event.urlImatge ?? ""),
+              Image.network(event.urlimatge ?? ""),
               Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Column(
@@ -53,7 +53,7 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
                       height: 20,
                     ),
                     Text(
-                      event.desc ?? "No n'hi ha descripció per a este event",
+                      event.descripcio ?? "No n'hi ha descripció per a este event",
                       textAlign: TextAlign.justify,
                       style: Theme.of(context).textTheme.bodyMedium,
                     )

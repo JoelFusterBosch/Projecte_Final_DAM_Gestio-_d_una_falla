@@ -27,7 +27,7 @@ router.get('/detallat/:id', async (req, res) => {
 //Escaner? i pantalla d'events: Un SELECT amb id,nom,dataInici,dataFi
 router.get('/llista', async (req, res) => {
   try{
-    const result = await pool.query('SELECT id, nom, datainici, datafi FROM events');/*queda prodEspecific=false */
+    const result = await pool.query('SELECT id, nom, datainici, datafi FROM events');
     res.json(result.rows);
   }catch (err){
     res.status(500).json({error:"Error a l'hora d'obtindre la llista d'events"});
@@ -40,7 +40,7 @@ Funcions amb POST
 router.post('/insertar', async (req,res) =>{
   const {id,nom,dataInici,dataFi} = req.body;
   try{
-    const result = await populate.query('INSERT INTO events(id,nom,datainici,datafi) VALUES ($1,$2,$3,$4)',[id,nom,dataInici,dataFi]);
+    const result = await pool.query('INSERT INTO events(id,nom,datainici,datafi) VALUES ($1,$2,$3,$4)',[id,nom,dataInici,dataFi]);
     res.status(201).json(result.rows[0]);
   }catch (err){
     res.json({error: "Error a l'hoora d'insertar un event"});

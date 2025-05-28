@@ -3,13 +3,13 @@ import 'package:gestio_falla/domain/entities/faller.dart';
 class Familia {
   double? id;
   String nom;
-  double? saldoTotal;
+  double? saldo_total;
   List<Faller>? membres;
 
   Familia({
     this.id,
     required this.nom,
-    this.saldoTotal,
+    this.saldo_total,
     this.membres,
   });
 
@@ -17,7 +17,7 @@ class Familia {
     return Familia(
       id: (json['id'] as num?)?.toDouble(),
       nom: json['nom'],
-      saldoTotal: (json['saldoTotal'] as num?)?.toDouble(),
+      saldo_total: (json['saldo_total'] as num?)?.toDouble(),
       membres: json['membres'] != null
           ? List<Faller>.from(json['membres'].map((m) => Faller.fromJSON(m)))
           : null,
@@ -28,7 +28,7 @@ class Familia {
     return {
       'id': id,
       'nom': nom,
-      'saldoTotal': saldoTotal,
+      'saldo_total': saldo_total,
       'membres': membres?.map((m) => m.toJSON()).toList(),
     };
   }

@@ -1,13 +1,11 @@
 /*
-Fitxer per a copiar i pegar en una base de dades PostgresSQL
+Fitxer per a copiar i pegar en una base de dades PostgreSQL
 */
 
 -- Sols la primera vegada (comprova que no existeixen abans de crear-los si ho vas a executar múltiples vegades)
 CREATE USER joel WITH PASSWORD '1234';
 CREATE DATABASE gestio_falla;
 GRANT ALL PRIVILEGES ON DATABASE gestio_falla TO joel;
-GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO joel;
-GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO joel;
 
 -- Eliminar taules si existeixen
 DROP TABLE IF EXISTS faller CASCADE;
@@ -45,14 +43,12 @@ VALUES
 CREATE TABLE ticket(
  id BIGSERIAL PRIMARY KEY NOT NULL,
  quantitat INT NOT NULL,
- preu BIGINT NOT NULL,
+ preu NUMERIC(5,2) NOT NULL,
  maxim BOOLEAN NOT NULL 
 );
 
 INSERT INTO ticket (id, quantitat, preu, maxim)
-VALUES (1, 20, 1, false);
-
-
+VALUES (1, 20, 1.00, false);
 
 -- Crea la taula 'faller'
 CREATE TABLE faller (
@@ -60,9 +56,14 @@ CREATE TABLE faller (
   nom TEXT NOT NULL,
   rol TEXT NOT NULL CHECK (rol IN ('Faller', 'Cobrador', 'Cap de familia', 'Administrador', 'SuperAdmin')),
   valorPulsera TEXT NOT NULL,
-
+  imatgeUrl TEXT,
   teLimit BOOLEAN,
   llimit NUMERIC,
+  saldo NUMERIC,
+  familia_id BIGINT,
+  cobrador_id BIGINT,
+  FOREIGN KEY (familia_id) REFERENCES familia(id),
+  FOREIGN KEY (cobrador_id) REFERENCES cobrador(id),
   CHECK (
     (rol = 'Cap de familia' AND teLimit = FALSE AND llimit IS NULL)
     OR
@@ -71,14 +72,6 @@ CREATE TABLE faller (
       (teLimit = FALSE AND llimit IS NULL)
     ))
   ),
-
-  saldo NUMERIC,
-
-  familia_id BIGINT,
-  cobrador_id BIGINT,
-  FOREIGN KEY (familia_id) REFERENCES familia(id),
-  FOREIGN KEY (cobrador_id) REFERENCES cobrador(id),
-
   CHECK (
     rol != 'Cobrador' OR cobrador_id IS NOT NULL
   )
@@ -91,11 +84,11 @@ VALUES
 ('Juan', 'Administrador', '2', false, NULL, 500.0, 2),
 ('Alexis', 'Faller', '3', true, 25.0, 20.0, 1);
 
---Insertar fallers SENSE familia
+-- Insertar fallers SENSE familia
 INSERT INTO faller (nom, rol, valorPulsera, teLimit, llimit, saldo)
 VALUES ('José', 'Faller', '7', false, NULL, 200.0);
 
---Insertar fallers amb rols de cobrador
+-- Insertar fallers amb rols de cobrador
 INSERT INTO faller (nom, rol, cobrador_id, valorPulsera, teLimit, llimit, saldo)
 VALUES 
 ('José Maria', 'Cobrador', 1, '4', false, NULL, 25.0),
@@ -107,16 +100,16 @@ CREATE TABLE producte(
  id BIGSERIAL PRIMARY KEY,
  nom TEXT NOT NULL,
  descripcio TEXT,
- preu BIGINT,
+ preu NUMERIC(5,2),
  stock INTEGER NOT NULL,
  urlImatge TEXT,
- eventEspecific BOOLEAN
+ eventEspecific BOOLEAN DEFAULT FALSE
 );
 
-INSERT INTO producte(nom,preu,stock,urlImatge)
+INSERT INTO producte(nom, preu, stock, urlImatge)
 VALUES
-('Aigua 500ml', 1, 20, 'img/Productes/Aigua.png'),
-('Cervesa 33cl', 1.5, 33, 'img/Productes/Cervesa.png'),
+('Aigua 500ml', 1.00, 20, 'img/Productes/Aigua.png'),
+('Cervesa 33cl', 1.50, 33, 'img/Productes/Cervesa.png'),
 ('Coca-Cola', 1.30, 0, 'img/Productes/Coca-Cola.png'),
 ('Pepsi', 1.25, 77, 'img/Productes/Pepsi.png');
 
@@ -135,7 +128,7 @@ CREATE TABLE events(
   FOREIGN KEY (ticket_id) REFERENCES ticket(id)
 );
 
---Insertar events sense tickets
+-- Insertar events sense tickets
 INSERT INTO events (nom, dataInici, dataFi, urlImatge)
 VALUES 
 ('Cremà', '2025-03-20 20:00:00', '2025-03-21 02:00:00','/img/Events/Cremà.png'),
@@ -143,6 +136,10 @@ VALUES
 ('Despedida', '2025-03-19 16:00:00', '2025-03-19 18:00:00','/img/Events/Despedida.png'),
 ('Caminata', '2025-03-19 16:00:00', '2025-03-19 18:00:00','/img/Events/Despedida.png');
 
---Insertar events AMB tickets
+-- Insertar events AMB tickets
 INSERT INTO events (nom, dataInici, dataFi, ticket_id, urlImatge)
 VALUES ('Paella', '2025-03-16 14:00:00', '2025-03-16 17:00:00', 1, '/img/Events/Paella.png');
+
+-- GRANT després de crear les taules i seqüències
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO joel;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO joel;

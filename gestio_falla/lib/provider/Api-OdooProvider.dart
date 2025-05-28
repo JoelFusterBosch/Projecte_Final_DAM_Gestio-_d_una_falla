@@ -151,6 +151,7 @@ class ApiOdooProvider with ChangeNotifier {
       _setLoading(false);
     }
   }
+  
   Future<String?> getFallerValorPulseraByName(String nom) async {
     try {
       final fallers = await _apiOdooRepository.getFallers();
@@ -162,6 +163,18 @@ class ApiOdooProvider with ChangeNotifier {
     }
   }
 
+  Future<Faller?> getMembrePerValorPolsera(String valorPolsera) async {
+    _setLoading(true);
+    try {
+      final faller = await _apiOdooRepository.getMembrePerValorPolsera(valorPolsera);
+      return faller;
+    } catch (e) {
+      _setError("No s'ha pogut trobar el faller: $e");
+      return null;
+    } finally {
+      _setLoading(false);
+    }
+  }
 
   Future<void> canviaRol({required String id, required String rol}) async {
     _setLoading(true);
@@ -199,7 +212,6 @@ class ApiOdooProvider with ChangeNotifier {
       _setLoading(false);
     }
   }
-
 
   Future<void> getEvents() async{
     _setLoading(true);
@@ -462,8 +474,8 @@ class ApiOdooProvider with ChangeNotifier {
         await prefs.setBool('estaLoguejat', true);
         await prefs.setString('nom', faller.nom);
         await prefs.setString('rol', faller.rol);
-        await prefs.setString('pulsera', faller.valorPulsera);
-        await prefs.setBool('teLimit', faller.teLimit);
+        await prefs.setString('pulsera', faller.valorpulsera);
+        await prefs.setBool('teLimit', faller.telimit);
 
         notifyListeners();
         return _usuariActual;

@@ -15,6 +15,7 @@ abstract class ApiOdooRepository {
   Future<Map<String,dynamic>> getMostraQR({required String id});
   Future<List<dynamic>?> getMostraMembres({required String idFamilia});
   Future<Faller?> getFallerPerNom({required String nom});
+  Future<Faller?> getMembrePerValorPolsera(String valorPolsera);
   Future<Map<String,dynamic>> postFaller({required String nom, required String rol, required String valorPulsera});
   Future<Map<String,dynamic>> canviaNom({required String id, required String nouNom});
   Future<Map<String,dynamic>> assignarFamilia({required String id, required String idFamilia});

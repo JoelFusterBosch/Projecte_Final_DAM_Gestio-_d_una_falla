@@ -25,8 +25,8 @@ class EscanerState extends State<Escaner>{
   @override
   void initState(){
     super.initState();
-    faller=Faller(nom: "Joel", rol:"Cobrador", cobrador: Cobrador(rolCobrador: "Cadires"),valorPulsera: "8430001000017", teLimit: false, estaLoguejat: true);
-    event=Event(nom: "Paella", dataInici:DateTime(2025,3,16,14,0), dataFi:DateTime(2025,3,16,17,0),numCadires: 10, prodEspecific: false);
+    faller=Faller(nom: "Joel", rol:"Cobrador", cobrador_id: Cobrador(rolCobrador: "Cadires"),valorpulsera: "8430001000017", telimit: false, estaloguejat: true);
+    event=Event(nom: "Paella", datainici:DateTime(2025,3,16,14,0), datafi:DateTime(2025,3,16,17,0),numcadires: 10, prodespecific: false);
     indexPantallaActual=0;
     esFaller=true;
     cadiresPerAlFaller=1;
@@ -96,7 +96,7 @@ class EscanerState extends State<Escaner>{
   }
   void event1() {
     setState(() {
-      if (event.nom == "Paella" && event.dataInici == DateTime(2025,3,16,14,0)) {
+      if (event.nom == "Paella" && event.datainici == DateTime(2025,3,16,14,0)) {
         if (esFaller) {
           if (faller.nom == "Joel") {
             if (cadiresPerAlFaller >= 1) {

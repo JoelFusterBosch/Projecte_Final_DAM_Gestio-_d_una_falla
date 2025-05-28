@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 import 'package:gestio_falla/provider/nfcProvider.dart';
 import 'package:gestio_falla/provider/qrProvider.dart';
 import 'package:provider/provider.dart';
 
 class EditarUsuari extends StatefulWidget {
-  const EditarUsuari({super.key});
+  final Faller faller;
+  const EditarUsuari({super.key, required this.faller});
 
   @override
   State<EditarUsuari> createState() => EditarUsuariState();

@@ -22,7 +22,7 @@ class _MostraQrScreenState extends State<MostraQrScreen> {
     super.didChangeDependencies();
     if (!estaCarregat) {
       final provider = Provider.of<Mostraqrprovider>(context, listen: false);
-      provider.generateQr(widget.faller.valorPulsera);
+      provider.generateQr(widget.faller.valorpulsera);
       estaCarregat = true;
     }
   }

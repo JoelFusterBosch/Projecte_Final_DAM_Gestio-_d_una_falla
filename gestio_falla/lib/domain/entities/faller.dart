@@ -4,56 +4,56 @@ import 'package:gestio_falla/domain/entities/familia.dart';
 class Faller {
   double? id;
   String nom;
-  bool teLimit;
-  double? limit;
+  bool telimit;
+  double? llimit;
   double? saldo;
-  Familia? familia;
+  Familia? familia_id;
 
   String rol;     
   static const List<String> rolsValids = ['Faller', 'Cobrador','Cap de familia','Administrador','SuperAdmin'];  
-  Cobrador? cobrador;  
-  String valorPulsera; 
-  String? imatgeUrl;
-  bool estaLoguejat;
+  Cobrador? cobrador_id;  
+  String valorpulsera; 
+  String? imatgeurl;
+  bool estaloguejat;
 
   Faller({
     this.id,
     required this.nom,
-    required this.teLimit,
-    this.limit,
+    required this.telimit,
+    this.llimit,
     this.saldo,
-    this.familia,
+    this.familia_id,
     required this.rol,
-    this.cobrador,
-    required this.valorPulsera,
-    this.imatgeUrl,
-    required this.estaLoguejat,
+    this.cobrador_id,
+    required this.valorpulsera,
+    this.imatgeurl,
+    required this.estaloguejat,
   }) {
     if (!rolsValids.contains(rol)) {
       throw ArgumentError('Rol no vàlid: $rol');
     } else if (rol == 'Cobrador' || rol == 'SuperAdmin') {
-      if (cobrador == null) {
+      if (cobrador_id == null) {
         throw ArgumentError('El rol "Cobrador" requereix una instància de Cobrador.');
       }
-      if (!Cobrador.rolsValids.contains(cobrador!.rolCobrador)) {
-        throw ArgumentError('Cobrador deu tindre un subRol vàlid: ${cobrador!.rolCobrador}.');
+      if (!Cobrador.rolsValids.contains(cobrador_id!.rolCobrador)) {
+        throw ArgumentError('Cobrador deu tindre un subRol vàlid: ${cobrador_id!.rolCobrador}.');
       }
     } else {
       // Si no és Cobrador, subRol hauria de ser null
-      cobrador = null;
+      cobrador_id = null;
     }
     if(rol!="Cap de familia"){
-      if (teLimit && limit == null) {
+      if (telimit && llimit == null) {
       throw ArgumentError("Si 'teLimit' es vertader, 'limit' no pot ser nul.");
       }
-      if (!teLimit && limit != null) {
+      if (!telimit && llimit != null) {
         throw ArgumentError("Si 'teLimit' es fals, 'limit' deu ser nul.");
       }
     } else {
-      if (teLimit && limit == null) {
+      if (telimit && llimit == null) {
         throw ArgumentError("Si 'teLimit' és vertader, 'limit' no pot ser nul.");
       }
-      if (!teLimit && limit != null) {
+      if (!telimit && llimit != null) {
         throw ArgumentError("Si 'teLimit' és fals, 'limit' ha de ser nul.");
       }
     }
@@ -63,30 +63,30 @@ class Faller {
     return Faller(
       id: (json['id'] as num?)?.toDouble(),
       nom: json['nom'],
-      teLimit: json['teLimit'],
-      limit: (json['limit'] as num?)?.toDouble(),
+      telimit: json['telimit'],
+      llimit: (json['llimit'] as num?)?.toDouble(),
       saldo: (json['saldo'] as num?)?.toDouble(),
-      familia: json['familia'] != null ? Familia.fromJSON(json['familia']) : null,
+      familia_id: json['familia_id'] != null ? Familia.fromJSON(json['familia']) : null,
       rol: json['rol'],
-      cobrador: json['cobrador'] != null ? Cobrador.fromJSON(json['cobrador']) : null,
-      valorPulsera: json['valorPulsera'],
-      imatgeUrl: json['imatgeUrl'],
-      estaLoguejat: json['estaLoguejat'],
+      cobrador_id: json['cobrador_id'] != null ? Cobrador.fromJSON(json['cobrador']) : null,
+      valorpulsera: json['valorpulsera'],
+      imatgeurl: json['imatgeurl'],
+      estaloguejat: json['estaloguejat'],
     );
   }
   Map<String, dynamic> toJSON() {
     return {
       'id': id,
       'nom': nom,
-      'teLimit': teLimit,
-      'limit': limit,
+      'telimit': telimit,
+      'llimit': llimit,
       'saldo': saldo,
-      'familia': familia?.toJson(),
+      'familia_id': familia_id?.toJson(),
       'rol': rol,
-      'cobrador': cobrador?.toJSON(),
-      'valorPulsera': valorPulsera,
-      'imatgeUrl': imatgeUrl,
-      'estaLoguejat': estaLoguejat,
+      'cobrador_id': cobrador_id?.toJSON(),
+      'valorpulsera': valorpulsera,
+      'imatgeurl': imatgeurl,
+      'estaloguejat': estaloguejat,
     };
   }
 }

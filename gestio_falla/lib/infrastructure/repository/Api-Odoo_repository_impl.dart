@@ -61,6 +61,11 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   }
 
   @override
+  Future<Faller?> getMembrePerValorPolsera(String valorPolsera) {
+    return fakeApiOdooDataSource.getMembrePerValorPolsera(valorPolsera);
+  }
+
+  @override
   Future<Map<String, dynamic>> postFaller({required String nom, required String rol, required String valorPulsera}) {
     return fakeApiOdooDataSource.postFaller(nom: nom, rol: rol, valorPulsera: valorPulsera);
   }
@@ -198,6 +203,5 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   @override
   Future<Faller?> verificarUsuari({required nom, required valorPulsera}) async{
     return await fakeApiOdooDataSource.verificarUsuari(nom, valorPulsera);
-  }
-  
+  }  
 }

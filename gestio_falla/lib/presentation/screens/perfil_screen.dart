@@ -60,21 +60,21 @@ class PerfilScreenState extends State<PerfilScreen> {
                           style: TextStyle(fontSize: 18),
                         ),
                         Text(
-                          widget.faller.familia != null ? widget.faller.familia!.nom : "Familia no assignada",
+                          widget.faller.familia_id != null ? widget.faller.familia_id!.nom : "Familia no assignada",
                           style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
                         SizedBox(height: 20),
                         Offstage(
-                          offstage: widget.faller.rol != "Cap de familia" && widget.faller.familia == null,
+                          offstage: widget.faller.rol != "Cap de familia" && widget.faller.familia_id == null,
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => AfegirMembre()));
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => AfegirMembre(faller: widget.faller)));
                             },
                             child: Text("Agregar membre"),
                           ),
                         ),
                         Offstage(
-                          offstage: widget.faller.familia != null,
+                          offstage: widget.faller.familia_id != null,
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context) => CrearFamilia()));

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/domain/entities/faller.dart';
+//import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/presentation/screens/login_screen.dart';
+import 'package:gestio_falla/provider/Api-OdooProvider.dart';
+import 'package:provider/provider.dart';
 
 
 class RegistrarUsuari extends StatefulWidget{
@@ -10,7 +12,7 @@ class RegistrarUsuari extends StatefulWidget{
   State<RegistrarUsuari> createState() => RegistrarUsuariState();
 
 }
-
+/*
 class RegistrarUsuariState extends State<RegistrarUsuari>{
   final List<String> rols=['Inserta un rol','Faller','Cobrador','Administrador'];
   Faller faller = Faller(nom: "", teLimit: false, rol: "Faller", valorPulsera: '0', estaLoguejat: true);
@@ -91,13 +93,14 @@ class RegistrarUsuariState extends State<RegistrarUsuari>{
     );         
   }         
 }
-/*
+*/
+
 class RegistrarUsuariState extends State<RegistrarUsuari> {
   final List<String> rols = ['Inserta un rol', 'Faller', 'Cobrador', 'Administrador'];
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nomController = TextEditingController();
 
-  Faller faller = Faller(nom: "", teLimit: false, rol: "Faller", valorPulsera: '0', estaLoguejat: true);
+  String _rolSeleccionat = 'Inserta un rol';
 
   @override
   Widget build(BuildContext context) {
@@ -151,10 +154,10 @@ class RegistrarUsuariState extends State<RegistrarUsuari> {
                           child: Text("Rol"),
                         ),
                         DropdownButton<String>(
-                          value: faller.rol,
+                          value: _rolSeleccionat,
                           onChanged: (String? newValue) {
                             setState(() {
-                              faller.rol = newValue!;
+                              _rolSeleccionat = newValue!;
                             });
                           },
                           items: rols.map<DropdownMenuItem<String>>((String value) {
@@ -168,21 +171,21 @@ class RegistrarUsuariState extends State<RegistrarUsuari> {
                         ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              if (faller.rol == 'Inserta un rol') {
+                              if (_rolSeleccionat == 'Inserta un rol') {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text("Selecciona un rol vàlid")),
                                 );
                                 return;
                               }
 
-                              // Actualitza l'objecte faller amb el nom
-                              faller.nom = _nomController.text.trim();
+                              final nomUsuari = _nomController.text.trim();
+                              final rolUsuari = _rolSeleccionat;
 
                               try {
                                 await apiOdooProvider.postFaller(
-                                  nom: faller.nom,
-                                  rol: faller.rol,
-                                  valorPulsera: faller.valorPulsera,
+                                  nom: nomUsuari,
+                                  rol: rolUsuari,
+                                  valorPulsera: '0', // o el valor que correspongui per defecte
                                 );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text("Usuari registrat correctament!")),
@@ -217,5 +220,3 @@ class RegistrarUsuariState extends State<RegistrarUsuari> {
     );
   }
 }
-
-*/         

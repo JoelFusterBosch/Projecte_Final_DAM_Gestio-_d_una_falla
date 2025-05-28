@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 import 'package:gestio_falla/provider/nfcProvider.dart';
 import 'package:gestio_falla/provider/qrProvider.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,7 @@ class CrearFamilia extends StatefulWidget{
   @override
   State<CrearFamilia> createState() => CrearFamiliaState();
 }
+/*
 class CrearFamiliaState extends State<CrearFamilia>{
   @override
   Widget build(BuildContext context) {
@@ -103,6 +105,7 @@ class CrearFamiliaState extends State<CrearFamilia>{
       ),
     );
   }
+  */
   void verificar(BuildContext context) {
     showDialog(
       context: context,
@@ -132,8 +135,9 @@ class CrearFamiliaState extends State<CrearFamilia>{
       },
     );
   }
-}
-/*
+
+
+
 class CrearFamiliaState extends State<CrearFamilia> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nomFamiliaController = TextEditingController();
@@ -320,4 +324,4 @@ class CrearFamiliaState extends State<CrearFamilia> {
     }
   }
 }
- */
+ 

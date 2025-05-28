@@ -18,13 +18,13 @@ class Qrprovider with ChangeNotifier{
   String _qrData = "Escaneja un QR";
   String get qrData => _qrData;
   List <Producte>totsElsProductes=[
-    Producte(nom: "Aigua 500ml", preu: 1 ,stock: 20, eventEspecific: false),
-    Producte(nom: "Cervesa 33cl", preu: 1.5, stock: 33, eventEspecific: false),
-    Producte(nom: "Coca-Cola", preu: 1.30, stock: 0, eventEspecific: false),
-    Producte(nom: "Pepsi", preu: 1.25, stock: 77, eventEspecific: false),  
+    Producte(nom: "Aigua 500ml", preu: 1 ,stock: 20, eventespecific: false),
+    Producte(nom: "Cervesa 33cl", preu: 1.5, stock: 33, eventespecific: false),
+    Producte(nom: "Coca-Cola", preu: 1.30, stock: 0, eventespecific: false),
+    Producte(nom: "Pepsi", preu: 1.25, stock: 77, eventespecific: false),  
   ];
 
-  Event event = Event(nom: "Paella", dataInici:DateTime(2025,3,16,14,0), dataFi:DateTime(2025,3,16,17,0), numCadires: 10, prodEspecific: true, producte: Producte(nom: "Hamburguesa", preu: 2.5, stock: 10, eventEspecific: true));
+  Event event = Event(nom: "Paella", datainici:DateTime(2025,3,16,14,0), datafi:DateTime(2025,3,16,17,0), numcadires: 10, prodespecific: true, producte_id: Producte(nom: "Hamburguesa", preu: 2.5, stock: 10, eventespecific: true));
 
 
   Future<void> llegirQR(BuildContext context) async {
@@ -33,18 +33,18 @@ class Qrprovider with ChangeNotifier{
 
     qrRepository.llegirQR(
       context: context,
-      valorEsperat: faller.valorPulsera,
+      valorEsperat: faller.valorpulsera,
       onCoincidencia: () {
-        _qrData = "Valor llegit ${faller.valorPulsera}";
+        _qrData = "Valor llegit ${faller.valorpulsera}";
 
         if (faller.rol == "Cobrador") {
-          if(!faller.estaLoguejat){
+          if(!faller.estaloguejat){
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
             );
           }else{
-            switch (faller.cobrador!.rolCobrador) {
+            switch (faller.cobrador_id!.rolCobrador) {
               case 'Cadires':
                 Navigator.pushReplacement(
                   context,
@@ -61,33 +61,33 @@ class Qrprovider with ChangeNotifier{
               case 'Escudellar':
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => Escudellar(faller: faller, producte: event.producte,)),
+                  MaterialPageRoute(builder: (_) => Escudellar(faller: faller, producte: event.producte_id,)),
                 );
                 break;
             }
           }
         } else if (faller.rol == "Faller") {
-          if(!faller.estaLoguejat){
+          if(!faller.estaloguejat){
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
             );
           }
         }else if (faller.rol == "Administrador") {
-          if(!faller.estaLoguejat){
+          if(!faller.estaloguejat){
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
             );
           }
         }else if (faller.rol == "SuperAdmin") {
-          if(!faller.estaLoguejat){
+          if(!faller.estaloguejat){
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
             );
           }else{
-            switch (faller.cobrador!.rolCobrador) {
+            switch (faller.cobrador_id!.rolCobrador) {
               case 'Cadires':
                 Navigator.pushReplacement(
                   context,
@@ -103,7 +103,7 @@ class Qrprovider with ChangeNotifier{
               case 'Escudellar':
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => Escudellar(faller: faller, producte: event.producte,)),
+                  MaterialPageRoute(builder: (_) => Escudellar(faller: faller, producte: event.producte_id,)),
                 );
                 break;
             }
@@ -120,6 +120,23 @@ class Qrprovider with ChangeNotifier{
         notifyListeners();
       },
     );
+  }
+  Future<String?> llegirQRRetornantValor(BuildContext context) async {
+    _qrData = "Llegint QR...";
+    notifyListeners();
+
+    try {
+      final valorLlegit = await qrRepository.llegirQRAmbRetorn(context);
+      if (valorLlegit != null) {
+        _qrData = "Valor llegit: $valorLlegit";
+        notifyListeners();
+        return valorLlegit;
+      }
+    } catch (e) {
+      _qrData = "Error al escanejar el QR";
+      notifyListeners();
+    }
+    return null;
   }
 
 }

@@ -15,4 +15,11 @@ class Ticket {
       maxim: json['maxim'],
       );
   }
+  Map<String, dynamic> toJSON() => {
+    'id': id,
+    'preu': preu,
+    'quantitat': quantitat,
+    'maxim': maxim,
+  };
+
 }

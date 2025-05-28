@@ -27,7 +27,7 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-  final fakeApiOdooDataSource=FakeApiOdooDataSource(baseUrl: "http://192.168.1.22:3000", db: "Projecte_Falla");
+  final fakeApiOdooDataSource=FakeApiOdooDataSource(baseUrl: "http://192.168.236.2:3000", db: "Projecte_Falla");
   final apiOdooRepository= ApiOdooRepositoryImpl(fakeApiOdooDataSource);
   final nfcDataSource = NfcDataSource();
   final nfcRepository = NfcRepositoryImpl(nfcDataSource);
@@ -48,7 +48,7 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
-  final faller = Faller(nom: "Joel", teLimit: false, rol: "SuperAdmin", cobrador: Cobrador(rolCobrador: "Cadires"),familia:Familia(nom: "Familia de Joel"), valorPulsera: "8430001000017", estaLoguejat: false);
+  final faller = Faller(nom: "Joel", telimit: false, rol: "SuperAdmin", cobrador_id: Cobrador(rolCobrador: "Cadires"),familia_id:Familia(nom: "Familia de Joel"), valorpulsera: "8430001000017", estaloguejat: false);
   final bool isLoggedIn;
     final ApiOdooRepositoryImpl apiOdooRepositoryImpl;
   final NfcRepositoryImpl nfcRepositoryImpl;

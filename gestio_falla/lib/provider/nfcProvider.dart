@@ -18,12 +18,12 @@ class NfcProvider with ChangeNotifier {
   String _nfcData = "Escaneja una etiqueta NFC";
   String get nfcData => _nfcData;
   List <Producte>totsElsProductes=[
-    Producte(nom: "Aigua 500ml", preu: 1 ,stock: 20, eventEspecific: false),
-    Producte(nom: "Cervesa 33cl", preu: 1.5, stock: 33, eventEspecific: false),
-    Producte(nom: "Coca-Cola", preu: 1.30, stock: 0, eventEspecific: false),
-    Producte(nom: "Pepsi", preu: 1.25, stock: 77, eventEspecific: false),  
+    Producte(nom: "Aigua 500ml", preu: 1 ,stock: 20, eventespecific: false),
+    Producte(nom: "Cervesa 33cl", preu: 1.5, stock: 33, eventespecific: false),
+    Producte(nom: "Coca-Cola", preu: 1.30, stock: 0, eventespecific: false),
+    Producte(nom: "Pepsi", preu: 1.25, stock: 77, eventespecific: false),  
   ];
-  Event event = Event(nom: "Paella", dataInici:DateTime(2025,3,16,14,0), dataFi:DateTime(2025,3,16,17,0), numCadires: 10, prodEspecific: true, producte: Producte(nom: "Hamburguesa", preu: 2.5, stock: 10, eventEspecific: true));
+  Event event = Event(nom: "Paella", datainici:DateTime(2025,3,16,14,0), datafi:DateTime(2025,3,16,17,0), numcadires: 10, prodespecific: true, producte_id: Producte(nom: "Hamburguesa", preu: 2.5, stock: 10, eventespecific: true));
   List<Producte> get productesBarra {
     return apiOdooProvider.productes.cast<Producte>();
   }
@@ -33,13 +33,13 @@ class NfcProvider with ChangeNotifier {
     notifyListeners();
 
     final valorLlegit = await _nfcRepository.llegirNfc(
-      valorEsperat: faller.valorPulsera,
+      valorEsperat: faller.valorpulsera,
         onCoincidencia: () async{
-          _nfcData = "Acció realitzada per valor NFC: ${faller.valorPulsera}";
+          _nfcData = "Acció realitzada per valor NFC: ${faller.valorpulsera}";
           
           if(faller.rol=="Cobrador"){
-            if(!faller.estaLoguejat){
-              switch (faller.cobrador!.rolCobrador) {
+            if(!faller.estaloguejat){
+              switch (faller.cobrador_id!.rolCobrador) {
             case 'Cadires':
               Navigator.push(
                 context,
@@ -56,28 +56,28 @@ class NfcProvider with ChangeNotifier {
             case 'Escudellar':
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Escudellar(faller: faller, producte: event.producte,)),
+                MaterialPageRoute(builder: (context) => Escudellar(faller: faller, producte: event.producte_id,)),
               );
               break;
           }
           notifyListeners();
           }
         } else if (faller.rol == "Faller") {
-          if(!faller.estaLoguejat){
+          if(!faller.estaloguejat){
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
             );
           }
         }else if (faller.rol == "Administrador") {
-          if(!faller.estaLoguejat){
+          if(!faller.estaloguejat){
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
             );
           }
         }else if (faller.rol == "SuperAdmin") {
-          if(!faller.estaLoguejat){
+          if(!faller.estaloguejat){
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
@@ -99,6 +99,31 @@ class NfcProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+  Future<String?> llegirEtiquetaRetornantValor(BuildContext context) async {
+  _nfcData = "Acosta una etiqueta NFC perfavor";
+  notifyListeners();
+
+  try {
+    final valorLlegit = await _nfcRepository.llegirNfc(
+      valorEsperat: "", // busquem qualsevol valor
+      onCoincidencia: () {}, // no fem res aquí
+      onError: () {
+        _nfcData = "Error en la lectura NFC";
+        notifyListeners();
+      },
+    );
+    if (valorLlegit != null) {
+      _nfcData = "Valor llegit: $valorLlegit";
+      notifyListeners();
+      return valorLlegit;
+    }
+  } catch (e) {
+    _nfcData = "Error en la lectura NFC";
+    notifyListeners();
+  }
+  return null;
+}
+
   Future<void> escriureNFC(BuildContext context) async {
     _nfcData = "Acosta una etiqueta NFC perfavor";
     notifyListeners();
