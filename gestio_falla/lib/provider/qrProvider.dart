@@ -9,23 +9,23 @@ import 'package:gestio_falla/presentation/screens/escudellar_screen.dart';
 import 'package:gestio_falla/presentation/screens/principal_screen.dart';
 import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 
-class Qrprovider with ChangeNotifier{
+class Qrprovider with ChangeNotifier {
   final QrRepository qrRepository;
   final Faller faller;
   final ApiOdooProvider apiOdooProvider;
 
   Qrprovider(this.qrRepository, this.faller, this.apiOdooProvider);
+
   String _qrData = "Escaneja un QR";
   String get qrData => _qrData;
-  List <Producte>totsElsProductes=[
-    Producte(nom: "Aigua 500ml", preu: 1 ,stock: 20, eventespecific: false),
-    Producte(nom: "Cervesa 33cl", preu: 1.5, stock: 33, eventespecific: false),
-    Producte(nom: "Coca-Cola", preu: 1.30, stock: 0, eventespecific: false),
-    Producte(nom: "Pepsi", preu: 1.25, stock: 77, eventespecific: false),  
-  ];
 
-  Event event = Event(nom: "Paella", datainici:DateTime(2025,3,16,14,0), datafi:DateTime(2025,3,16,17,0), numcadires: 10, prodespecific: true, producte_id: Producte(nom: "Hamburguesa", preu: 2.5, stock: 10, eventespecific: true));
-
+  // Getter per obtenir l'event actiu
+  Event? get eventActiu {
+    final now = DateTime.now();
+    return apiOdooProvider.events.firstWhere(
+      (e) => e.datainici.isBefore(now) && e.datafi.isAfter(now)
+    );
+  }
 
   Future<void> llegirQR(BuildContext context) async {
     _qrData = "Llegint QR...";
@@ -34,81 +34,72 @@ class Qrprovider with ChangeNotifier{
     qrRepository.llegirQR(
       context: context,
       valorEsperat: faller.valorpulsera,
-      onCoincidencia: () {
+      onCoincidencia: () async {
         _qrData = "Valor llegit ${faller.valorpulsera}";
 
-        if (faller.rol == "Cobrador") {
-          if(!faller.estaloguejat){
+        if (faller.rol == "Cobrador" || faller.rol == "SuperAdmin") {
+          if (!faller.estaloguejat) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
             );
-          }else{
+          } else {
             switch (faller.cobrador_id!.rolCobrador) {
               case 'Cadires':
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => DescomptaCadira(faller: faller,)),
+                  MaterialPageRoute(builder: (_) => DescomptaCadira(faller: faller, event: eventActiu,)),
                 );
                 break;
+
               case 'Barra':
-                //await apiOdooProvider.getProductesBarra();
+                if (apiOdooProvider.productes.isEmpty) {
+                  await apiOdooProvider.getProductesBarra();
+                }
+
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => Barra(faller: faller,totsElsProductes:totsElsProductes/*apiOdooProvider.productes.cast<Producte>() */,)),
+                  MaterialPageRoute(
+                    builder: (_) => Barra(
+                      faller: faller,
+                      totsElsProductes: apiOdooProvider.productes.cast<Producte>(),
+                    ),
+                  ),
                 );
                 break;
+
               case 'Escudellar':
+                await apiOdooProvider.getEvents();
+                final event = eventActiu;
+
+                if (event == null || event.producte_id == null) {
+                  _qrData = "No s'ha trobat cap event actiu amb producte";
+                  notifyListeners();
+                  return;
+                }
+
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => Escudellar(faller: faller, producte: event.producte_id,)),
+                  MaterialPageRoute(
+                    builder: (_) => Escudellar(
+                      faller: faller,
+                      producte: event.producte_id!,
+                    ),
+                  ),
                 );
                 break;
             }
           }
-        } else if (faller.rol == "Faller") {
-          if(!faller.estaloguejat){
+        } else {
+          // Per a Faller, Administrador o altres rols
+          if (!faller.estaloguejat) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
             );
-          }
-        }else if (faller.rol == "Administrador") {
-          if(!faller.estaloguejat){
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
-            );
-          }
-        }else if (faller.rol == "SuperAdmin") {
-          if(!faller.estaloguejat){
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
-            );
-          }else{
-            switch (faller.cobrador_id!.rolCobrador) {
-              case 'Cadires':
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => DescomptaCadira(faller: faller,)),
-                );
-                break;
-              case 'Barra':
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => Barra(faller: faller,totsElsProductes:totsElsProductes/*apiOdooProvider.getProductesBarra() */,)),
-                );
-                break;
-              case 'Escudellar':
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => Escudellar(faller: faller, producte: event.producte_id,)),
-                );
-                break;
-            }
           }
         }
+
         notifyListeners();
       },
       onError: () {
@@ -121,6 +112,7 @@ class Qrprovider with ChangeNotifier{
       },
     );
   }
+
   Future<String?> llegirQRRetornantValor(BuildContext context) async {
     _qrData = "Llegint QR...";
     notifyListeners();
@@ -138,5 +130,4 @@ class Qrprovider with ChangeNotifier{
     }
     return null;
   }
-
 }

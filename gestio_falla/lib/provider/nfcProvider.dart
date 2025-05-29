@@ -17,16 +17,14 @@ class NfcProvider with ChangeNotifier {
 
   String _nfcData = "Escaneja una etiqueta NFC";
   String get nfcData => _nfcData;
-  List <Producte>totsElsProductes=[
-    Producte(nom: "Aigua 500ml", preu: 1 ,stock: 20, eventespecific: false),
-    Producte(nom: "Cervesa 33cl", preu: 1.5, stock: 33, eventespecific: false),
-    Producte(nom: "Coca-Cola", preu: 1.30, stock: 0, eventespecific: false),
-    Producte(nom: "Pepsi", preu: 1.25, stock: 77, eventespecific: false),  
-  ];
-  Event event = Event(nom: "Paella", datainici:DateTime(2025,3,16,14,0), datafi:DateTime(2025,3,16,17,0), numcadires: 10, prodespecific: true, producte_id: Producte(nom: "Hamburguesa", preu: 2.5, stock: 10, eventespecific: true));
-  List<Producte> get productesBarra {
-    return apiOdooProvider.productes.cast<Producte>();
+  Event? get eventActiu {
+    if (apiOdooProvider.events.isEmpty){
+      return null;
+    } 
+    return apiOdooProvider.events.last;
   }
+
+    List<Producte> get productesBarra => apiOdooProvider.productes.cast<Producte>();
 
   Future<void> llegirEtiqueta(BuildContext context) async {
     _nfcData = "Acosta una etiqueta NFC perfavor";
@@ -43,17 +41,24 @@ class NfcProvider with ChangeNotifier {
             case 'Cadires':
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => DescomptaCadira(faller: faller,)),
+                MaterialPageRoute(builder: (context) => DescomptaCadira(faller: faller,event: eventActiu,)),
               );
               break;
             case 'Barra':
               await apiOdooProvider.getProductesBarra();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Barra(faller: faller,totsElsProductes: totsElsProductes,/*apiOdooProvider.productes.cast<Producte>() */)),
+                MaterialPageRoute(builder: (context) => Barra(faller: faller,totsElsProductes: productesBarra)),
               );
               break;
             case 'Escudellar':
+              await apiOdooProvider.getEvents(); 
+              final event = eventActiu;
+              if (event == null || event.producte_id == null) {
+                _nfcData = "No s'ha trobat cap event actiu amb producte";
+                notifyListeners();
+                return;
+              }
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Escudellar(faller: faller, producte: event.producte_id,)),

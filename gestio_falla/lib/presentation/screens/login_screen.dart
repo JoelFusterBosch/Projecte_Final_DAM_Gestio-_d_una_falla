@@ -20,7 +20,6 @@ class LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usuariController = TextEditingController();
   bool _isLoading = false;
 
-  // Exemple de llista local per a proves (pots eliminar-ho si ja uses l'API)
   @override
   Widget build(BuildContext context) {
     return Scaffold(

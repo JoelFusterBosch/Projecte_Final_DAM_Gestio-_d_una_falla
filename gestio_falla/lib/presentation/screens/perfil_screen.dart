@@ -31,6 +31,7 @@ class PerfilScreenState extends State<PerfilScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //String? fotoPerfil = widget.faller.imatgeurl;
     return Scaffold(
       body: SafeArea(
         child: LayoutBuilder(
@@ -48,7 +49,7 @@ class PerfilScreenState extends State<PerfilScreen> {
                       children: [
                         CircleAvatar(
                           radius: 50,
-                          backgroundImage: AssetImage("lib/assets/perfil.jpg"),
+                          backgroundImage: AssetImage("lib/assets/perfil.jpg"/*fotoPerfil ?? ""*/),
                         ),
                         SizedBox(height: 10),
                         Text(
