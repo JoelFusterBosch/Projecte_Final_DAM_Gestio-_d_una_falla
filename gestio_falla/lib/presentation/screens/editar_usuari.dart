@@ -6,7 +6,7 @@ import 'package:gestio_falla/provider/qrProvider.dart';
 import 'package:provider/provider.dart';
 
 class EditarUsuari extends StatefulWidget {
-  final Faller faller;
+  final Faller? faller;
   const EditarUsuari({super.key, required this.faller});
 
   @override

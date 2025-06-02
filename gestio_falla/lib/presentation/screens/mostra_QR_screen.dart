@@ -5,7 +5,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:gestio_falla/provider/mostraQRProvider.dart';
 
 class MostraQrScreen extends StatefulWidget {
-  final Faller faller;
+  final Faller? faller;
 
   const MostraQrScreen({super.key, required this.faller});
 
@@ -22,7 +22,7 @@ class _MostraQrScreenState extends State<MostraQrScreen> {
     super.didChangeDependencies();
     if (!estaCarregat) {
       final provider = Provider.of<Mostraqrprovider>(context, listen: false);
-      provider.generateQr(widget.faller.valorpulsera);
+      provider.generateQr(widget.faller!.valorpulsera);
       estaCarregat = true;
     }
   }
@@ -52,7 +52,7 @@ class _MostraQrScreenState extends State<MostraQrScreen> {
                           return Column(
                             children: [
                               Text(
-                                "Qr del valor de la pulsera de l'usuari ${widget.faller.nom}",
+                                "Qr del valor de la pulsera de l'usuari ${widget.faller!.nom}",
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.grey,

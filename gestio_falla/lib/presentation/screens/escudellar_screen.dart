@@ -5,7 +5,7 @@ import 'package:gestio_falla/provider/notificacionsProvider.dart';
 import 'package:provider/provider.dart';
 
 class Escudellar extends StatefulWidget{
-  final Faller faller;
+  final Faller? faller;
   final Producte? producte;
   const Escudellar({super.key, required this.faller, required this.producte});
 
@@ -172,7 +172,7 @@ class EscudellarState extends State<Escudellar>{
   Future<void> notificacio() async {
     Provider.of<NotificacionsProvider>(context, listen: false).showNotification(
       title: widget.producte!.nom,
-      body: '${widget.producte!.nom} per al usuari ${widget.faller.nom} reservada correctament',
+      body: '${widget.producte!.nom} per al usuari ${widget.faller!.nom} reservada correctament',
     );
   }
 

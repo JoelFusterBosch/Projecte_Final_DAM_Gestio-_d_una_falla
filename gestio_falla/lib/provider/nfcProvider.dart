@@ -11,84 +11,108 @@ import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 
 class NfcProvider with ChangeNotifier {
   final NfcRepository _nfcRepository;
-  final Faller faller;
-  final ApiOdooProvider apiOdooProvider;
-  NfcProvider(this._nfcRepository, this.faller, this.apiOdooProvider);
+  Faller? _faller;
+  ApiOdooProvider? _apiOdooProvider;
 
+  NfcProvider(this._nfcRepository);
+
+  set faller(Faller? fallerNou) {
+    _faller = fallerNou;
+    notifyListeners();
+  }
+
+  set apiOdooProvider(ApiOdooProvider? provider) {
+    _apiOdooProvider = provider;
+    notifyListeners();
+  }
+
+  Faller? get faller => _faller;
+  ApiOdooProvider? get apiOdooProvider => _apiOdooProvider;
+  
   String _nfcData = "Escaneja una etiqueta NFC";
   String get nfcData => _nfcData;
   Event? get eventActiu {
-    if (apiOdooProvider.events.isEmpty){
+    if (apiOdooProvider!.events.isEmpty){
       return null;
     } 
-    return apiOdooProvider.events.last;
+    return apiOdooProvider!.events.last;
   }
 
-    List<Producte> get productesBarra => apiOdooProvider.productes.cast<Producte>();
+  List<Producte> get productesBarra => apiOdooProvider!.productes.cast<Producte>();
 
   Future<void> llegirEtiqueta(BuildContext context) async {
     _nfcData = "Acosta una etiqueta NFC perfavor";
     notifyListeners();
 
     final valorLlegit = await _nfcRepository.llegirNfc(
-      valorEsperat: faller.valorpulsera,
-        onCoincidencia: () async{
-          _nfcData = "Acció realitzada per valor NFC: ${faller.valorpulsera}";
-          
-          if(faller.rol=="Cobrador"){
-            if(!faller.estaloguejat){
-              switch (faller.cobrador_id!.rolCobrador) {
-            case 'Cadires':
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DescomptaCadira(faller: faller,event: eventActiu,)),
-              );
-              break;
-            case 'Barra':
-              await apiOdooProvider.getProductesBarra();
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Barra(faller: faller,totsElsProductes: productesBarra)),
-              );
-              break;
-            case 'Escudellar':
-              await apiOdooProvider.getEvents(); 
-              final event = eventActiu;
-              if (event == null || event.producte_id == null) {
-                _nfcData = "No s'ha trobat cap event actiu amb producte";
-                notifyListeners();
-                return;
-              }
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Escudellar(faller: faller, producte: event.producte_id,)),
-              );
-              break;
+      valorEsperat: faller!.valorpulsera,
+        onCoincidencia: () async {
+        _nfcData = "Valor llegit ${faller!.valorpulsera}";
+
+        if (faller!.rol == "Cobrador" || faller!.rol == "SuperAdmin") {
+          if (!faller!.estaloguejat) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
+            );
+          } else {
+            switch (faller!.cobrador_id!.rolcobrador) {
+              case 'Cadires':
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (_) => DescomptaCadira(faller: faller, event: eventActiu,)),
+                );
+                break;
+
+              case 'Barra':
+                if (apiOdooProvider!.productes.isEmpty) {
+                  await apiOdooProvider!.getProductesBarra();
+                }
+
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => Barra(
+                      faller: faller,
+                      totsElsProductes: apiOdooProvider!.productes.cast<Producte>(),
+                    ),
+                  ),
+                );
+                break;
+
+              case 'Escudellar':
+                await apiOdooProvider!.getEvents();
+                final event = eventActiu;
+
+                if (event == null || event.producte_id == null) {
+                  _nfcData = "No s'ha trobat cap event actiu amb producte";
+                  notifyListeners();
+                  return;
+                }
+
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => Escudellar(
+                      faller: faller,
+                      producte: event.producte_id!,
+                    ),
+                  ),
+                );
+                break;
+            }
           }
-          notifyListeners();
-          }
-        } else if (faller.rol == "Faller") {
-          if(!faller.estaloguejat){
+        } else {
+          // Per a Faller, Administrador o altres rols
+          if (!faller!.estaloguejat) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
             );
           }
-        }else if (faller.rol == "Administrador") {
-          if(!faller.estaloguejat){
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
-            );
-          }
-        }else if (faller.rol == "SuperAdmin") {
-          if(!faller.estaloguejat){
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
-            );
-          }
-        }     
+        }
+
+        notifyListeners();
       },
       onError: () {
         _nfcData = "Valor llegit no coincideix o error";
@@ -105,29 +129,29 @@ class NfcProvider with ChangeNotifier {
     }
   }
   Future<String?> llegirEtiquetaRetornantValor(BuildContext context) async {
-  _nfcData = "Acosta una etiqueta NFC perfavor";
-  notifyListeners();
-
-  try {
-    final valorLlegit = await _nfcRepository.llegirNfc(
-      valorEsperat: "", // busquem qualsevol valor
-      onCoincidencia: () {}, // no fem res aquí
-      onError: () {
-        _nfcData = "Error en la lectura NFC";
-        notifyListeners();
-      },
-    );
-    if (valorLlegit != null) {
-      _nfcData = "Valor llegit: $valorLlegit";
-      notifyListeners();
-      return valorLlegit;
-    }
-  } catch (e) {
-    _nfcData = "Error en la lectura NFC";
+    _nfcData = "Acosta una etiqueta NFC perfavor";
     notifyListeners();
+
+    try {
+      final valorLlegit = await _nfcRepository.llegirNfc(
+        valorEsperat: "", // busquem qualsevol valor
+        onCoincidencia: () {}, // no fem res aquí
+        onError: () {
+          _nfcData = "Error en la lectura NFC";
+          notifyListeners();
+        },
+      );
+      if (valorLlegit != null) {
+        _nfcData = "Valor llegit: $valorLlegit";
+        notifyListeners();
+        return valorLlegit;
+      }
+    } catch (e) {
+      _nfcData = "Error en la lectura NFC";
+      notifyListeners();
+    }
+    return null;
   }
-  return null;
-}
 
   Future<void> escriureNFC(BuildContext context) async {
     _nfcData = "Acosta una etiqueta NFC perfavor";
@@ -135,6 +159,11 @@ class NfcProvider with ChangeNotifier {
     final valorLlegit = await _nfcRepository.escriureNFC("8430001000017");
     notifyListeners();
     _nfcData="Etiqueta nfc canviada amb el valor $valorLlegit";
+    notifyListeners();
+  }
+
+  void setFaller(Faller faller) {
+    faller = faller;
     notifyListeners();
   }
 }

@@ -78,11 +78,11 @@ router.get('/mostraQR/:id', async (req,res) =>{
 router.get('/mostraMembres/:idFamilia', async (req,res)=>{
   const {idFamilia} = req.params;
   try{
-    const result= await pool.query('SELECT nom from faller WHERE id_familia=$1',[idFamilia]);
+    const result = await pool.query('SELECT nom FROM faller WHERE familia_id = $1', [idFamilia]);
     if(result.rows.length===0){
       return res.status(404).json({error: "No n'hi han membres en esta familia"});
     }
-    res.json(result.rows[0]);
+    res.json(result.rows);
   }catch (err){
     res.status(500).json({error:"Error a l'hora de mostrar els membres de la familia"});
   }
@@ -164,8 +164,7 @@ router.put('/canviaNom/:id', async (req,res) =>{
 
 //Pantalla afegir membre: Assigna una familia al usuari(sols familia no sera null, tindra el id de la familia)
 router.put('/familia/:idFamilia', async (req, res) => {
-  const { id } = req.params;
-  const { idFamilia } = req.body;
+  const {id, idFamilia } = req.body;
   try {
     const result = await pool.query(
       'UPDATE faller SET familia_id = $1 WHERE id = $2 RETURNING *',
@@ -183,7 +182,8 @@ router.put('/cambiaRol/:id', async (req, res) =>{
   const {id}= req.params;
   const {rol}= req.body;
   try{
-    const result = await pool.query('UPDATE faller SET rol=$1 WHERE id=$2 RETURNING *', [rol,id])
+    const result = await pool.query('UPDATE faller SET rol=$1 WHERE id=$2 RETURNING *', [rol,id]);
+    res.json(result.rows[0]);
   }catch (err){
     res.status(500).json({error: err.message});
   }
@@ -192,14 +192,13 @@ router.put('/cambiaRol/:id', async (req, res) =>{
 Funcions amb DELETE
 */
 //Pantalla admin?: Borrar un faller
-router.delete('/borrar/:valorPulsera', async (req,res) => {
-  const {id} =req.params;
-  try{
-    await pool.query('DELETE FROM faller WHERE valorpulsera = $1'[valorPulsera]);
-    res.json({missatge: 'Faller borrat'});
-  }catch (err){
-    res.status(500).json({error: err.message});
+router.delete('/borrar/:valorPulsera', async (req, res) => {
+  const { valorPulsera } = req.params;
+  try {
+    await pool.query('DELETE FROM faller WHERE valorpulsera = $1', [valorPulsera]);
+    res.json({ missatge: 'Faller borrat' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: err.message });
   }
 });
-
-module.exports = router;

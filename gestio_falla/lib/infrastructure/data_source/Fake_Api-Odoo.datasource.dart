@@ -107,7 +107,6 @@ class FakeApiOdooDataSource {
       }
       return null;
     } catch (e) {
-      print("Error obtenint faller per valorpolsera: $e");
       return null;
     }
   }
@@ -468,6 +467,7 @@ class FakeApiOdooDataSource {
           rol: body['rol'] ?? 'Faller',
           valorpulsera: valorPulsera,
           telimit: body['teLimit'] ?? false,
+          saldo: body['saldo'] ?? 0,
           estaloguejat: true,
         );
       } else {

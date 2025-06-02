@@ -5,7 +5,7 @@ import 'package:gestio_falla/provider/notificacionsProvider.dart';
 import 'package:provider/provider.dart';
 
 class DescomptaCadira extends StatefulWidget{
-  final Faller faller;
+  final Faller? faller;
    final Event? event;
   const DescomptaCadira({super.key, required this.faller, required this.event});
   
@@ -180,7 +180,7 @@ class DescomptaCadiraState extends State<DescomptaCadira>{
   Future<void> notificacio() async {
     Provider.of<NotificacionsProvider>(context, listen: false).showNotification(
       title: 'Cadires',
-      body: 'Cadires al usuari ${widget.faller.nom} reservades correctament',
+      body: 'Cadires al usuari ${widget.faller!.nom} reservades correctament',
     );
   }
 

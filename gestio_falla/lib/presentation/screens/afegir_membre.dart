@@ -6,7 +6,7 @@ import 'package:gestio_falla/provider/qrProvider.dart';
 import 'package:provider/provider.dart';
 
 class AfegirMembre extends StatefulWidget {
-  final Faller faller;
+  final Faller? faller;
   const AfegirMembre({super.key, required this.faller});
 
   @override
@@ -176,7 +176,7 @@ class AfegirMembreState extends State<AfegirMembre> {
                     }
 
                     // Assignar família si cal
-                    final familiaPerfil = widget.faller.familia_id?.id;
+                    final familiaPerfil = widget.faller!.familia_id?.id;
                     if (familiaPerfil == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("El faller perfil no té família assignada!")),
@@ -228,7 +228,7 @@ class AfegirMembreState extends State<AfegirMembre> {
                     }
 
                     // Assignar família si cal
-                    final familiaPerfil = widget.faller.familia_id?.id;
+                    final familiaPerfil = widget.faller!.familia_id?.id;
                     if (familiaPerfil == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("El faller perfil no té família assignada!")),
@@ -264,35 +264,3 @@ class AfegirMembreState extends State<AfegirMembre> {
     );
   }
 }
-
-/*
-  void verificar(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Amb què vols verificar?"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  context.read<NfcProvider>().llegirEtiqueta(context);
-                },
-                child: Text("Verificar amb NFC"),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  context.read<Qrprovider>().llegirQR(context);
-                },
-                child: Text("Verificar amb QR"),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-  */

@@ -5,7 +5,7 @@ import 'package:gestio_falla/provider/notificacionsProvider.dart';
 import 'package:provider/provider.dart';
 
 class Barra extends StatefulWidget{
-  final Faller faller;
+  final Faller? faller;
   final List<Producte> totsElsProductes;
   const Barra({super.key, required this.faller, required this.totsElsProductes});
 
@@ -171,7 +171,7 @@ class BarraState extends State<Barra>{
       if (resultado != null && resultado) {
         Provider.of<NotificacionsProvider>(context, listen: false).showNotification(
           title: 'Barra',
-          body: 'Pagament realitzat pel usuari ${widget.faller.nom} amb preu de $preuTotal€ pagat de forma correcta',
+          body: 'Pagament realitzat pel usuari ${widget.faller!.nom} amb preu de $preuTotal€ pagat de forma correcta',
         );
         setState(() {
           quantitatsSeleccionades.forEach((producte, quantitat) {

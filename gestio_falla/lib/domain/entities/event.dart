@@ -3,7 +3,7 @@ import 'package:gestio_falla/domain/entities/ticket.dart';
 import 'package:intl/intl.dart';
 
 class Event {
-  double? id;
+  String? id;
   String nom;
   String? descripcio;
   Ticket? ticket_id;
@@ -46,16 +46,16 @@ class Event {
 
   factory Event.fromJSON(Map<String, dynamic> json){
     return Event(
-      id: (json['id'] as num?)?.toDouble(),
+      id: json['id'],
       nom: json['nom'],
       descripcio: json['descripcio'],
-      ticket_id: json['ticket_id'] != null ? Ticket.fromJSON(json['ticket']) : null,
-      datainici: DateTime.parse(json['dataInici']),
-      datafi: DateTime.parse(json['dataFi']),
+      ticket_id: json['ticket_id'] != null ? Ticket.fromJSON(json['tickets']) : null,
+      datainici: DateTime.parse(json['datainici']),
+      datafi: DateTime.parse(json['datafi']),
       urlimatge: json['urlimatge'] ?? "",
       numcadires: json['numcadires'],
       prodespecific: json['prodespecific'],
-      producte_id: json['producte_id'] != null ? Producte.fromJSON(json['producte']) : null,
+      producte_id: json['producte_id'] != null ? Producte.fromJSON(json['productes']) : null,
     );
   }
   Map<String, dynamic> toJSON() => {
@@ -66,7 +66,7 @@ class Event {
     'datainici': datainici.toIso8601String(),
     'datafi': datafi.toIso8601String(),
     'urlimatge': urlimatge,
-    'numCadires': numcadires,
+    'numcadires': numcadires,
     'prodespecific': prodespecific,
     'producte_id': producte_id?.toJSON(),
   };

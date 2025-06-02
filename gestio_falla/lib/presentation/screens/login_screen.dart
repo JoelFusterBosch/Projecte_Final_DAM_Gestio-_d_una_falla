@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/presentation/screens/registrar_usuari.dart';
 import 'package:provider/provider.dart';
@@ -71,7 +70,6 @@ class LoginScreenState extends State<LoginScreen> {
                                   );
                                   return;
                                 }
-
                                 // Diàleg per a triar mètode de verificació
                                 showDialog(
                                   context: context,
@@ -134,21 +132,22 @@ class LoginScreenState extends State<LoginScreen> {
     if (via == 'nfc') {
       final nfcProvider = context.read<NfcProvider>();
       await nfcProvider.llegirEtiqueta(context);
-      valorEscanejat = nfcProvider.nfcData;
+      valorEscanejat = valorEscanejat = await nfcProvider.llegirEtiquetaRetornantValor(context);
     } else {
       final qrProvider = context.read<Qrprovider>();
       await qrProvider.llegirQR(context);
-      valorEscanejat = qrProvider.qrData;
+      valorEscanejat = valorEscanejat = await qrProvider.llegirQRRetornantValor(context);
+
     }
 
     final apiProvider = context.read<ApiOdooProvider>();
-    final faller = await apiProvider.verificarUsuari(usuari, valorEscanejat);
+    final faller = await apiProvider.verificarUsuari(usuari, valorEscanejat!);
 
     setState(() => _isLoading = false);
 
     if (faller != null) {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isLoggedIn', true);
+      await prefs.setBool('estaloguejat', true);
       await prefs.setString('faller', jsonEncode(faller.toJSON()));
 
       if (!mounted) return;

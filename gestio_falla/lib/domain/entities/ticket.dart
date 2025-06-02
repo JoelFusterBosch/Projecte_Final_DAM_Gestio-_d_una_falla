@@ -1,5 +1,5 @@
 class Ticket {
-  double id;
+  String id;
   double preu;
   int quantitat;
   bool maxim;

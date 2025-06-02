@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
@@ -18,6 +16,7 @@ class ApiOdooProvider with ChangeNotifier {
   String? _error;
   String _status = "";
   Faller? _usuariActual;
+  Faller? _faller;
 
   // Datos cargados
   List<dynamic> fallers = [];
@@ -34,6 +33,7 @@ class ApiOdooProvider with ChangeNotifier {
   String? get error => _error;
   String get status => _status;
   Faller? get usuariActual => _usuariActual;
+  Faller? get faller => _faller;
 
   // Funcions internes per al estat
   void _setStatus(String status) {
@@ -471,11 +471,11 @@ class ApiOdooProvider with ChangeNotifier {
 
         //Guarda les dades a SharedPreferences
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setBool('estaLoguejat', true);
+        await prefs.setBool('estaloguejat', true);
         await prefs.setString('nom', faller.nom);
         await prefs.setString('rol', faller.rol);
         await prefs.setString('pulsera', faller.valorpulsera);
-        await prefs.setBool('teLimit', faller.telimit);
+        await prefs.setBool('telimit', faller.telimit);
 
         notifyListeners();
         return _usuariActual;
@@ -491,16 +491,19 @@ class ApiOdooProvider with ChangeNotifier {
   }
 
   Future<void> tancaSessio() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('nom');
-    await prefs.remove('valorPulsera');
     _usuariActual = null;
+    _uid = null;
+    _status = "";
+    _message = "";
+    _error = null;
+    // Esborrem dades locals si cal
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
     notifyListeners();
   }
 
-Future<void> guardarFaller(Faller faller) async {
-  final prefs = await SharedPreferences.getInstance();
-  prefs.setString('usuariLoguejat', jsonEncode(faller.toJSON()));
-}
-
+  void setFaller(Faller faller) {
+    _faller = faller;
+    notifyListeners();
+  }
 }

@@ -62,6 +62,7 @@ CREATE TABLE faller (
   saldo NUMERIC,
   familia_id BIGINT,
   cobrador_id BIGINT,
+  estaLoguejat BOOLEAN NOT NULL,
   FOREIGN KEY (familia_id) REFERENCES familia(id),
   FOREIGN KEY (cobrador_id) REFERENCES cobrador(id),
   CHECK (
@@ -78,28 +79,27 @@ CREATE TABLE faller (
 );
 
 -- Insertar fallers AMB familia
-INSERT INTO faller (nom, rol, valorPulsera, teLimit, llimit, saldo, familia_id) 
+INSERT INTO faller (nom, rol, valorPulsera, teLimit, llimit, saldo, familia_id, estaLoguejat) 
 VALUES 
-('Joel', 'SuperAdmin', '1', false, NULL, 50.0, 1),
-('Juan', 'Administrador', '2', false, NULL, 500.0, 2),
-('Alexis', 'Faller', '3', true, 25.0, 20.0, 1);
+('Joel', 'SuperAdmin', '8430001000017', false, NULL, 50.0, 1, false),
+('Juan', 'Administrador', '2', false, NULL, 500.0, 2, false),
+('Alexis', 'Faller', '3', true, 25.0, 20.0, 1, false);
 
 -- Insertar fallers SENSE familia
 INSERT INTO faller (nom, rol, valorPulsera, teLimit, llimit, saldo)
-VALUES ('José', 'Faller', '7', false, NULL, 200.0);
+VALUES ('José', 'Faller', '7', false, NULL, 200.0, false);
 
 -- Insertar fallers amb rols de cobrador
 INSERT INTO faller (nom, rol, cobrador_id, valorPulsera, teLimit, llimit, saldo)
 VALUES 
-('José Maria', 'Cobrador', 1, '4', false, NULL, 25.0),
-('Maria José', 'Cobrador', 2, '5', false, NULL, 55.5),
-('Josefina', 'Cobrador', 3, '6', false, NULL, 114.0);
+('José Maria', 'Cobrador', 1, '4', false, NULL, 25.0, true),
+('Maria José', 'Cobrador', 2, '5', false, NULL, 55.5, true),
+('Josefina', 'Cobrador', 3, '6', false, NULL, 114.0, true);
 
 -- Crea la taula 'producte'
 CREATE TABLE producte(
  id BIGSERIAL PRIMARY KEY,
  nom TEXT NOT NULL,
- descripcio TEXT,
  preu NUMERIC(5,2),
  stock INTEGER NOT NULL,
  urlImatge TEXT,
@@ -119,27 +119,48 @@ CREATE TABLE events(
   nom TEXT NOT NULL,
   descripcio TEXT,
   ticket_id BIGINT,
+  numCadires INT NOT NULL,
   dataInici TIMESTAMP,
   dataFi TIMESTAMP,
   urlImatge TEXT,
-  prodEspecific BOOLEAN,
+  prodEspecific BOOLEAN NOT NULL,
   producte_id BIGINT,
   FOREIGN KEY (producte_id) REFERENCES producte(id),
   FOREIGN KEY (ticket_id) REFERENCES ticket(id)
 );
 
 -- Insertar events sense tickets
-INSERT INTO events (nom, dataInici, dataFi, urlImatge)
+INSERT INTO events (nom, dataInici, dataFi, numCadires, urlImatge, prodEspecific)
 VALUES 
-('Cremà', '2025-03-20 20:00:00', '2025-03-21 02:00:00','/img/Events/Cremà.png'),
-('Jocs', '2025-03-15 09:00:00', '2025-03-16 19:00:00','/img/Events/Castell_unflable.png'),
-('Despedida', '2025-03-19 16:00:00', '2025-03-19 18:00:00','/img/Events/Despedida.png'),
-('Caminata', '2025-03-19 16:00:00', '2025-03-19 18:00:00','/img/Events/Despedida.png');
+('Cremà', '2025-03-20 20:00:00', '2025-03-21 02:00:00',10,'/img/Events/Cremà.png', false),
+('Jocs', '2025-03-15 09:00:00', '2025-03-16 19:00:00',10,'/img/Events/Castell_unflable.png', false),
+('Despedida', '2025-03-19 16:00:00', '2025-03-19 18:00:00',10,'/img/Events/Despedida.png', false),
+('Caminata', '2025-03-19 16:00:00', '2025-03-19 18:00:00',10,'/img/Events/Despedida.png', false);
 
 -- Insertar events AMB tickets
-INSERT INTO events (nom, dataInici, dataFi, ticket_id, urlImatge)
-VALUES ('Paella', '2025-03-16 14:00:00', '2025-03-16 17:00:00', 1, '/img/Events/Paella.png');
+INSERT INTO events (nom, dataInici, dataFi, numCadires, ticket_id, urlImatge, prodEspecific)
+VALUES ('Paella', '2025-03-16 14:00:00', '2025-03-16 17:00:00',10, 1, '/img/Events/Paella.png', true);
+
+-- Vista per obtenir famílies amb membres (fallers)
+CREATE OR REPLACE VIEW familias_amb_fallers AS
+SELECT 
+  fam.id AS familia_id,
+  fam.nom AS familia_nom,
+  COALESCE(ARRAY_AGG(f.nom) FILTER (WHERE f.nom IS NOT NULL), ARRAY[]::text[]) AS membres
+FROM familia fam
+LEFT JOIN faller f ON f.familia_id = fam.id
+GROUP BY fam.id, fam.nom
+ORDER BY fam.nom;
 
 -- GRANT després de crear les taules i seqüències
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO joel;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO joel;
+
+-- Crear vista membres que mostra les famílies amb la llista de fallers (membres)
+CREATE OR REPLACE VIEW membres AS
+SELECT 
+  fam.*,
+  COALESCE(ARRAY_AGG(f.nom) FILTER (WHERE f.nom IS NOT NULL), ARRAY[]::text[]) AS membres
+FROM familia fam
+LEFT JOIN faller f ON f.familia_id = fam.id
+GROUP BY fam.id;

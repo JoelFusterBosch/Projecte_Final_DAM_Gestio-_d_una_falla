@@ -3,7 +3,7 @@ import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/presentation/screens/editar_usuari.dart';
 
 class EditarPerfil extends StatefulWidget {
-  final Faller faller;
+  final Faller? faller;
   const EditarPerfil({super.key, required this.faller});
 
   @override

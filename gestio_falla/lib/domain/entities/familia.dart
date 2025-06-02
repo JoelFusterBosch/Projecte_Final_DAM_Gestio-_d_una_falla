@@ -1,7 +1,7 @@
 import 'package:gestio_falla/domain/entities/faller.dart';
 
 class Familia {
-  double? id;
+  String? id;
   String nom;
   double? saldo_total;
   List<Faller>? membres;
@@ -15,7 +15,7 @@ class Familia {
 
   factory Familia.fromJSON(Map<String, dynamic> json) {
     return Familia(
-      id: (json['id'] as num?)?.toDouble(),
+      id: json['id'],
       nom: json['nom'],
       saldo_total: (json['saldo_total'] as num?)?.toDouble(),
       membres: json['membres'] != null
@@ -24,7 +24,7 @@ class Familia {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJSON() {
     return {
       'id': id,
       'nom': nom,

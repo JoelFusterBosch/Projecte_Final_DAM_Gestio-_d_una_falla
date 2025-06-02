@@ -1,26 +1,26 @@
 class Cobrador {
-  double? id;
-  final String rolCobrador;
+  String? id;
+  final String rolcobrador;
 
   static const List<String> rolsValids = ['Cadires', 'Barra', 'Escudellar'];
 
-  Cobrador({required this.rolCobrador, this.id}) {
-    if (!rolsValids.contains(rolCobrador)) {
-      throw ArgumentError('Rol no vàlid: $rolCobrador');
+  Cobrador({required this.rolcobrador, this.id}) {
+    if (!rolsValids.contains(rolcobrador)) {
+      throw ArgumentError('Rol no vàlid: $rolcobrador');
     }
   }
 
   factory Cobrador.fromJSON(Map<String, dynamic> json) {
     return Cobrador(
       id: json['id'],
-      rolCobrador: json['rolCobrador']
+      rolcobrador: json['rolcobrador']
     );
   }
 
   Map<String, dynamic> toJSON() {
     return {
       'id' : id,
-      'rolCobrador': rolCobrador,
+      'rolcobrador': rolcobrador,
     };
   }
 }

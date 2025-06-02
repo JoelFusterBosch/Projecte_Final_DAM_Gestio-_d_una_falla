@@ -11,10 +11,25 @@ import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 
 class Qrprovider with ChangeNotifier {
   final QrRepository qrRepository;
-  final Faller faller;
-  final ApiOdooProvider apiOdooProvider;
+  Faller? _faller;
+  ApiOdooProvider? _apiOdooProvider;
 
-  Qrprovider(this.qrRepository, this.faller, this.apiOdooProvider);
+  Qrprovider(this.qrRepository);
+
+  set faller(Faller? fallerNou) {
+    _faller = fallerNou;
+    notifyListeners();
+  }
+
+  set apiOdooProvider(ApiOdooProvider? provider) {
+    _apiOdooProvider = provider;
+    notifyListeners();
+  }
+
+  Faller? get faller => _faller;
+  ApiOdooProvider? get apiOdooProvider => _apiOdooProvider;
+
+
 
   String _qrData = "Escaneja un QR";
   String get qrData => _qrData;
@@ -22,7 +37,7 @@ class Qrprovider with ChangeNotifier {
   // Getter per obtenir l'event actiu
   Event? get eventActiu {
     final now = DateTime.now();
-    return apiOdooProvider.events.firstWhere(
+    return apiOdooProvider!.events.firstWhere(
       (e) => e.datainici.isBefore(now) && e.datafi.isAfter(now)
     );
   }
@@ -33,18 +48,18 @@ class Qrprovider with ChangeNotifier {
 
     qrRepository.llegirQR(
       context: context,
-      valorEsperat: faller.valorpulsera,
+      valorEsperat: faller!.valorpulsera,
       onCoincidencia: () async {
-        _qrData = "Valor llegit ${faller.valorpulsera}";
+        _qrData = "Valor llegit ${faller!.valorpulsera}";
 
-        if (faller.rol == "Cobrador" || faller.rol == "SuperAdmin") {
-          if (!faller.estaloguejat) {
+        if (faller!.rol == "Cobrador" || faller!.rol == "SuperAdmin") {
+          if (!faller!.estaloguejat) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
             );
           } else {
-            switch (faller.cobrador_id!.rolCobrador) {
+            switch (faller!.cobrador_id!.rolcobrador) {
               case 'Cadires':
                 Navigator.pushReplacement(
                   context,
@@ -53,8 +68,8 @@ class Qrprovider with ChangeNotifier {
                 break;
 
               case 'Barra':
-                if (apiOdooProvider.productes.isEmpty) {
-                  await apiOdooProvider.getProductesBarra();
+                if (apiOdooProvider!.productes.isEmpty) {
+                  await apiOdooProvider!.getProductesBarra();
                 }
 
                 Navigator.pushReplacement(
@@ -62,14 +77,14 @@ class Qrprovider with ChangeNotifier {
                   MaterialPageRoute(
                     builder: (_) => Barra(
                       faller: faller,
-                      totsElsProductes: apiOdooProvider.productes.cast<Producte>(),
+                      totsElsProductes: apiOdooProvider!.productes.cast<Producte>(),
                     ),
                   ),
                 );
                 break;
 
               case 'Escudellar':
-                await apiOdooProvider.getEvents();
+                await apiOdooProvider!.getEvents();
                 final event = eventActiu;
 
                 if (event == null || event.producte_id == null) {
@@ -92,7 +107,7 @@ class Qrprovider with ChangeNotifier {
           }
         } else {
           // Per a Faller, Administrador o altres rols
-          if (!faller.estaloguejat) {
+          if (!faller!.estaloguejat) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
@@ -129,5 +144,10 @@ class Qrprovider with ChangeNotifier {
       notifyListeners();
     }
     return null;
+  }
+
+  void setFaller(Faller faller) {
+    faller=faller;
+    notifyListeners();
   }
 }

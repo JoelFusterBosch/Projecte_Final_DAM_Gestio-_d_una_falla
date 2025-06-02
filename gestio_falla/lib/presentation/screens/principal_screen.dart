@@ -12,177 +12,14 @@ import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 import 'package:provider/provider.dart';
 
 class PrincipalScreen extends StatefulWidget {
-  final Faller faller;
+  final Faller? faller;
 
   const PrincipalScreen({super.key, required this.faller});
 
   @override
   State<PrincipalScreen> createState() => PrincipalScreenState();
 }
-/*
-class PrincipalScreenState extends State<PrincipalScreen> {
-  List<Event> totsElsEvents = [
-    Event(nom: "Paella", datainici: DateTime(2025, 3, 16, 14, 0), datafi: DateTime(2025, 3, 16, 17, 0), numcadires: 10,prodespecific: false),
-    Event(nom: "Cremà", datainici: DateTime(2025, 3, 20, 20, 0), datafi: DateTime(2025, 3, 21, 2, 0), numcadires: 10,prodespecific: false),
-    Event(nom: "Jocs", datainici: DateTime(2025, 3, 15, 9, 0), datafi: DateTime(2025, 3, 16, 19, 0), numcadires: 10,prodespecific: false),
-    Event(nom: "Despedida", datainici: DateTime(2025, 3, 19, 16, 0), datafi: DateTime(2025, 3, 19, 18, 0), numcadires: 10,prodespecific: false),
-    Event(nom: "Caminata", datainici: DateTime(2025, 3, 19, 16, 0), datafi: DateTime(2025, 3, 19, 18, 0), numcadires: 10,prodespecific: false),
-  ];
-  int indexPantallaActual = 0;
-  
-  @override
-  void initState() {
-    super.initState();
-    // Esperem fins que el context estiga disponible
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<ApiOdooProvider>(context, listen: false);
-      provider.getLlistaEvents();
-    });
-  }
-  
-  @override
-  Widget build(BuildContext context) {
-    final apiOdooProvider = Provider.of<ApiOdooProvider>(context);
-    final config = _getConfiguracioPerRol(widget.faller.rol, indexPantallaActual, apiOdooProvider);
-    
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.orange,
-        centerTitle: true,
-        title: config.titolsAppBar[indexPantallaActual],
-      ),
-      bottomNavigationBar: config.navegacio.length >= 2
-          ? NavigationBar(
-              selectedIndex: indexPantallaActual,
-              onDestinationSelected: (index) {
-                setState(() {
-                  indexPantallaActual = index;
-                });
-              },
-              destinations: config.navegacio,
-            )
-          : null,
-      body: config.pantalles[indexPantallaActual],
-    );
-  }
 
-  _ConfiguracioVista _getConfiguracioPerRol(String rol, int index, ApiOdooProvider apiOdooProvider) {
-    if (rol == "Faller" || rol == "Cap de familia") {
-      return _ConfiguracioVista(
-        pantalles: [
-          EventsScreen(totsElsEvents: apiOdooProvider.events ),
-          PerfilScreen(faller: widget.faller), // Provider accedirà dins de PerfilScreen
-        ],
-        navegacio: [
-          NavigationDestination(
-            icon: Icon(index == 0 ? Icons.event : Icons.event_outlined),
-            label: 'Events',
-          ),
-          NavigationDestination(
-            icon: Icon(index == 1 ? Icons.account_circle : Icons.account_circle_outlined),
-            label: 'Perfil',
-          ),
-        ],
-        titolsAppBar: const [
-          Text('Events'),
-          Text('Perfil'),
-        ],
-      );
-    } else if (rol == "Cobrador") {
-      return _ConfiguracioVista(
-        pantalles: [
-          Escaner(),
-          PerfilScreen(faller: widget.faller), // Provider accedirà dins de PerfilScreen
-        ],
-        navegacio: [
-          NavigationDestination(
-            icon: Icon(index == 0 ? Icons.scanner : Icons.scanner_outlined),
-            label: 'Escaner',
-          ),
-          NavigationDestination(
-            icon: Icon(index == 1 ? Icons.account_circle : Icons.account_circle_outlined),
-            label: 'Perfil',
-          ),
-        ],
-        titolsAppBar: const [
-          Text("Escaner"),
-          Text("Perfil"),
-        ],
-      );
-    } else if (rol == "Administrador") {
-      return _ConfiguracioVista(
-        pantalles: [
-          EventsScreen(totsElsEvents: totsElsEvents),
-          AdminScreen(),
-          PerfilScreen(faller: widget.faller),
-        ],
-        navegacio: [
-          NavigationDestination(
-            icon: Icon(index == 0 ? Icons.event : Icons.event_outlined),
-            label: 'Events',
-          ),
-          NavigationDestination(
-            icon: Icon(index == 1 ? Icons.admin_panel_settings : Icons.admin_panel_settings_outlined),
-            label: 'Administrador',
-          ),
-          NavigationDestination(
-            icon: Icon(index == 2 ? Icons.account_circle : Icons.account_circle_outlined),
-            label: 'Perfil',
-          ),
-        ],
-        titolsAppBar: const [
-          Text("Events"),
-          Text("Admin"),
-          Text("Perfil"),
-        ],
-      );
-    } else if (rol == "SuperAdmin") {
-      return _ConfiguracioVista(
-        pantalles: [
-          EventsScreen(totsElsEvents: totsElsEvents),
-          PerfilScreen(faller: widget.faller),
-          Escaner(),
-          AdminScreen(),
-        ],
-        navegacio: [
-          NavigationDestination(
-            icon: Icon(index == 0 ? Icons.event : Icons.event_outlined),
-            label: 'Events',
-          ),
-          NavigationDestination(
-            icon: Icon(index == 1 ? Icons.account_circle : Icons.account_circle_outlined),
-            label: 'Perfil',
-          ),
-          NavigationDestination(
-            icon: Icon(index == 2 ? Icons.scanner : Icons.scanner_outlined),
-            label: 'Escaner',
-          ),
-          NavigationDestination(
-            icon: Icon(index == 3 ? Icons.admin_panel_settings : Icons.admin_panel_settings_outlined),
-            label: 'Admin',
-          ),
-        ],
-        titolsAppBar: const [
-          Text('Events'),
-          Text('Perfil'),
-          Text('Escaner'),
-          Text('Admin'),
-        ],
-      );
-    } else {
-      return _ConfiguracioVista(
-        pantalles: const [LoginScreen()],
-        navegacio: [
-          const NavigationDestination(
-            icon: Icon(Icons.login),
-            label: 'Login',
-          )
-        ],
-        titolsAppBar: const [Text("Login")],
-      );
-    }
-  }
-}*/
 class PrincipalScreenState extends State<PrincipalScreen> {
   int indexPantallaActual = 0;
 
@@ -198,7 +35,7 @@ class PrincipalScreenState extends State<PrincipalScreen> {
   @override
   Widget build(BuildContext context) {
     final apiOdooProvider = Provider.of<ApiOdooProvider>(context);
-    final config = _getConfiguracioPerRol(widget.faller.rol, indexPantallaActual, apiOdooProvider);
+    final config = _getConfiguracioPerRol(widget.faller!.rol, indexPantallaActual, apiOdooProvider);
 
     return Scaffold(
       appBar: AppBar(
