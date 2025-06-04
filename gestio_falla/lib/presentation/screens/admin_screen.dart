@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/provider/Api-OdooProvider.dart';
+import 'package:gestio_falla/provider/nfcProvider.dart';
 import 'package:provider/provider.dart';
 
 class AdminScreen extends StatelessWidget {
@@ -74,6 +75,7 @@ class AdminScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final api = Provider.of<ApiOdooProvider>(context);
+    final nfcapi= Provider.of<NfcProvider>(context);
 
     return Scaffold(
       body: Padding(
@@ -276,6 +278,17 @@ class AdminScreen extends StatelessWidget {
                 );
               },
             ),
+            buildMenuButton(icon: Icons.edit, label: "Escriure NFC", onTap: (){
+              String valorpulsera='';
+              mostrarFormulari(
+                context: context,
+                title: "Escriure NFC", 
+                fields: [
+                  TextFormField(decoration: InputDecoration(labelText: 'Escriure NFC'), onChanged: (v) => valorpulsera = v ,validator:(v) => v!.isEmpty ? 'Obligatori':null),
+                ], 
+                onSubmit: () => nfcapi.escriureNFC(valorpulsera)); 
+              }
+            )
           ],
         ),
       ),

@@ -22,9 +22,10 @@ class QrRepositoryImpl implements QrRepository {
       onError: onError,
     );
   }
-
+  
   @override
   Future<String?> llegirQRAmbRetorn(BuildContext context) {
-    return qrDataSource.llegirQRAmbRetorn(context);
+    return qrDataSource.llegirQRAmbRetorn(context: context);
   }
+
 }

@@ -31,12 +31,16 @@ class Faller {
   }) {
     if (!rolsValids.contains(rol)) {
       throw ArgumentError('Rol no vàlid: $rol');
-    } else if (rol == 'Cobrador' || rol == 'SuperAdmin') {
+    } else if (rol == 'Cobrador') {
       if (cobrador_id == null) {
         throw ArgumentError('El rol "Cobrador" requereix una instància de Cobrador.');
       }
       if (!Cobrador.rolsValids.contains(cobrador_id!.rolcobrador)) {
         throw ArgumentError('Cobrador deu tindre un subRol vàlid: ${cobrador_id!.rolcobrador}.');
+      }
+    } else if (rol == 'SuperAdmin' && cobrador_id != null) {
+      if (!Cobrador.rolsValids.contains(cobrador_id!.rolcobrador)) {
+        throw ArgumentError('Cobrador (de SuperAdmin) té un subRol no vàlid: ${cobrador_id!.rolcobrador}.');
       }
     } else {
       // Si no és Cobrador, subRol hauria de ser null
@@ -60,20 +64,21 @@ class Faller {
   }
 
   factory Faller.fromJSON(Map<String, dynamic> json) {
-    return Faller(
-      id: json['id'],
-      nom: json['nom'],
-      telimit: json['telimit'],
-      llimit: (json['llimit'] as num?)?.toDouble(),
-      saldo: (json['saldo'] as num).toDouble(),
-      familia_id: json['familia_id'] != null ? Familia.fromJSON(json['families']) : null,
-      rol: json['rol'],
-      cobrador_id: json['cobrador_id'] != null ? Cobrador.fromJSON(json['cobrador']) : null,
-      valorpulsera: json['valorpulsera'],
-      imatgeurl: json['imatgeurl'],
-      estaloguejat: json['estaloguejat'],
-    );
-  }
+  return Faller(
+    id: json['id']?.toString(),
+    nom: json['nom'] ?? '',
+    telimit: json['telimit'] == true || json['telimit'] == 'true',
+    llimit: json['llimit'] != null ? double.tryParse(json['llimit'].toString()) : null,
+    saldo: double.tryParse(json['saldo'].toString()) ?? 0.0,
+    familia_id: json['familia'] is Map<String, dynamic> ? Familia.fromJSON(json['familia']) : null,
+    rol: json['rol'] ?? '',
+    cobrador_id: json['cobrador'] != null ? Cobrador.fromJSON(json['cobrador']) : null,
+    valorpulsera: json['valorpulsera'] ?? '',
+    imatgeurl: json['imatgeurl'],
+    estaloguejat: json['estaloguejat'] == true || json['estaloguejat'] == 'true',
+  );
+}
+
   Map<String, dynamic> toJSON() {
     return {
       'id': id,

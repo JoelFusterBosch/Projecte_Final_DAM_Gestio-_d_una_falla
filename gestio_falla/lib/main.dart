@@ -27,7 +27,7 @@ void main() async {
   final isLoggedIn = prefs.getBool('estaloguejat') ?? false;
 
   final fakeApiOdooDataSource = FakeApiOdooDataSource(
-    baseUrl: "http://192.168.236.2:3000", 
+    baseUrl: "http://192.168.157.2:3000", 
     db: "Projecte_Falla"
   );
   final apiOdooRepository = ApiOdooRepositoryImpl(fakeApiOdooDataSource);
@@ -83,6 +83,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Falla Portal',
+        debugShowCheckedModeBanner: false,
         home: const SplashScreen(),
       ),
     );

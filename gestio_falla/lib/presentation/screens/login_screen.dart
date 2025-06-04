@@ -131,11 +131,9 @@ class LoginScreenState extends State<LoginScreen> {
 
     if (via == 'nfc') {
       final nfcProvider = context.read<NfcProvider>();
-      await nfcProvider.llegirEtiqueta(context);
       valorEscanejat = valorEscanejat = await nfcProvider.llegirEtiquetaRetornantValor(context);
     } else {
       final qrProvider = context.read<Qrprovider>();
-      await qrProvider.llegirQR(context);
       valorEscanejat = valorEscanejat = await qrProvider.llegirQRRetornantValor(context);
 
     }

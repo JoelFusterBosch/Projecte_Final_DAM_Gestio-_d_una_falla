@@ -20,6 +20,11 @@ class Qrprovider with ChangeNotifier {
     _faller = fallerNou;
     notifyListeners();
   }
+  
+  void setFaller(Faller faller) {
+    faller=faller;
+    notifyListeners();
+  }
 
   set apiOdooProvider(ApiOdooProvider? provider) {
     _apiOdooProvider = provider;
@@ -53,7 +58,7 @@ class Qrprovider with ChangeNotifier {
         _qrData = "Valor llegit ${faller!.valorpulsera}";
 
         if (faller!.rol == "Cobrador" || faller!.rol == "SuperAdmin") {
-          if (!faller!.estaloguejat) {
+          if (faller!.estaloguejat) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
@@ -107,7 +112,7 @@ class Qrprovider with ChangeNotifier {
           }
         } else {
           // Per a Faller, Administrador o altres rols
-          if (!faller!.estaloguejat) {
+          if (faller!.estaloguejat) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
@@ -143,11 +148,7 @@ class Qrprovider with ChangeNotifier {
       _qrData = "Error al escanejar el QR";
       notifyListeners();
     }
-    return null;
-  }
 
-  void setFaller(Faller faller) {
-    faller=faller;
-    notifyListeners();
+    return null;
   }
 }

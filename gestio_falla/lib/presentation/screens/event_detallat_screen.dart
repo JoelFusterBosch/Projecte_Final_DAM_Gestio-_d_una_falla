@@ -32,7 +32,7 @@ class EventDetallatScreenState extends State<EventDetallatScreen>{
             mainAxisAlignment:MainAxisAlignment.center,
             children: [
               const SizedBox(height: 80),
-              Image.network(event.urlimatge ?? ""),
+              Image.network(event.urlimatge ?? "No n'hi ha imatge disponible"),
               Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Column(

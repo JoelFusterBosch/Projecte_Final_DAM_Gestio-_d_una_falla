@@ -1,179 +1,120 @@
 import 'package:flutter/material.dart';
-import 'package:gestio_falla/domain/entities/cobrador.dart';
 import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
+import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 import 'package:gestio_falla/provider/nfcProvider.dart';
 import 'package:gestio_falla/provider/qrProvider.dart';
 import 'package:provider/provider.dart';
 
-class Escaner extends StatefulWidget{
+class Escaner extends StatefulWidget {
   const Escaner({super.key});
 
   @override
   State<Escaner> createState() => EscanerState();
-
 }
-class EscanerState extends State<Escaner>{
-  List pantalles=[];
-  late Event event;
+
+class EscanerState extends State<Escaner> {
+  Event? event; 
   late Faller faller;
-  late int indexPantallaActual;
-  late bool esFaller;
   late int cadiresPerAlFaller;
   late bool eventCorrecte;
-  
+  bool carregat = false;
+
   @override
-  void initState(){
-    super.initState();
-    faller=Faller(nom: "Joel", rol:"Cobrador", cobrador_id: Cobrador(rolcobrador: "Cadires"),valorpulsera: "8430001000017", telimit: false, estaloguejat: true, saldo: 0);
-    event=Event(nom: "Paella", datainici:DateTime(2025,3,16,14,0), datafi:DateTime(2025,3,16,17,0),numcadires: 10, prodespecific: false);
-    indexPantallaActual=0;
-    esFaller=true;
-    cadiresPerAlFaller=1;
-    eventCorrecte=false;
-    event1();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!carregat) {
+      final apiProvider = Provider.of<ApiOdooProvider>(context);
+      if (apiProvider.event != null) {
+        setState(() {
+          event = apiProvider.event;
+          print(event);
+          cadiresPerAlFaller = 1;
+          eventCorrecte = true;
+          carregat = true;
+        });
+      }
+    }
   }
-  
-  
+
   @override
   Widget build(BuildContext context) {
+    if (event == null) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
       body: SafeArea(
         child: LayoutBuilder(
-          builder: (context, constraints){
+          builder: (context, constraints) {
             return SingleChildScrollView(
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minHeight: constraints.maxHeight,
-                ),
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
                 child: Center(
                   child: Padding(
-                    padding: EdgeInsets.all(20.0),
-                    child:Column(
-                      mainAxisAlignment:MainAxisAlignment.center,
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        pantalles[indexPantallaActual],
+                        Text(event!.nom,
+                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 10),
+                        const Text("Durada:"),
+                        Text("${event!.dataIniciFormatejada} - ${event!.dataFiFormatejada}"),
+                        const SizedBox(height: 30),
+
                         Consumer<NfcProvider>(
                           builder: (context, provider, child) {
-                            return Text(eventCorrecte ? provider.nfcData : "",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold, 
-                                overflow: TextOverflow.ellipsis, 
-                              ),
+                            return Text(
+                              eventCorrecte ? provider.nfcData : "",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.ellipsis),
                               maxLines: 1,
                             );
                           },
                         ),
-                        ElevatedButton.icon(onPressed:eventCorrecte? () => {context.read<NfcProvider>().llegirEtiqueta(context)}:null, 
-                        icon: Icon(Icons.nfc),
-                        label: Text("Escàner NFC")
+
+                        ElevatedButton.icon(
+                          onPressed: eventCorrecte
+                              ? () => context.read<NfcProvider>().llegirEtiqueta(context)
+                              : null,
+                          icon: const Icon(Icons.nfc),
+                          label: const Text("Escàner NFC"),
                         ),
-                        ElevatedButton.icon(onPressed: eventCorrecte? () => {context.read<Qrprovider>().llegirQR(context)}:null,
-                        icon: Icon(Icons.qr_code),
-                        label: Text("Escàner QR")
+
+                        ElevatedButton.icon(
+                          onPressed: eventCorrecte
+                              ? () => context.read<Qrprovider>().llegirQR(context)
+                              : null,
+                          icon: const Icon(Icons.qr_code),
+                          label: const Text("Escàner QR"),
                         ),
+
                         Consumer<Qrprovider>(
-                          builder: (context, provider, child){
-                            return Text(eventCorrecte ? provider.qrData : "",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold, 
-                              overflow: TextOverflow.ellipsis, 
-                            ),
-                            maxLines: 1, 
+                          builder: (context, provider, child) {
+                            return Text(
+                              eventCorrecte ? provider.qrData : "",
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  overflow: TextOverflow.ellipsis),
+                              maxLines: 1,
                             );
-                          }
+                          },
                         ),
-                      ]
-                    )
-                  ) 
+                      ],
+                    ),
+                  ),
                 ),
               ),
             );
-          }
+          },
         ),
       ),
     );
-  }
-  void event1() {
-    setState(() {
-      if (event.nom == "Paella" && event.datainici == DateTime(2025,3,16,14,0)) {
-        if (esFaller) {
-          if (faller.nom == "Joel") {
-            if (cadiresPerAlFaller >= 1) {
-              eventCorrecte=true;
-              pantalles = [
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(event.nom),
-                      Text("Durada:"),
-                      Text("${event.dataIniciFormatejada}-${event.dataFiFormatejada}"),
-                    ],
-                  ),
-                )
-              ];
-            } else {
-              pantalles = [
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "L'usuari ${faller.nom} no té cadires assignades!",
-                        style: TextStyle(color: Colors.red),
-                      ),
-                      Text("Cadires assignades: $cadiresPerAlFaller")
-                    ],
-                  ),
-                )
-              ];
-            }
-          } else {
-            pantalles = [
-              Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "L'usuari ${faller.nom} no és correcte",
-                      style: TextStyle(color: Colors.red),
-                    )
-                  ],
-                ),
-              )
-            ];
-          }
-        } else {
-          pantalles = [
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "L'usuari ${faller.nom} no és un faller",
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ],
-              ),
-            )
-          ];
-        }
-      } else {
-        pantalles = [
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Hui no n'hi han events per a demanar cadires",
-                  style: TextStyle(color: Colors.red),
-                ),
-              ],
-            ),
-          )
-        ];
-      }
-    });
   }
 }

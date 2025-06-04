@@ -15,11 +15,13 @@ router.get('/', async (req, res) => {
 });
 //Barra: SELECT amb id,nom,preu,stock,imatgeURL
 router.get('/barra', async (req, res) => {
-  try{
-    const result = await pool.query('SELECT nom, preu, stock, urlimatge, prodespecific=false FROM producte');
+  try {
+    const result = await pool.query(
+      'SELECT id, nom, preu, stock, urlimatge FROM producte WHERE prodespecific = false'
+    );
     res.json(result.rows);
-  }catch (err){
-    res.status(500).json({error: "Error a l'hora d'obtindre la llista de productes"});
+  } catch (err) {
+    res.status(500).json({ error: "Error a l'hora d'obtindre la llista de productes" });
   }
 });
 /*

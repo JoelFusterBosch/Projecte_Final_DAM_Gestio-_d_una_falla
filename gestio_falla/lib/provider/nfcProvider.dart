@@ -16,8 +16,8 @@ class NfcProvider with ChangeNotifier {
 
   NfcProvider(this._nfcRepository);
 
-  set faller(Faller? fallerNou) {
-    _faller = fallerNou;
+  void setFaller(Faller faller) {
+    faller = faller;
     notifyListeners();
   }
 
@@ -50,7 +50,7 @@ class NfcProvider with ChangeNotifier {
         _nfcData = "Valor llegit ${faller!.valorpulsera}";
 
         if (faller!.rol == "Cobrador" || faller!.rol == "SuperAdmin") {
-          if (!faller!.estaloguejat) {
+          if (faller!.estaloguejat) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
@@ -104,7 +104,7 @@ class NfcProvider with ChangeNotifier {
           }
         } else {
           // Per a Faller, Administrador o altres rols
-          if (!faller!.estaloguejat) {
+          if (faller!.estaloguejat) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),
@@ -153,17 +153,13 @@ class NfcProvider with ChangeNotifier {
     return null;
   }
 
-  Future<void> escriureNFC(BuildContext context) async {
+  Future<void> escriureNFC(String valorPulsera) async {
     _nfcData = "Acosta una etiqueta NFC perfavor";
     notifyListeners();
-    final valorLlegit = await _nfcRepository.escriureNFC("8430001000017");
+    final valorLlegit = await _nfcRepository.escriureNFC(valorPulsera);
     notifyListeners();
     _nfcData="Etiqueta nfc canviada amb el valor $valorLlegit";
     notifyListeners();
   }
 
-  void setFaller(Faller faller) {
-    faller = faller;
-    notifyListeners();
-  }
 }

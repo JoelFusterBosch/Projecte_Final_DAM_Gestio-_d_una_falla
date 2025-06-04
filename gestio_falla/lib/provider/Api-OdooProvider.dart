@@ -17,6 +17,7 @@ class ApiOdooProvider with ChangeNotifier {
   String _status = "";
   Faller? _usuariActual;
   Faller? _faller;
+  Event? _event;
 
   // Datos cargados
   List<dynamic> fallers = [];
@@ -34,7 +35,17 @@ class ApiOdooProvider with ChangeNotifier {
   String get status => _status;
   Faller? get usuariActual => _usuariActual;
   Faller? get faller => _faller;
+  Event? get event => _event;
 
+  void setFaller(Faller faller) {
+    _faller = faller;
+    notifyListeners();
+  }
+  void setEvent(Event event){
+    _event = event;
+    notifyListeners();
+  }
+  
   // Funcions internes per al estat
   void _setStatus(String status) {
     _status = status;
@@ -50,18 +61,6 @@ class ApiOdooProvider with ChangeNotifier {
     _message = 'Error: $error';
     _error = error;
     notifyListeners();
-  }
-
-  Future<void> saluda() async {
-    _setLoading(true);
-    try {
-      final result = await _apiOdooRepository.saluda();
-      _setStatus(result['missatge']);
-    } catch (e) {
-      _setError(e.toString());
-    } finally {
-      _setLoading(false);
-    }
   }
 
   Future<void> getFallers() async {
@@ -213,13 +212,31 @@ class ApiOdooProvider with ChangeNotifier {
     }
   }
 
-  Future<void> getEvents() async{
+  Future<void> getEvents() async {
     _setLoading(true);
     _setStatus("Carregant events...");
 
     try {
       final result = await _apiOdooRepository.getEvents();
-      events = (result ?? []).cast<Event>();
+
+      if (result != null && result is List) {
+        events = events = result
+  .where((e) {
+    try {
+      final ev = Event.fromJSON(e);
+      return true;
+    } catch (_) {
+      print("Event descartat per error de deserialització: $e");
+      return false;
+    }
+  })
+  .map((e) => Event.fromJSON(e))
+  .toList();
+
+      } else {
+        events = [];
+      }
+
       _setStatus("Events carregats: ${events.length}");
     } catch (e) {
       _setError(e.toString());
@@ -241,18 +258,30 @@ class ApiOdooProvider with ChangeNotifier {
     }
   }
 
-  Future<void> getLlistaEvents() async{
+  Future<void> getLlistaEvents() async {
     _setLoading(true);
     _setStatus("Carregant la llista d'events...");
 
     try {
       final result = await _apiOdooRepository.getEvents();
-      events = (result ?? []).cast<Event>();
-      _setStatus("Events carregats: ${events.length}");
+
+      if (result is List) {
+        events = result
+            .map((eventJson) => Event.fromJSON(eventJson))
+            .toList();
+        _setStatus("Events carregats: ${events.length}");
+        notifyListeners();
+      } else {
+        events = [];
+        _setStatus("No s'han trobat events o el format és inesperat.");
+        notifyListeners();
+      }
     } catch (e) {
-      _setError(e.toString());
+      _setError("Error carregant events: $e");
+      notifyListeners();
     } finally {
       _setLoading(false);
+      notifyListeners();
     }
   }
 
@@ -499,11 +528,6 @@ class ApiOdooProvider with ChangeNotifier {
     // Esborrem dades locals si cal
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
-    notifyListeners();
-  }
-
-  void setFaller(Faller faller) {
-    _faller = faller;
     notifyListeners();
   }
 }

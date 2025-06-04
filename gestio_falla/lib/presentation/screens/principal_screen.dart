@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/presentation/screens/admin_screen.dart';
 import 'package:gestio_falla/presentation/screens/escaner.dart';
@@ -28,7 +27,7 @@ class PrincipalScreenState extends State<PrincipalScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = Provider.of<ApiOdooProvider>(context, listen: false);
-      provider.getLlistaEvents();  // Carrega la llista d'events del servidor
+      provider.getEvents();  // Carrega la llista d'events del servidor
     });
   }
 
@@ -62,7 +61,7 @@ class PrincipalScreenState extends State<PrincipalScreen> {
     if (rol == "Faller" || rol == "Cap de familia") {
       return _ConfiguracioVista(
         pantalles: [
-          EventsScreen(totsElsEvents: apiOdooProvider.events),
+          EventsScreen(),
           PerfilScreen(faller: widget.faller),
         ],
         navegacio: [
@@ -104,7 +103,7 @@ class PrincipalScreenState extends State<PrincipalScreen> {
     } else if (rol == "Administrador") {
       return _ConfiguracioVista(
         pantalles: [
-          EventsScreen(totsElsEvents: apiOdooProvider.events),
+          EventsScreen(),
           AdminScreen(),
           PerfilScreen(faller: widget.faller),
         ],
@@ -131,7 +130,7 @@ class PrincipalScreenState extends State<PrincipalScreen> {
     } else if (rol == "SuperAdmin") {
       return _ConfiguracioVista(
         pantalles: [
-          EventsScreen(totsElsEvents: apiOdooProvider.events),
+          EventsScreen(),
           PerfilScreen(faller: widget.faller),
           Escaner(),
           AdminScreen(),

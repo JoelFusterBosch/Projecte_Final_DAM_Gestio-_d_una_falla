@@ -7,12 +7,41 @@ Funcions amb GET
 //Get bàsic
 router.get('/', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM faller');
-    res.json(result.rows);
+    const result = await pool.query(`
+      SELECT 
+        f.id, f.nom, f.telimit, f.llimit, f.saldo,
+        f.rol, f.valorpulsera, f.estaloguejat, f.imatgeurl,
+        fam.id AS familia_id, fam.nom AS familia_nom, fam.saldo_total
+      FROM faller f
+      LEFT JOIN familia fam ON f.familia_id = fam.id
+    `);
+
+    const fallers = result.rows.map(row => ({
+      id: row.id,
+      nom: row.nom,
+      telimit: row.telimit,
+      llimit: row.llimit,
+      saldo: parseFloat(row.saldo) || 0,
+      rol: row.rol,
+      valorpulsera: row.valorpulsera,
+      estaloguejat: row.estaloguejat,
+      imatgeurl: row.imatgeurl,
+      familia_id: row.familia_id ? {
+        id: row.familia_id,
+        nom: row.familia_nom,
+        saldo_total: row.saldo_total,
+        membres: null
+      } : null,
+      cobrador_id: null
+    }));
+
+    res.json(fallers);
   } catch (err) {
-    res.status(500).json({ error: "Error a l'hora d'obtindre als fallers" });
+    console.error(err);
+    res.status(500).json({ error: "Error a l'hora d'obtenir els fallers" });
   }
 });
+
 
 //Pantalla perfil: Un SELECT amb id, nom,familia, rol,teLimit?, limit?,saldo?
 router.get('/perfil/:id', async (req, res) => {
@@ -21,7 +50,7 @@ router.get('/perfil/:id', async (req, res) => {
     const result = await pool.query(`
       SELECT 
         f.id, f.nom, f.teLimit, f.llimit AS limit, f.saldo,
-        f.rol, f.valorPulsera, f.estaLoguejat, f.imatgeUrl,
+        f.rol, f.valorpulsera, f.estaloguejat, f.imatgeurl,
         fam.id AS familia_id, fam.nom AS familia_nom, fam.saldo_total
       FROM faller f
       LEFT JOIN familia fam ON f.familia_id = fam.id
@@ -202,3 +231,5 @@ router.delete('/borrar/:valorPulsera', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+module.exports = router;

@@ -9,17 +9,6 @@ class FakeApiOdooDataSource {
   final String db;
 
   FakeApiOdooDataSource({required this.baseUrl, required this.db});
-  Future<Map<String,dynamic>> saluda() async{
-    final url = Uri.parse('$baseUrl/');
-
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      throw Exception("Error a l'hora de conectar al servidor");
-    }
-  }
   /*
   Fallers 
   */
@@ -213,15 +202,18 @@ class FakeApiOdooDataSource {
   }
 
   // Obté la llista d'events (GET)
-  Future <List<Event>?> getLlistaEvents() async{
+  Future<List<Event>> getLlistaEvents() async {
     final url = Uri.parse('$baseUrl/events/llista');
     final response = await http.get(url);
-    if(response.statusCode == 200){
-      return jsonDecode(response.body);
-    }else{
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonList = jsonDecode(response.body);
+      return jsonList.map((json) => Event.fromJSON(json)).toList();
+    } else {
       throw Exception("Error a l'hora d'obtindre la llista d'events");
     }
   }
+
   
   // Inserta un nou event (POST)
   Future <Map<String, dynamic>> postEvents(
@@ -254,6 +246,7 @@ class FakeApiOdooDataSource {
       throw Exception("Error a l'hora de borrar l'event");
     }
   }
+
   /*
   Familia
   */
@@ -446,7 +439,7 @@ class FakeApiOdooDataSource {
   } 
 
   Future<Faller?> verificarUsuari(String nom, String valorPulsera) async {
-    final url = Uri.parse('$baseUrl/auth/verificar');
+    final url = Uri.parse('$baseUrl/verificar');
 
     final response = await http.post(
       url,
@@ -458,24 +451,12 @@ class FakeApiOdooDataSource {
     );
 
     if (response.statusCode == 200) {
-      final body = jsonDecode(response.body);
-
-      if (body['verificat'] == true) {
-        // Assegura't que l'API et retorna les dades necessàries del faller
-        return Faller(
-          nom: body['nom'] ?? nom,
-          rol: body['rol'] ?? 'Faller',
-          valorpulsera: valorPulsera,
-          telimit: body['teLimit'] ?? false,
-          saldo: body['saldo'] ?? 0,
-          estaloguejat: true,
-        );
-      } else {
-        return null;
-      }
+      final data = jsonDecode(response.body);
+      return Faller.fromJSON(data['faller']);
     } else {
+      // Aquí pots gestionar errors o mostrar missatge
+      print('Error: ${response.body}');
       return null;
     }
   }
-
 }

@@ -8,7 +8,6 @@ abstract class ApiOdooRepository {
   
   Future<List<dynamic>?> getEvents(int uid, String password);
   */
-  Future<Map<String,dynamic>> saluda();
   //Fallers
   Future<List<dynamic>?> getFallers();
   Future<Map<String,dynamic>> getPerfil({required String id});
@@ -24,7 +23,7 @@ abstract class ApiOdooRepository {
   //Events
   Future<List<dynamic>?> getEvents();
   Future<Map<String,dynamic>> getEventsDetallats({required String id});
-  Future<List<Event>?> getLlistaEvents();
+  Future<List<Event>> getLlistaEvents();
   Future<Map<String,dynamic>> postEvents({required String nom, required DateTime dataInici, required DateTime dataFi, String? desc});
   Future<void> borrarEvent({required String nom});
   //Families

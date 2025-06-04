@@ -26,10 +26,6 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
     return fakeApiOdooDataSource.getEvents(uid, password);
   }
 */
-  @override
-  Future<Map<String, dynamic>> saluda() {
-    return fakeApiOdooDataSource.saluda();
-  }
 
   /*
   Fallers
@@ -105,7 +101,7 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   }
 
   @override
-  Future<List<Event>?> getLlistaEvents() {
+  Future<List<Event>> getLlistaEvents() {
     return fakeApiOdooDataSource.getLlistaEvents();
   }
 
@@ -118,7 +114,6 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   Future<void> borrarEvent({required String nom}) {
     return fakeApiOdooDataSource.borrarEvent(nom);
   }
-  
   /*
   Families
   */

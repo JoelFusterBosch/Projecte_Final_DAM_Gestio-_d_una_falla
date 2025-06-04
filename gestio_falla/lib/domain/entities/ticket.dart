@@ -3,23 +3,28 @@ class Ticket {
   double preu;
   int quantitat;
   bool maxim;
-  Ticket({required this.id,required this.preu, required this.quantitat, required this.maxim,});
 
-  factory Ticket.fromJSON(Map<String, dynamic>json){
-    return Ticket(
-      id: json['id'],
-      preu: (json['preu'] is int)
-              ? (json['preu'] as int).toDouble()
-              : json['preu'],
-      quantitat: json['quantitat'],
-      maxim: json['maxim'],
-      );
-  }
+  Ticket({
+    required this.id,
+    required this.preu,
+    required this.quantitat,
+    required this.maxim,
+  });
+
+  factory Ticket.fromJSON(Map<String, dynamic> json) {
+  return Ticket(
+    id: json['id'].toString(),
+    preu: double.tryParse(json['preu'].toString()) ?? 0.0,
+    quantitat: json['quantitat'] ?? 0,
+    maxim: json['maxim'] == true,
+  );
+}
+
+
   Map<String, dynamic> toJSON() => {
     'id': id,
     'preu': preu,
     'quantitat': quantitat,
     'maxim': maxim,
   };
-
 }

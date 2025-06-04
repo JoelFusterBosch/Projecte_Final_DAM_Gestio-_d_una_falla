@@ -17,7 +17,7 @@ class Familia {
     return Familia(
       id: json['id'],
       nom: json['nom'],
-      saldo_total: (json['saldo_total'] as num?)?.toDouble(),
+      saldo_total: json['saldo_total'] != null ? double.tryParse(json['saldo_total'].toString()) : null,
       membres: json['membres'] != null
           ? List<Faller>.from(json['membres'].map((m) => Faller.fromJSON(m)))
           : null,

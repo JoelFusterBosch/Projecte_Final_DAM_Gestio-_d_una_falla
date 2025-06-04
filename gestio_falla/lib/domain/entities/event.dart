@@ -1,6 +1,6 @@
+import 'package:intl/intl.dart';
 import 'package:gestio_falla/domain/entities/producte.dart';
 import 'package:gestio_falla/domain/entities/ticket.dart';
-import 'package:intl/intl.dart';
 
 class Event {
   String? id;
@@ -13,51 +13,53 @@ class Event {
   int numcadires;
   bool prodespecific;
   Producte? producte_id;
+
   Event({
     this.id,
     required this.nom,
     this.descripcio,
-    this.ticket_id, 
-    required this.datainici, 
-    required this.datafi, 
-    this.urlimatge, 
-    required this.numcadires, 
-    required this.prodespecific, 
-    this.producte_id}){
+    this.ticket_id,
+    required this.datainici,
+    required this.datafi,
+    this.urlimatge,
+    required this.numcadires,
+    required this.prodespecific,
+    this.producte_id,
+  }) {
     if (prodespecific) {
-      if (producte_id == null) {
-        throw ArgumentError("Si el producte es específic de l'event tens que posar un producte.");
+      if (prodespecific && producte_id != null) {
+        if (!producte_id!.eventespecific) {
+          throw ArgumentError("Només es poden assignar productes exclusius a l'event.");
+        }
       }
-      if(!producte_id!.eventespecific){
-        throw ArgumentError("Tens que posar sols els productes exclusius a eixe event");
+      if (!producte_id!.eventespecific) {
+        throw ArgumentError("Només es poden assignar productes exclusius a l'event.");
       }
     } else {
-      // Si no és Cobrador, subRol hauria de ser null
       producte_id = null;
     }
   }
-  String get dataIniciFormatejada {
-    return DateFormat('dd-MM-yyyy HH:mm').format(datainici);
-  }
-  String get dataFiFormatejada {
-    return DateFormat('dd-MM-yyyy HH:mm').format(datafi);
-  }
 
+  String get dataIniciFormatejada => DateFormat('dd-MM-yyyy HH:mm').format(datainici);
+  String get dataFiFormatejada => DateFormat('dd-MM-yyyy HH:mm').format(datafi);
 
-  factory Event.fromJSON(Map<String, dynamic> json){
-    return Event(
-      id: json['id'],
-      nom: json['nom'],
-      descripcio: json['descripcio'],
-      ticket_id: json['ticket_id'] != null ? Ticket.fromJSON(json['tickets']) : null,
-      datainici: DateTime.parse(json['datainici']),
-      datafi: DateTime.parse(json['datafi']),
-      urlimatge: json['urlimatge'] ?? "",
-      numcadires: json['numcadires'],
-      prodespecific: json['prodespecific'],
-      producte_id: json['producte_id'] != null ? Producte.fromJSON(json['productes']) : null,
-    );
-  }
+  factory Event.fromJSON(Map<String, dynamic> json) {
+  final DateTime datainiciParsed = DateTime.parse(json['dataInici']);
+  final DateTime datafiParsed = DateTime.parse(json['dataFi']);
+
+  return Event(
+    id: json['id']?.toString(),
+    nom: json['nom'] ?? 'Sense nom',
+    descripcio: json['descripcio'],
+    ticket_id: json['ticket'] != null ? Ticket.fromJSON(json['ticket']) : null,
+    datainici: datainiciParsed,
+    datafi: datafiParsed,
+    urlimatge: json['urlImatge'],
+    numcadires: json['numCadires'] ?? 0,
+    prodespecific: json['prodEspecific'] ?? false,
+    producte_id: json['producte'] != null ? Producte.fromJSON(json['producte']) : null,
+  );
+}
   Map<String, dynamic> toJSON() => {
     'id': id,
     'nom': nom,
@@ -70,5 +72,4 @@ class Event {
     'prodespecific': prodespecific,
     'producte_id': producte_id?.toJSON(),
   };
-
 }

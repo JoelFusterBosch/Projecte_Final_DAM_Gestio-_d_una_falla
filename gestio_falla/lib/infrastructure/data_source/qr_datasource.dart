@@ -54,13 +54,17 @@ class QrDataSource {
   }
 
   // Aquí el nou mètode per llegir QR i retornar el valor (o null)
-  Future<String?> llegirQRAmbRetorn(BuildContext context) async {
+  Future<String?> llegirQRAmbRetorn({
+    required BuildContext context,
+    void Function()? onError,
+  }) async {
     final status = await Permission.camera.request();
 
     if (!status.isGranted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Permís de càmera denegat')),
       );
+      onError?.call();
       return null;
     }
 
@@ -80,7 +84,11 @@ class QrDataSource {
               isProcessing = true;
 
               final String? code = capture.barcodes.first.rawValue;
-              if (code == null) return;
+              if (code == null) {
+                onError?.call();
+                Navigator.pop(dialogContext);
+                return;
+              }
 
               valorLlegit = code;
               Navigator.pop(dialogContext);
@@ -92,4 +100,5 @@ class QrDataSource {
 
     return valorLlegit;
   }
+
 }
