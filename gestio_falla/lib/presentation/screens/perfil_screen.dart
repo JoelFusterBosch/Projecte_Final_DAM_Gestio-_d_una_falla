@@ -64,6 +64,9 @@ class PerfilScreenState extends State<PerfilScreen> {
                           widget.faller!.familia_id != null ? widget.faller!.familia_id!.nom : "Familia no assignada",
                           style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
+                        Text(
+                          "Saldo restant: ${widget.faller!.saldo.toString()}"
+                        ),
                         SizedBox(height: 20),
                         Offstage(
                           offstage: widget.faller!.rol != "Cap de familia" && widget.faller!.familia_id == null,

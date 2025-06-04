@@ -3,10 +3,14 @@ import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 import 'package:gestio_falla/provider/nfcProvider.dart';
 import 'package:provider/provider.dart';
 
-class AdminScreen extends StatelessWidget {
-  const AdminScreen({super.key});
-
-  Widget buildMenuButton({
+class AdminScreen extends StatefulWidget {
+  AdminScreen({super.key});
+  
+  @override
+  State<AdminScreen> createState() => AdminScreenState();
+}
+class AdminScreenState extends State<AdminScreen>{
+   Widget buildMenuButton({
     required IconData icon,
     required String label,
     required VoidCallback onTap,
@@ -89,16 +93,31 @@ class AdminScreen extends StatelessWidget {
               icon: Icons.person_add,
               label: 'Afegir faller',
               onTap: () {
-                String nom = '', rol = '', valor = '';
+                String nom = '', valor = '';
+                List<String> rols = ['Inserta un rol', 'Faller', 'Cobrador', 'Administrador'];
+                String rolSeleccionat= 'Inserta un rol';
                 mostrarFormulari(
                   context: context,
                   title: 'Afegir Faller',
                   fields: [
                     TextFormField(decoration: InputDecoration(labelText: 'Nom'), onChanged: (v) => nom = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
-                    TextFormField(decoration: InputDecoration(labelText: 'Rol'), onChanged: (v) => rol = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
+                    DropdownButton<String>(
+                          value: rolSeleccionat,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              rolSeleccionat = newValue!;
+                            });
+                          },
+                          items: rols.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
                     TextFormField(decoration: InputDecoration(labelText: 'Valor Pulsera'), onChanged: (v) => valor = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
                   ],
-                  onSubmit: () => api.postFaller(nom: nom, rol: rol, valorPulsera: valor),
+                  onSubmit: () => api.postFaller(nom: nom, rol: rolSeleccionat, valorPulsera: valor),
                 );
               },
             ),
@@ -186,16 +205,16 @@ class AdminScreen extends StatelessWidget {
               icon: Icons.shopping_cart,
               label: 'Afegir producte',
               onTap: () {
-                String nom = '', unitat = '', preu = '';
+                String nom = '', stock = '', preu = '';
                 mostrarFormulari(
                   context: context,
                   title: 'Afegir Producte',
                   fields: [
                     TextFormField(decoration: InputDecoration(labelText: 'Nom'), onChanged: (v) => nom = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
-                    TextFormField(decoration: InputDecoration(labelText: 'Unitat'), onChanged: (v) => unitat = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
                     TextFormField(decoration: InputDecoration(labelText: 'Preu'), onChanged: (v) => preu = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
+                    TextFormField(decoration: InputDecoration(labelText: 'Stock'), onChanged: (v) => stock = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
                   ],
-                  onSubmit: () => api.postProducte(nom, double.tryParse(unitat) ?? 0, int.tryParse(preu) ?? 0, ''),
+                  onSubmit: () => api.postProducte(nom, double.tryParse(preu) ?? 0, int.tryParse(stock) ?? 0, ''),
                 );
               },
             ),
@@ -250,15 +269,15 @@ class AdminScreen extends StatelessWidget {
               icon: Icons.confirmation_num,
               label: 'Afegir ticket',
               onTap: () {
-                String fallerId = '', eventId = '';
+                String quantitat = '', preu = '';
                 mostrarFormulari(
                   context: context,
                   title: 'Afegir Ticket',
                   fields: [
-                    TextFormField(decoration: InputDecoration(labelText: 'ID Faller'), onChanged: (v) => fallerId = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
-                    TextFormField(decoration: InputDecoration(labelText: 'ID Event'), onChanged: (v) => eventId = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
+                    TextFormField(decoration: InputDecoration(labelText: 'Quantitat'), onChanged: (v) => quantitat = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
+                    TextFormField(decoration: InputDecoration(labelText: 'Preu'), onChanged: (v) => preu = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
                   ],
-                  onSubmit: () => api.postTickets(int.tryParse(fallerId) ?? 0, double.tryParse(eventId) ?? 0, false),
+                  onSubmit: () => api.postTickets(int.tryParse(quantitat) ?? 0,  double.tryParse(preu) ?? 0, false),
                 );
               },
             ),
@@ -272,7 +291,7 @@ class AdminScreen extends StatelessWidget {
                   context: context,
                   title: 'Borrar Ticket',
                   fields: [
-                    TextFormField(decoration: InputDecoration(labelText: 'ID'), onChanged: (v) => id = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
+                    TextFormField(decoration: InputDecoration(labelText: 'ID (en números)'), onChanged: (v) => id = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
                   ],
                   onSubmit: () => api.borrarTicket(id),
                 );
@@ -294,4 +313,5 @@ class AdminScreen extends StatelessWidget {
       ),
     );
   }
+
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
-import 'package:gestio_falla/domain/entities/producte.dart';
 import 'package:gestio_falla/domain/repository/qr_repository.dart';
 import 'package:gestio_falla/presentation/screens/barra_screen.dart';
 import 'package:gestio_falla/presentation/screens/descompta_cadira_screen.dart';
@@ -82,7 +81,6 @@ class Qrprovider with ChangeNotifier {
                   MaterialPageRoute(
                     builder: (_) => Barra(
                       faller: faller,
-                      totsElsProductes: apiOdooProvider!.productes.cast<Producte>(),
                     ),
                   ),
                 );

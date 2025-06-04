@@ -18,7 +18,7 @@ class RegistrarUsuariState extends State<RegistrarUsuari> {
   final TextEditingController _nomController = TextEditingController();
   String _rolSeleccionat = 'Inserta un rol';
 
-  String? _valorPulseraLlegit;
+  String _valorPulseraLlegit='';
 
   @override
   Widget build(BuildContext context) {
@@ -114,11 +114,10 @@ class RegistrarUsuariState extends State<RegistrarUsuari> {
                           icon: const Icon(Icons.qr_code),
                           label: const Text("Escaneja QR"),
                         ),
-                        if (_valorPulseraLlegit != null)
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("Polsera llegida: $_valorPulseraLlegit", style: const TextStyle(color: Colors.green)),
-                          ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Polsera llegida: $_valorPulseraLlegit", style: const TextStyle(color: Colors.green)),
+                        ),
 
                         const SizedBox(height: 20),
                         ElevatedButton(
@@ -130,7 +129,7 @@ class RegistrarUsuariState extends State<RegistrarUsuari> {
                                 );
                                 return;
                               }
-                              if (_valorPulseraLlegit == null || _valorPulseraLlegit!.isEmpty) {
+                              if (_valorPulseraLlegit.isEmpty) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text("Escaneja una polsera NFC abans de registrar")),
                                 );
@@ -141,7 +140,7 @@ class RegistrarUsuariState extends State<RegistrarUsuari> {
                                 await apiOdooProvider.postFaller(
                                   nom: _nomController.text.trim(),
                                   rol: _rolSeleccionat,
-                                  valorPulsera: _valorPulseraLlegit!,
+                                  valorPulsera: _valorPulseraLlegit,
                                 );
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text("Usuari registrat correctament!")),

@@ -44,8 +44,8 @@ class Event {
   String get dataFiFormatejada => DateFormat('dd-MM-yyyy HH:mm').format(datafi);
 
   factory Event.fromJSON(Map<String, dynamic> json) {
-  final DateTime datainiciParsed = DateTime.parse(json['dataInici']);
-  final DateTime datafiParsed = DateTime.parse(json['dataFi']);
+  final DateTime datainiciParsed = DateTime.parse(json['datainici']);
+  final DateTime datafiParsed = DateTime.parse(json['datafi']);
 
   return Event(
     id: json['id']?.toString(),
@@ -54,9 +54,9 @@ class Event {
     ticket_id: json['ticket'] != null ? Ticket.fromJSON(json['ticket']) : null,
     datainici: datainiciParsed,
     datafi: datafiParsed,
-    urlimatge: json['urlImatge'],
-    numcadires: json['numCadires'] ?? 0,
-    prodespecific: json['prodEspecific'] ?? false,
+    urlimatge: json['urlimatge'],
+    numcadires: json['numcadires'] ?? 0,
+    prodespecific: json['prodespecific'] ?? false,
     producte_id: json['producte'] != null ? Producte.fromJSON(json['producte']) : null,
   );
 }

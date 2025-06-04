@@ -5,17 +5,17 @@ const verificarUsuari = async (req, res) => {
 
   try {
     const result = await pool.query(
-      'SELECT * FROM fallers WHERE nom = $1 AND valorpulsera = $2',
+      'SELECT * FROM faller WHERE nom = $1 AND valorPulsera = $2',
       [nom, valorPulsera]
     );
 
     if (result.rows.length > 0) {
-      res.status(200).json({ valid: true });
+      res.status(200).json({ faller: result.rows[0] });
     } else {
-      res.status(401).json({ valid: false, missatge: 'Nom o pulsera incorrectes' });
+      res.status(401).json({ error: 'Nom o pulsera incorrectes' });
     }
   } catch (err) {
-    console.error('Error verificando:', err);
+    console.error('Error verificant:', err);
     res.status(500).json({ error: 'Error intern del servidor' });
   }
 };

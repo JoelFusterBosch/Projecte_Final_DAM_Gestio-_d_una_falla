@@ -30,6 +30,17 @@ class _EventsScreenState extends State<EventsScreen> {
           .toList();
     });
   }
+  void _filtrarEventsPerData(String query, List<Event> events) {
+  final input = query.trim().toLowerCase();
+  setState(() {
+    eventsFiltrats = events.where((e) {
+      final dataInici = e.dataIniciFormatejada.toLowerCase();
+      final dataFi = e.dataFiFormatejada.toLowerCase();
+      return dataInici.contains(input) || dataFi.contains(input);
+    }).toList();
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +74,10 @@ class _EventsScreenState extends State<EventsScreen> {
                             ),
                             prefixIcon: const Icon(Icons.search),
                           ),
-                          onChanged: (query) =>
-                              _filtrarEvents(query, totsElsEvents),
+                          onChanged: (query) {
+                            _filtrarEvents(query, totsElsEvents);
+                            _filtrarEventsPerData(query, totsElsEvents);
+                          },
                         ),
                         const SizedBox(height: 20),
                         Expanded(

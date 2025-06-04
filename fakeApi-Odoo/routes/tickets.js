@@ -4,10 +4,20 @@ const pool = require('../db');
 
 router.get('/', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM ticket');
-    res.json(result.rows);
+    const result = await pool.query(`
+      SELECT
+      t.id, t.quantitat, t.preu, t.maxim
+      FROM ticket t
+    `);
+    const tickets = result.rows.map(row => ({
+      id: row.id,
+      quantitat: row.quantitat,
+      preu: row.preu,
+      maxim: row.maxim
+      })
+    );
+    res.json(tickets);
   } catch (err) {
-    console.error('Error al obtindre tickets:', err);
     res.status(500).json({ error: "Error a l'hora d'obtindre els tickets" });
   }
 });
@@ -16,9 +26,9 @@ Funcions amb POST
 */
 //Pantalla de admin?: Afegir tickets
 router.post('/insertar', async (req,res)=>{
-  const {id,quantitat,preu,maxim} =  req.body;
+  const {id,quantitat,preu} =  req.body;
   try{
-    const result = await pool.query('INSERT INTO ticket(id,quantitat,preu,maxim) VALUES ($1,$2,$3,$4)'[id,quantitat,preu,maxim]);
+    const result = await pool.query('INSERT INTO ticket(id,quantitat,preu) VALUES ($1,$2,$3)'[id,quantitat,preu]);
     res.json(result.rows[0]);
   }catch(err){
     res.status(500).json({error:"Error a l'hora d'insertar tickets"});

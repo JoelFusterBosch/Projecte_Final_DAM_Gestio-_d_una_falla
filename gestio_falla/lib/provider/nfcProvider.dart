@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
-import 'package:gestio_falla/domain/entities/producte.dart';
 import 'package:gestio_falla/domain/repository/nfc_repository.dart';
 import 'package:gestio_falla/presentation/screens/barra_screen.dart';
 import 'package:gestio_falla/presentation/screens/descompta_cadira_screen.dart';
@@ -38,8 +37,6 @@ class NfcProvider with ChangeNotifier {
     return apiOdooProvider!.events.last;
   }
 
-  List<Producte> get productesBarra => apiOdooProvider!.productes.cast<Producte>();
-
   Future<void> llegirEtiqueta(BuildContext context) async {
     _nfcData = "Acosta una etiqueta NFC perfavor";
     notifyListeners();
@@ -74,7 +71,6 @@ class NfcProvider with ChangeNotifier {
                   MaterialPageRoute(
                     builder: (_) => Barra(
                       faller: faller,
-                      totsElsProductes: apiOdooProvider!.productes.cast<Producte>(),
                     ),
                   ),
                 );

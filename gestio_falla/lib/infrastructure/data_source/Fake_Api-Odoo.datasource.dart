@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart' as httpClient;
@@ -24,32 +23,6 @@ class FakeApiOdooDataSource {
     }
   }
 
-  // Obté el perfil d'un faller (GET)
-  Future<Map<String, dynamic>> getPerfil(String id) async {
-    final url = Uri.parse('$baseUrl/fallers/perfil/$id');
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else if (response.statusCode == 404) {
-      throw Exception("Perfil no encontrado");
-    } else {
-      throw Exception("Error a l'hora d'obtindre el perfil");
-    }
-  }
-
-  // Obté dades per al QR d'un faller (GET)
-  Future<Map<String, dynamic>> getMostraQR(String id) async {
-    final url = Uri.parse('$baseUrl/fallers/mostraQR/$id');
-    final response = await http.get(url);
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else if (response.statusCode == 404) {
-      throw Exception("Faller no encontrado");
-    } else {
-      throw Exception("Error a l'hora d'obtindre les dades per al QR");
-    }
-  }
-
   // Obté membres d'una familia (GET)
   Future<List<dynamic>?> getMostraMembres(String idFamilia) async {
     final url = Uri.parse('$baseUrl/fallers/mostraMembres/$idFamilia');
@@ -63,18 +36,6 @@ class FakeApiOdooDataSource {
     }
   }
 
-  Future<Faller?> getFallerPerNom(String nom) async {
-    final response = await http.get(Uri.parse('$baseUrl/faller/buscarNom/$nom'));
-
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.body);
-      return Faller.fromJSON(json);
-    } else if (response.statusCode == 404) {
-      return null;
-    } else {
-      throw Exception("Error buscant faller per nom");
-    }
-  }
   Future<Faller?> getMembrePerValorPolsera(String valorPolsera) async{
     try {
       // Exemple: crida GET a l’endpoint que filtra per 'valorpulsera' igual a valorPolsera
@@ -189,31 +150,6 @@ class FakeApiOdooDataSource {
       throw Exception('Error al conectar al servidor');
     }
   }
-
-  // Obté l'event detallat (GET)
-  Future<Map<String, dynamic>> getEventsDetallats(String id) async{
-    final url = Uri.parse('$baseUrl/events/detallat/$id');
-    final response = await http.get(url);
-    if(response.statusCode == 200){
-      return jsonDecode(response.body);
-    }else{
-      throw Exception("Error a l'hora d'obtindre els events detallats");
-    }
-  }
-
-  // Obté la llista d'events (GET)
-  Future<List<Event>> getLlistaEvents() async {
-    final url = Uri.parse('$baseUrl/events/llista');
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonList = jsonDecode(response.body);
-      return jsonList.map((json) => Event.fromJSON(json)).toList();
-    } else {
-      throw Exception("Error a l'hora d'obtindre la llista d'events");
-    }
-  }
-
   
   // Inserta un nou event (POST)
   Future <Map<String, dynamic>> postEvents(

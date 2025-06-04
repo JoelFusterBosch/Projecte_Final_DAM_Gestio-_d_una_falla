@@ -7,8 +7,21 @@ Funcions amb GET:
 //GET bàsic
 router.get('/', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM producte');
-    res.json(result.rows);
+    const result = await pool.query(`
+      SELECT
+      p.id p.nom, p.preu, p.stock, p.urlimatge, p.eventespecific
+      FROM producte p
+    `);
+    const productes = result.rows.map(row => ({
+      id: row.id,
+      nom: row.nom,
+      preu: row.preu,
+      stock: row.stock,
+      urlimatge: row.urlimatge,
+      eventespecific: row.eventespecific
+      })
+    );
+    res.json(productes);
   } catch (err) {
     res.status(500).json({ error: "Error a l'hora d'obtindre els productes"});
   }
@@ -24,14 +37,15 @@ router.get('/barra', async (req, res) => {
     res.status(500).json({ error: "Error a l'hora d'obtindre la llista de productes" });
   }
 });
+
 /*
 Funcions amb POST:
 */
 //Pantalla de admin?: Publicar un producte amb id,nom,preu,stock,imatgeURL
 router.post('/insertar', async (req,res) =>{
-  const {id,nom,preu,stock,imatgeUrl} = req.body;
+  const {nom,preu,stock} = req.body;
   try{
-    const result = await pool.query('INSERT INTO producte(id,nom,preu,stock,urlimatge) VALUES ($1,$2,$3,$4,$5)',[id,nom,preu,stock,imatgeUrl]);
+    const result = await pool.query('INSERT INTO producte(nom,preu,stock) VALUES ($1,$2,$3)',[nom,preu,stock]);
     res.json(result.rows[0]);
   }catch (err){
     res.tatus(500).json({error:"Error a l'hora d'insertar un producte"});

@@ -4,8 +4,17 @@ const pool = require('../db');
 
 router.get('/', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM cobrador');
-    res.json(result.rows);
+    const result = await pool.query(`
+      SELECT 
+      c.id, c.rolcobrador 
+      FROM cobrador c
+    `);
+    const cobradors = result.rows.map(row =>({
+      id: row.id,
+      rolcobrador: row.rolcobrador
+      })
+    );
+    res.json(cobradors);
   } catch (err) {
     res.status(500).json({ error: "Error a l'hora d'obtindre als cobradors" });
   }
@@ -15,9 +24,9 @@ Funcions amb POST
 */
 //Pantalla de admin: Insertar cobradors
 router.post('/insertar', async (req,res) =>{
- const {id,rolCobrador} = req.body;
+ const {rolCobrador} = req.body;
  try{
-  const result = await pool.query('INSERT INTO cobrador(id, rol_cobrador) VALUES ($1,$2)',[id,rolCobrador])
+  const result = await pool.query('INSERT INTO cobrador(rolcobrador) VALUES ($1)',[rolCobrador])
   res.status(201).json({missatge: result.rows[0]});
  }catch (err){
   res.status(500).json({error: "Error a l'hora d'afegir un cobrador"});

@@ -77,30 +77,6 @@ class ApiOdooProvider with ChangeNotifier {
     }
   }
 
-  Future<void> getPerfil(String id) async {
-    _setLoading(true);
-    _setStatus("Carregant perfil...");
-    try {
-      await _apiOdooRepository.getPerfil(id: id);
-    } catch (e) {
-      _setError(e.toString());
-    } finally {
-      _setLoading(false);
-    }
-  }
-
-  Future<void> getMostraQR(String id) async {
-    _setLoading(true);
-    _setStatus("Carregant QR...");
-    try {
-      await _apiOdooRepository.getMostraQR(id: id);
-    } catch (e) {
-      _setError(e.toString());
-    } finally {
-      _setLoading(false);
-    }
-  }
-
   Future<void> getMostraMembres(String idFamilia) async {
     _setLoading(true);
     _setStatus("Carregant membres...");
@@ -112,16 +88,6 @@ class ApiOdooProvider with ChangeNotifier {
       _setLoading(false);
     }
   }
-  Future<Faller?> getFallerPerNom(String nom) async {
-    try {
-      final faller = await _apiOdooRepository.getFallerPerNom(nom:nom); 
-      return faller;
-    } catch (e) {
-      _setError("No s'ha trobat el faller amb nom $nom");
-      return null;
-    }
-  }
-
 
   Future<void> postFaller({
     required String nom,
@@ -219,11 +185,10 @@ class ApiOdooProvider with ChangeNotifier {
     try {
       final result = await _apiOdooRepository.getEvents();
 
-      if (result != null && result is List) {
+      if (result != null) {
         events = events = result
   .where((e) {
     try {
-      final ev = Event.fromJSON(e);
       return true;
     } catch (_) {
       print("Event descartat per error de deserialització: $e");
@@ -242,46 +207,6 @@ class ApiOdooProvider with ChangeNotifier {
       _setError(e.toString());
     } finally {
       _setLoading(false);
-    }
-  }
-
-  Future<void> getEventsDetallats(String id) async{
-    _setLoading(true);
-    _setStatus("Carregant l'event detallat...");
-    try{
-      await _apiOdooRepository.getEventsDetallats(id: id);
-      _setStatus("Event carregat");
-    }catch (e){
-      _setError(e.toString());
-    }finally{
-      _setLoading(false);
-    }
-  }
-
-  Future<void> getLlistaEvents() async {
-    _setLoading(true);
-    _setStatus("Carregant la llista d'events...");
-
-    try {
-      final result = await _apiOdooRepository.getEvents();
-
-      if (result is List) {
-        events = result
-            .map((eventJson) => Event.fromJSON(eventJson))
-            .toList();
-        _setStatus("Events carregats: ${events.length}");
-        notifyListeners();
-      } else {
-        events = [];
-        _setStatus("No s'han trobat events o el format és inesperat.");
-        notifyListeners();
-      }
-    } catch (e) {
-      _setError("Error carregant events: $e");
-      notifyListeners();
-    } finally {
-      _setLoading(false);
-      notifyListeners();
     }
   }
 

@@ -189,10 +189,6 @@ Aquest projecte ha suposat un repte personal i tècnic. He aplicat coneixements 
 
 [https://github.com/JoelFusterBosch/Projecte_Final_DAM_Gestio-_d_una_falla](https://github.com/JoelFusterBosch/Projecte_Final_DAM_Gestio-_d_una_falla)
 
-### 8.2 Prototips Figma
-
-Enllaç a prototip: *[Afegir si és públic]*
-
 ### 8.3 Diagrames visuals
 
 - Arquitectura CLEAN

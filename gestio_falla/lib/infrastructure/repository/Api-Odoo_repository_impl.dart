@@ -1,4 +1,3 @@
-import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/domain/repository/Api-Odoo_repository.dart';
 // import 'package:gestio_falla/infrastructure/data_source/Api-Odoo_datasource.dart';
@@ -37,23 +36,8 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> getMostraQR({required String id}) {
-    return fakeApiOdooDataSource.getMostraQR(id);
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getPerfil({required String id}) {
-    return fakeApiOdooDataSource.getPerfil(id);
-  }
-
-  @override
   Future<List?> getMostraMembres({required String idFamilia}) {
     return fakeApiOdooDataSource.getMostraMembres(idFamilia);
-  }
-
-    @override
-  Future<Faller?> getFallerPerNom({required String nom}) {
-    return fakeApiOdooDataSource.getFallerPerNom(nom);
   }
 
   @override
@@ -93,16 +77,6 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   @override
   Future<List?> getEvents() async {
     return fakeApiOdooDataSource.getEvents();
-  }
-
-  @override
-  Future<Map<String, dynamic>> getEventsDetallats({required String id}) {
-    return fakeApiOdooDataSource.getEventsDetallats(id);
-  }
-
-  @override
-  Future<List<Event>> getLlistaEvents() {
-    return fakeApiOdooDataSource.getLlistaEvents();
   }
 
   @override

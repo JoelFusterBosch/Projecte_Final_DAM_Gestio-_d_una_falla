@@ -25,6 +25,7 @@ class EscanerState extends State<Escaner> {
     super.didChangeDependencies();
     if (!carregat) {
       final apiProvider = Provider.of<ApiOdooProvider>(context);
+      //apiProvider.getEvent(); 
       if (apiProvider.event != null) {
         setState(() {
           event = apiProvider.event;
@@ -39,11 +40,15 @@ class EscanerState extends State<Escaner> {
 
   @override
   Widget build(BuildContext context) {
+    if (!carregat) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     if (event == null) {
       return const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
+        body: Center(child: Text("No s'ha pogut carregar cap event.")),
       );
     }
 
@@ -60,8 +65,7 @@ class EscanerState extends State<Escaner> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(event!.nom,
-                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        Text(event!.nom, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 10),
                         const Text("Durada:"),
                         Text("${event!.dataIniciFormatejada} - ${event!.dataFiFormatejada}"),
@@ -117,4 +121,5 @@ class EscanerState extends State<Escaner> {
       ),
     );
   }
+
 }

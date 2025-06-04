@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/domain/entities/producte.dart';
+import 'package:gestio_falla/provider/Api-OdooProvider.dart';
 import 'package:gestio_falla/provider/notificacionsProvider.dart';
 import 'package:provider/provider.dart';
 
 class Barra extends StatefulWidget{
   final Faller? faller;
-  final List<Producte> totsElsProductes;
-  const Barra({super.key, required this.faller, required this.totsElsProductes});
+  
+  const Barra({super.key, required this.faller});
 
   @override
   State<Barra> createState() => BarraState();
@@ -15,14 +16,19 @@ class Barra extends StatefulWidget{
 }
 
 class BarraState extends State<Barra>{
+  late final totsElsProductes;
   late double preuTotal;
   Map<Producte, int> quantitatsSeleccionades = {};
   @override
   void initState() {
     preuTotal=0;
-    for (var p in widget.totsElsProductes) {
+    final provider = Provider.of<ApiOdooProvider>(context, listen: false);
+    provider.getProductes();
+    totsElsProductes = provider.productes;
+    for (var p in totsElsProductes) {
     quantitatsSeleccionades[p] = 0;
   }
+  
     super.initState();
   }
   @override
@@ -49,7 +55,7 @@ class BarraState extends State<Barra>{
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: GridView.builder(
-                      itemCount: widget.totsElsProductes.length,
+                      itemCount: totsElsProductes.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         crossAxisSpacing: 10,
@@ -57,7 +63,7 @@ class BarraState extends State<Barra>{
                         childAspectRatio: 2.3 / 3,
                       ),
                       itemBuilder: (context, index) {
-                        final producte = widget.totsElsProductes[index];
+                        final producte = totsElsProductes[index];
                         final quantitat = quantitatsSeleccionades[producte] ?? 0;
                         final disponible = producte.stock - quantitat;
 

@@ -63,19 +63,30 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Image(image: AssetImage('lib/assets/FallaPortal.png')),
-              SizedBox(height: 20),
-              Text("Benvingut a l'app de la Falla Portal", style: TextStyle(fontSize: 20)),
-              SizedBox(height: 10),
-              Text("Un moment, per favor...", style: TextStyle(fontSize: 16)),
-              SizedBox(height: 20),
-              CircularProgressIndicator(),
-            ],
-          ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Image(image: AssetImage('lib/assets/FallaPortal.png')),
+                      SizedBox(height: 20),
+                      Text("Benvingut a l'app de la Falla Portal", style: TextStyle(fontSize: 20)),
+                      SizedBox(height: 10),
+                      Text("Un moment, per favor...", style: TextStyle(fontSize: 16)),
+                      SizedBox(height: 20),
+                      CircularProgressIndicator(),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
         ),
       ),
     );
