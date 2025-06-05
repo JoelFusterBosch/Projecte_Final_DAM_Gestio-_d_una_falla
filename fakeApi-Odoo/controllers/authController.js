@@ -5,7 +5,7 @@ const verificarUsuari = async (req, res) => {
 
   try {
     const result = await pool.query(
-      'SELECT * FROM faller WHERE nom = $1 AND valorPulsera = $2',
+      'SELECT * FROM faller WHERE nom = $1 AND valorpulsera = $2',
       [nom, valorPulsera]
     );
 

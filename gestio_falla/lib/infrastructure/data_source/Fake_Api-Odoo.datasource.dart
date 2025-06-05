@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart' as httpClient;
@@ -36,11 +37,11 @@ class FakeApiOdooDataSource {
     }
   }
 
-  Future<Faller?> getMembrePerValorPolsera(String valorPolsera) async{
+  Future<Faller?> getMembrePerValorPolsera(String valorPulsera) async{
     try {
       // Exemple: crida GET a l’endpoint que filtra per 'valorpulsera' igual a valorPolsera
       final response = await httpClient.get(
-        Uri.parse('$baseUrl/fallers/buscarPerPulsera/$valorPolsera'),
+        Uri.parse('$baseUrl/fallers/buscarPerPulsera/$valorPulsera'),
         headers: {
           'Authorization': 'Bearer token_o_auth',
           'Content-Type': 'application/json',
@@ -71,7 +72,7 @@ class FakeApiOdooDataSource {
       body: jsonEncode({
         'nom': nom,
         'rol': rol,
-        'valorPulsera': valorPulsera,
+        'valorulsera': valorPulsera,
       }),
     );
     if (response.statusCode == 201) {
@@ -97,23 +98,23 @@ class FakeApiOdooDataSource {
   }
 
   // Asigna una familia a un faller (PUT)
-  Future<Map<String, dynamic>> asignarFamilia(String id, String idFamilia) async {
-    final url = Uri.parse('$baseUrl/fallers/familia/$id');
+  Future<Map<String, dynamic>> asignarFamilia(String valorPulsera, String idFamilia) async {
+    final url = Uri.parse('$baseUrl/fallers/familia/$idFamilia');
     final response = await http.put(
       url,
       headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'idFamilia': idFamilia}),
+      body: jsonEncode({'familia': idFamilia}),
     );
     if (response.statusCode == 200) {
       return jsonDecode(response.body);
     } else {
-      throw Exception("Error a l'hora d¡asignar la familia");
+      throw Exception("Error a l'hora d'asignar la familia");
     }
   }
 
   // Cambia el rol d'un faller (PUT)
   Future<Map<String, dynamic>> canviaRol(String id, String rol) async {
-    final url = Uri.parse('$baseUrl/fallers/cambiaRol/$id');
+    final url = Uri.parse('$baseUrl/fallers/canviaRol/$id');
     final response = await http.put(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -150,6 +151,15 @@ class FakeApiOdooDataSource {
       throw Exception('Error al conectar al servidor');
     }
   }
+  Future<Event?> getEvent(String nom) async {
+    final url = Uri.parse('$baseUrl/events/event/$nom');
+    final response = await http.get(url);
+    if(response.statusCode == 200){
+      return jsonDecode(response.body);
+    }else{
+      throw Exception('Error al conectar al servidor');
+    }
+  }
   
   // Inserta un nou event (POST)
   Future <Map<String, dynamic>> postEvents(
@@ -161,7 +171,8 @@ class FakeApiOdooDataSource {
     body: jsonEncode({
       'nom': nom,
       'datainici': dataInici, 
-      'datafi' : dataFi
+      'datafi' : dataFi,
+      'descripcio' : desc
       }),
     );
     if(response.statusCode == 201){
@@ -243,7 +254,7 @@ class FakeApiOdooDataSource {
 
   // Inserta nous tickets (POST)
   Future<Map<String, dynamic>> postTickets(
-  {required int quantitat, required double preu, required bool maxim}) async{
+  {required int quantitat, required double preu}) async{
     final url = Uri.parse('$baseUrl/tickets/insertar');
     final response = await http.post(
       url,
@@ -251,7 +262,6 @@ class FakeApiOdooDataSource {
       body: jsonEncode({
         'quantitat' : quantitat,
         'preu' : preu,
-        'maxim' : maxim,
       }),
     );
     if(response.statusCode == 201){
@@ -353,7 +363,7 @@ class FakeApiOdooDataSource {
       url,
       headers: {'Content-Type':'applicattion/json'},
       body: jsonEncode({
-        'rol_cobrador': rolCobrador,
+        'rolcobrador': rolCobrador,
       }),
     );
     if(response.statusCode == 201){

@@ -19,7 +19,7 @@ DROP TABLE IF EXISTS producte CASCADE;
 CREATE TABLE familia (
   id BIGSERIAL PRIMARY KEY,
   nom TEXT NOT NULL,
-  saldo_total NUMERIC
+  saldo_total NUMERIC DEFAULT 0
 );
 
 INSERT INTO familia(id, nom)
@@ -42,9 +42,9 @@ VALUES
 -- Crea la taula 'ticket'
 CREATE TABLE ticket(
  id BIGSERIAL PRIMARY KEY NOT NULL,
- quantitat INT NOT NULL,
+ quantitat INT NOT NULL DEFAULT 1,
  preu NUMERIC(5,2) NOT NULL,
- maxim BOOLEAN NOT NULL 
+ maxim BOOLEAN NOT NULL DEFAULT FALSE 
 );
 
 INSERT INTO ticket (id, quantitat, preu, maxim)
@@ -62,7 +62,7 @@ CREATE TABLE faller (
   saldo NUMERIC,
   familia_id BIGINT,
   cobrador_id BIGINT,
-  estaLoguejat BOOLEAN NOT NULL,
+  estaLoguejat BOOLEAN NOT NULL DEFAULT FALSE,
   FOREIGN KEY (familia_id) REFERENCES familia(id),
   FOREIGN KEY (cobrador_id) REFERENCES cobrador(id),
   CHECK (
@@ -78,19 +78,21 @@ CREATE TABLE faller (
   )
 );
 
--- Insertar fallers AMB familia
-INSERT INTO faller (nom, rol, valorPulsera, teLimit, llimit, saldo, familia_id, estaLoguejat) 
+-- Insertar fallers AMB familia i foto de perfil
+INSERT INTO faller (nom, rol, cobrador_id, valorPulsera, imatgeUrl, teLimit, llimit, saldo, familia_id, estaLoguejat) 
 VALUES 
-('Joel', 'SuperAdmin', '8430001000017', false, NULL, 50.0, 1, false),
+('Joel', 'SuperAdmin', 3, '8430001000017', '/img/Perfil/perfil.jpg', false, NULL, 50.0, 1, false);
+INSERT INTO faller (nom, rol, valorPulsera, teLimit, llimit, saldo, familia_id, estaLoguejat) 
+VALUES
 ('Juan', 'Administrador', '2', false, NULL, 500.0, 2, false),
 ('Alexis', 'Faller', '3', true, 25.0, 20.0, 1, false);
 
 -- Insertar fallers SENSE familia
-INSERT INTO faller (nom, rol, valorPulsera, teLimit, llimit, saldo)
+INSERT INTO faller (nom, rol, valorPulsera, teLimit, llimit, saldo, estaLoguejat)
 VALUES ('José', 'Faller', '7', false, NULL, 200.0, false);
 
 -- Insertar fallers amb rols de cobrador
-INSERT INTO faller (nom, rol, cobrador_id, valorPulsera, teLimit, llimit, saldo)
+INSERT INTO faller (nom, rol, cobrador_id, valorPulsera, teLimit, llimit, saldo, estaLoguejat)
 VALUES 
 ('José Maria', 'Cobrador', 1, '4', false, NULL, 25.0, true),
 ('Maria José', 'Cobrador', 2, '5', false, NULL, 55.5, true),
@@ -100,24 +102,28 @@ VALUES
 CREATE TABLE producte(
  id BIGSERIAL PRIMARY KEY,
  nom TEXT NOT NULL,
- preu NUMERIC(5,2),
+ preu NUMERIC(5,2) NOT NULL,
  stock INTEGER NOT NULL,
  urlImatge TEXT,
  eventEspecific BOOLEAN DEFAULT FALSE
 );
 
-INSERT INTO producte(nom, preu, stock, urlImatge)
+INSERT INTO producte (nom, preu, stock, urlImatge)
 VALUES
 ('Aigua 500ml', 1.00, 20, 'img/Productes/Aigua.png'),
 ('Cervesa 33cl', 1.50, 33, 'img/Productes/Cervesa.png'),
 ('Coca-Cola', 1.30, 0, 'img/Productes/Coca-Cola.png'),
 ('Pepsi', 1.25, 77, 'img/Productes/Pepsi.png');
 
+INSERT INTO producte (nom, preu, stock, urlImatge, eventEspecific)
+VALUES
+('Paella', 3.75, 50, 'img/Events/Paella.png', true);
+
 -- Crea la taula 'events'
 CREATE TABLE events(
   id BIGSERIAL PRIMARY KEY,
   nom TEXT NOT NULL,
-  descripcio TEXT,
+  descripcio TEXT DEFAULT 'No hi ha descripció per a este event',
   ticket_id BIGINT,
   numCadires INT NOT NULL,
   dataInici TIMESTAMP,
@@ -138,8 +144,8 @@ VALUES
 ('Caminata', '2025-03-19 16:00:00', '2025-03-19 18:00:00',10,'/img/Events/Despedida.png', false);
 
 -- Insertar events AMB tickets
-INSERT INTO events (nom, dataInici, dataFi, numCadires, ticket_id, urlImatge, prodEspecific)
-VALUES ('Paella', '2025-03-16 14:00:00', '2025-03-16 17:00:00',10, 1, '/img/Events/Paella.png', true);
+INSERT INTO events (nom, dataInici, dataFi, numCadires, ticket_id, urlImatge, prodEspecific, producte_id)
+VALUES ('Paella', '2025-03-16 14:00:00', '2025-03-16 17:00:00',10, 1, '/img/Events/Paella.png', true, 5);
 
 -- Vista per obtenir famílies amb membres (fallers)
 CREATE OR REPLACE VIEW familias_amb_fallers AS

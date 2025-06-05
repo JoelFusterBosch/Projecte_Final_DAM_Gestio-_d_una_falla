@@ -65,7 +65,7 @@ class PerfilScreenState extends State<PerfilScreen> {
                           style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
                         Text(
-                          "Saldo restant: ${widget.faller!.saldo.toString()}"
+                          "Saldo restant: ${widget.faller!.saldo.toString()}€"
                         ),
                         SizedBox(height: 20),
                         Offstage(

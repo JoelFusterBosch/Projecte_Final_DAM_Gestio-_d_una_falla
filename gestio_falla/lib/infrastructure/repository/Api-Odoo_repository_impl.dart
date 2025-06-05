@@ -1,3 +1,4 @@
+import 'package:gestio_falla/domain/entities/event.dart';
 import 'package:gestio_falla/domain/entities/faller.dart';
 import 'package:gestio_falla/domain/repository/Api-Odoo_repository.dart';
 // import 'package:gestio_falla/infrastructure/data_source/Api-Odoo_datasource.dart';
@@ -61,8 +62,8 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> assignarFamilia({required String id, required String idFamilia}) {
-    return fakeApiOdooDataSource.asignarFamilia(id, idFamilia);
+  Future<Map<String, dynamic>> assignarFamilia({required String valorPulsera, required String idFamilia}) {
+    return fakeApiOdooDataSource.asignarFamilia(valorPulsera, idFamilia);
   }
 
   @override
@@ -78,6 +79,10 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   Future<List?> getEvents() async {
     return fakeApiOdooDataSource.getEvents();
   }
+   @override
+  Future<Event?> getEvent(String nom) {
+    return fakeApiOdooDataSource.getEvent(nom);
+  } 
 
   @override
   Future<Map<String, dynamic>> postEvents({required String nom, required DateTime dataInici, required DateTime dataFi, String? desc}) {
@@ -160,8 +165,8 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   }
   
   @override
-  Future<Map<String, dynamic>> postTickets({required int quantitat, required double preu, required bool maxim}) {
-    return fakeApiOdooDataSource.postTickets(quantitat: quantitat, preu: preu, maxim: maxim);
+  Future<Map<String, dynamic>> postTickets({required int quantitat, required double preu}) {
+    return fakeApiOdooDataSource.postTickets(quantitat: quantitat, preu: preu);
   }
 
   @override
@@ -172,5 +177,5 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   @override
   Future<Faller?> verificarUsuari({required nom, required valorPulsera}) async{
     return await fakeApiOdooDataSource.verificarUsuari(nom, valorPulsera);
-  }  
+  } 
 }

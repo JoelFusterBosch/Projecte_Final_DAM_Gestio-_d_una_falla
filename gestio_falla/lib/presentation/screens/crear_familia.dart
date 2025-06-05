@@ -169,11 +169,11 @@ class CrearFamiliaState extends State<CrearFamilia> {
     final qrProvider = context.read<Qrprovider>();
     final apiOdooProvider = context.read<ApiOdooProvider>();
 
-    final idFaller = nfcProvider.nfcData.isNotEmpty
+    final pulseraFaller = nfcProvider.nfcData.isNotEmpty
         ? nfcProvider.nfcData
         : qrProvider.qrData;
 
-    if (idFaller.isEmpty) {
+    if (pulseraFaller.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Verifica un faller primer")),
       );
@@ -185,7 +185,7 @@ class CrearFamiliaState extends State<CrearFamilia> {
       final familiaCreada = apiOdooProvider.families.last;
       final idFamilia = familiaCreada['id'].toString();
 
-      await apiOdooProvider.assignarFamilia(id: idFaller, idFamilia: idFamilia);
+      await apiOdooProvider.assignarFamilia(valorPulsera: pulseraFaller, idFamilia: idFamilia);
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Família assignada correctament al faller!")),

@@ -152,6 +152,17 @@ router.get('/buscarNom/:nom', async (req, res) => {
   }
 });
 
+// Buscar faller per valor de pulsera
+router.get('/buscarPerPulsera/:valorPulsera', async (req, res) =>{
+  const { valorPulsera } = req.params
+  try{
+    const result = await pool.query('SELECT id, nom FROM faller WHERE valorpulsera = $1', {valorPulsera})
+    res.json(result.rows)
+  }catch(err){
+    res.status(500).json({ error: "Error a l'hora de buscar el valor de la pulsera del faller" });
+  }
+});
+
 /*
 Funcions amb POST
 */
@@ -195,7 +206,7 @@ router.put('/familia/:idFamilia', async (req, res) => {
   try {
     const result = await pool.query(
       'UPDATE faller SET familia_id = $1 WHERE id = $2 RETURNING *',
-      [idFamilia, id]
+      [id, idFamilia]
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -204,7 +215,7 @@ router.put('/familia/:idFamilia', async (req, res) => {
 });
 
 // Canviar rol d'un faller
-router.put('/cambiaRol/:id', async (req, res) => {
+router.put('/canviaRol/:id', async (req, res) => {
   const { id } = req.params;
   const { rol } = req.body;
   try {

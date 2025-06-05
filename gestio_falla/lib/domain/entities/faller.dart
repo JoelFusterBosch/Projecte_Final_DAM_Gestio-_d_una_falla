@@ -62,7 +62,7 @@ class Faller {
       }
     }
   }
-
+  
   factory Faller.fromJSON(Map<String, dynamic> json) {
   return Faller(
     id: json['id']?.toString(),
@@ -70,28 +70,49 @@ class Faller {
     telimit: json['telimit'] == true || json['telimit'] == 'true',
     llimit: json['llimit'] != null ? double.tryParse(json['llimit'].toString()) : null,
     saldo: double.tryParse(json['saldo'].toString()) ?? 0.0,
-    familia_id: json['familia'] is Map<String, dynamic> ? Familia.fromJSON(json['familia']) : null,
+    familia_id: json['familia_id'] != null
+        ? Familia(
+            id: json['familia_id'].toString(),
+            nom: json['familia_nom'] ?? '',
+            saldo_total: json['saldo_total'] != null ? double.tryParse(json['saldo_total'].toString()) : null,
+            membres: null,
+          )
+        : null,
     rol: json['rol'] ?? '',
-    cobrador_id: json['cobrador'] != null ? Cobrador.fromJSON(json['cobrador']) : null,
+    cobrador_id: json['cobrador'] != null
+        ? Cobrador.fromJSON(json['cobrador'])
+        : (json['cobrador_id'] != null
+            ? Cobrador(
+                id: json['cobrador_id'].toString(),
+                rolcobrador: json['cobrador_rol'] ?? '')
+            : null),
     valorpulsera: json['valorpulsera'] ?? '',
     imatgeurl: json['imatgeurl'],
     estaloguejat: json['estaloguejat'] == true || json['estaloguejat'] == 'true',
   );
 }
 
+
   Map<String, dynamic> toJSON() {
-    return {
-      'id': id,
-      'nom': nom,
-      'telimit': telimit,
-      'llimit': llimit,
-      'saldo': saldo,
-      'familia_id': familia_id?.toJSON(),
-      'rol': rol,
-      'cobrador_id': cobrador_id?.toJSON(),
-      'valorpulsera': valorpulsera,
-      'imatgeurl': imatgeurl,
-      'estaloguejat': estaloguejat,
-    };
-  }
+  return {
+    'id': id,
+    'nom': nom,
+    'telimit': telimit,
+    'llimit': llimit,
+    'saldo': saldo,
+    'familia': familia_id != null
+        ? {
+            'id': familia_id!.id,
+            'nom': familia_id!.nom,
+            'saldo_total': familia_id!.saldo_total
+          }
+        : null,
+    'rol': rol,
+    'cobrador': cobrador_id?.toJSON(),
+    'valorpulsera': valorpulsera,
+    'imatgeurl': imatgeurl,
+    'estaloguejat': estaloguejat,
+  };
+}
+
 }

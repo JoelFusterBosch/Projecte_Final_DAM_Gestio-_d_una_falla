@@ -33,21 +33,6 @@ router.post('/insertar', async (req,res) =>{
  }
 });
 /*
-Funcions amb PUT 
-*/
-//?: Actualitzara el nom dels rols de cobrador
-/*Pendent
-router.put('/actualitza', async (req,res) =>{
-  const {id} = req.body;
-  const {rolCobrador} = req.params;
-  try{  
-    const result = await pool.query('UPDATE cobrador ')
-  }catch (err){
-    res.status(500).json({error: "Error a l'hora d'actualitzar als cobradors"});
-  }
-});
-*/
-/*
 Funcions amb DELETE 
 */
 //Pantalla de admin: Borrar cobradors

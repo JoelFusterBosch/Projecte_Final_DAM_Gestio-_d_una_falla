@@ -25,7 +25,7 @@ class EscanerState extends State<Escaner> {
     super.didChangeDependencies();
     if (!carregat) {
       final apiProvider = Provider.of<ApiOdooProvider>(context);
-      //apiProvider.getEvent(); 
+      apiProvider.getEvent(""); 
       if (apiProvider.event != null) {
         setState(() {
           event = apiProvider.event;

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gestio_falla/presentation/screens/registrar_usuari.dart';
+import 'package:gestio_falla/provider/notificacionsProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:gestio_falla/presentation/screens/principal_screen.dart';
 import 'package:gestio_falla/provider/nfcProvider.dart';
@@ -147,7 +148,10 @@ class LoginScreenState extends State<LoginScreen> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setBool('estaloguejat', true);
       await prefs.setString('faller', jsonEncode(faller.toJSON()));
-
+      Provider.of<NotificacionsProvider>(context, listen: false).showNotification(
+        title: 'Iniciar sessio',
+        body: 'Has iniciat sessió de forma exitosa',
+      );
       if (!mounted) return;
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => PrincipalScreen(faller: faller)),

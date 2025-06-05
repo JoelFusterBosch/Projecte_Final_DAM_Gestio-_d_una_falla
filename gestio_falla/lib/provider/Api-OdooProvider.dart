@@ -153,11 +153,11 @@ class ApiOdooProvider with ChangeNotifier {
     }
   }
 
-  Future<void> assignarFamilia({required String id, required String idFamilia}) async {
+  Future<void> assignarFamilia({required String valorPulsera, required String idFamilia}) async {
     _setLoading(true);
     _setStatus("Assignant familia...");
     try {
-      await _apiOdooRepository.assignarFamilia(id: id, idFamilia: idFamilia);
+      await _apiOdooRepository.assignarFamilia(valorPulsera: valorPulsera, idFamilia: idFamilia);
     } catch (e) {
       _setError(e.toString());
     } finally {
@@ -202,6 +202,23 @@ class ApiOdooProvider with ChangeNotifier {
         events = [];
       }
 
+      _setStatus("Events carregats: ${events.length}");
+    } catch (e) {
+      _setError(e.toString());
+    } finally {
+      _setLoading(false);
+    }
+  }
+  Future<void> getEvent(String nom) async {
+    _setLoading(true);
+    _setStatus("Carregant events...");
+
+    try {
+      final result = await _apiOdooRepository.getEvent(nom);
+
+      if (result != null) {
+      _event = result;
+      }
       _setStatus("Events carregats: ${events.length}");
     } catch (e) {
       _setError(e.toString());
@@ -347,11 +364,11 @@ class ApiOdooProvider with ChangeNotifier {
     }
   }
 
-  Future<void> postTickets(int quantitat, double preu, bool maxim) async{
+  Future<void> postTickets(int quantitat, double preu) async{
     _setLoading(true);
     _setStatus("Creant ticket...");
     try{
-      await _apiOdooRepository.postTickets(quantitat: quantitat, preu: preu, maxim: maxim);
+      await _apiOdooRepository.postTickets(quantitat: quantitat, preu: preu);
       _setStatus("Tickets creats");
     }catch (e){
       _setError(e.toString());

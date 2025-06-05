@@ -160,7 +160,6 @@ Respostes en format JSON. Validacions bàsiques a nivell de backend.
 
 ### 5.2 Proves d'integració
 
-- API provada amb Postman.
 - Validació de respostes, errors i dades mal formades.
 
 ### 5.3 Desplegament

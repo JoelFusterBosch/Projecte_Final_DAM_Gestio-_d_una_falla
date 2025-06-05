@@ -9,13 +9,13 @@ router.get('/', async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT
-      p.id p.nom, p.preu, p.stock, p.urlimatge, p.eventespecific
+      p.id, p.nom, p.preu, p.stock, p.urlimatge, p.eventespecific
       FROM producte p
     `);
     const productes = result.rows.map(row => ({
       id: row.id,
       nom: row.nom,
-      preu: row.preu,
+      preu: parseFloat(row.preu),
       stock: row.stock,
       urlimatge: row.urlimatge,
       eventespecific: row.eventespecific
@@ -29,9 +29,11 @@ router.get('/', async (req, res) => {
 //Barra: SELECT amb id,nom,preu,stock,imatgeURL
 router.get('/barra', async (req, res) => {
   try {
-    const result = await pool.query(
-      'SELECT id, nom, preu, stock, urlimatge FROM producte WHERE prodespecific = false'
-    );
+    const result = await pool.query(`
+      SELECT
+      p.id, p.nom, p.preu, p.stock, p.urlimatge
+      FROM p WHERE prodespecific = false
+    `);
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: "Error a l'hora d'obtindre la llista de productes" });
@@ -43,9 +45,9 @@ Funcions amb POST:
 */
 //Pantalla de admin?: Publicar un producte amb id,nom,preu,stock,imatgeURL
 router.post('/insertar', async (req,res) =>{
-  const {nom,preu,stock} = req.body;
+  const {nom,preu,stock, imatgeUrl} = req.body;
   try{
-    const result = await pool.query('INSERT INTO producte(nom,preu,stock) VALUES ($1,$2,$3)',[nom,preu,stock]);
+    const result = await pool.query('INSERT INTO producte(nom,preu,stock,imatgeurl) VALUES ($1,$2,$3,$4)',[nom,preu,stock,imatgeUrl]);
     res.json(result.rows[0]);
   }catch (err){
     res.tatus(500).json({error:"Error a l'hora d'insertar un producte"});

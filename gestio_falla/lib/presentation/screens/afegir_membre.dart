@@ -186,7 +186,7 @@ class AfegirMembreState extends State<AfegirMembre> {
 
                     if (fallerNou.familia_id == null || fallerNou.familia_id!.id == null) {
                       await apiProvider.assignarFamilia(
-                        id: fallerNou.id.toString(),
+                        valorPulsera: fallerNou.valorpulsera,
                         idFamilia: familiaPerfil.toString(),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -222,7 +222,7 @@ class AfegirMembreState extends State<AfegirMembre> {
                     final fallerNou = await apiProvider.getMembrePerValorPolsera(valorPolsera);
                     if (fallerNou == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Faller no trobat per la polsera QR!")),
+                        SnackBar(content: Text("Faller no trobat per codi QR!")),
                       );
                       return;
                     }
@@ -238,7 +238,7 @@ class AfegirMembreState extends State<AfegirMembre> {
 
                     if (fallerNou.familia_id == null || fallerNou.familia_id!.id == null) {
                       await apiProvider.assignarFamilia(
-                        id: fallerNou.id.toString(),
+                        valorPulsera: fallerNou.id.toString(),
                         idFamilia: familiaPerfil.toString(),
                       );
                       ScaffoldMessenger.of(context).showSnackBar(

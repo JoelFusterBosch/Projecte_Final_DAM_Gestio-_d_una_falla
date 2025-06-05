@@ -4,7 +4,7 @@ import 'package:gestio_falla/provider/nfcProvider.dart';
 import 'package:provider/provider.dart';
 
 class AdminScreen extends StatefulWidget {
-  AdminScreen({super.key});
+ AdminScreen({super.key});
   
   @override
   State<AdminScreen> createState() => AdminScreenState();
@@ -101,7 +101,9 @@ class AdminScreenState extends State<AdminScreen>{
                   title: 'Afegir Faller',
                   fields: [
                     TextFormField(decoration: InputDecoration(labelText: 'Nom'), onChanged: (v) => nom = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
-                    DropdownButton<String>(
+                    StatefulBuilder(
+                      builder: (BuildContext context, StateSetter setState) {
+                        return DropdownButton<String>(
                           value: rolSeleccionat,
                           onChanged: (String? newValue) {
                             setState(() {
@@ -114,7 +116,10 @@ class AdminScreenState extends State<AdminScreen>{
                               child: Text(value),
                             );
                           }).toList(),
-                        ),
+                        );
+                      },
+                    ),
+
                     TextFormField(decoration: InputDecoration(labelText: 'Valor Pulsera'), onChanged: (v) => valor = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
                   ],
                   onSubmit: () => api.postFaller(nom: nom, rol: rolSeleccionat, valorPulsera: valor),
@@ -141,7 +146,7 @@ class AdminScreenState extends State<AdminScreen>{
               icon: Icons.event,
               label: 'Afegir event',
               onTap: () {
-                String nomEvent = '';
+                String nomEvent = '', desc='';
                 DateTime dataInici = DateTime.now();
                 DateTime dataFi = DateTime.now();
                 mostrarFormulari(
@@ -149,8 +154,9 @@ class AdminScreenState extends State<AdminScreen>{
                   title: 'Afegir Event',
                   fields: [
                     TextFormField(decoration: InputDecoration(labelText: 'Nom'), onChanged: (v) => nomEvent = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
+                    TextFormField(decoration: InputDecoration(labelText: "Descripció del event"),onChanged: (v) => desc = v)
                   ],
-                  onSubmit: () => api.postEvents(nom: nomEvent, dataFi: dataFi, dataInici: dataInici),
+                  onSubmit: () => api.postEvents(nom: nomEvent, dataFi: dataFi, dataInici: dataInici, desc: desc),
                 );
               },
             ),
@@ -277,7 +283,7 @@ class AdminScreenState extends State<AdminScreen>{
                     TextFormField(decoration: InputDecoration(labelText: 'Quantitat'), onChanged: (v) => quantitat = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
                     TextFormField(decoration: InputDecoration(labelText: 'Preu'), onChanged: (v) => preu = v, validator: (v) => v!.isEmpty ? 'Obligatori' : null),
                   ],
-                  onSubmit: () => api.postTickets(int.tryParse(quantitat) ?? 0,  double.tryParse(preu) ?? 0, false),
+                  onSubmit: () => api.postTickets(int.tryParse(quantitat) ?? 0,  double.tryParse(preu) ?? 0),
                 );
               },
             ),

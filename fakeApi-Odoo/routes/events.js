@@ -24,11 +24,11 @@ router.get('/', async (req, res) => {
       id: row.id,
       nom: row.nom,
       descripcio: row.descripcio,
-      numCadires: row.numcadires,
-      dataInici: row.datainici,
-      dataFi: row.datafi,
-      urlImatge: row.urlimatge,
-      prodEspecific: row.prodespecific,
+      numcadires: row.numcadires,
+      datainici: row.datainici,
+      datafi: row.datafi,
+      urlimatge: row.urlimatge,
+      prodespecific: row.prodespecific,
       producte: row.producte_id ? {
         id: row.producte_id,
         nom: row.producte_nom,
@@ -48,59 +48,18 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: "Error a l'hora d'obtindre els events" });
   }
 });
-
-/*
-  GET - Event detallat per ID: nom, descripcio, urlimatge
-*/
-router.get('/detallat/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    const query = `
-      SELECT nom, descripcio, urlimatge
-      FROM events
-      WHERE id = $1
-    `;
-    const result = await pool.query(query, [id]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Event no trobat' });
-    }
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Error a l'hora de mostrar els events detallats" });
-  }
-});
-
-/*
-  GET - Llista d'events amb id, nom, dataInici, dataFi
-*/
-router.get('/llista', async (req, res) => {
-  try {
-    const query = `
-      SELECT id, nom, datainici, datafi
-      FROM events
-      ORDER BY datainici DESC
-    `;
-    const result = await pool.query(query);
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Error a l'hora d'obtindre la llista d'events" });
-  }
-});
-
 /*
   POST - Insertar un event (sense producte ni ticket per ara)
 */
 router.post('/insertar', async (req, res) => {
-  const { nom, dataInici, dataFi } = req.body;
+  const { nom, dataInici, dataFi, descripcio} = req.body;
   try {
     const query = `
-      INSERT INTO events (nom, datainici, datafi)
-      VALUES ($1,$2,$3)
+      INSERT INTO events (nom, datainici, datafi, descripcio)
+      VALUES ($1,$2,$3,$4)
       RETURNING *
     `;
-    const values = [nom, dataInici, dataFi];
+    const values = [nom, dataInici, dataFi, descripcio];
     const result = await pool.query(query, values);
     res.status(201).json(result.rows[0]);
   } catch (err) {
