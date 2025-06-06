@@ -35,6 +35,10 @@ class ApiOdooRepositoryImpl implements ApiOdooRepository {
   Future<List?> getFallers() {
     return fakeApiOdooDataSource.getFallers();
   }
+  @override
+  Future<Faller> getFaller(String id) {
+    return fakeApiOdooDataSource.getFaller(id);
+  }
 
   @override
   Future<List?> getMostraMembres({required String idFamilia}) {

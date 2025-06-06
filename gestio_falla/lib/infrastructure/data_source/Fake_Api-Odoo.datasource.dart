@@ -23,6 +23,16 @@ class FakeApiOdooDataSource {
       throw Exception("Error a l'hora d'obtindre als fallers");
     }
   }
+  //Obté el faller per el id
+  Future<Faller> getFaller(String id) async {
+    final url = Uri.parse('$baseUrl/fallers/faller/$id');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception("Error a l'hora d'obtindre als fallers");
+    }
+  }
 
   // Obté membres d'una familia (GET)
   Future<List<dynamic>?> getMostraMembres(String idFamilia) async {

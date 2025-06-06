@@ -70,7 +70,7 @@ flutter:
     - lib/assets/FallaPortal.png
 flutter_launcher_icons:
   android: true
-  ios: false
+  ios: true
   adaptive_icon_foreground: "assets/logo/foreground.png"
   adaptive_icon_background: "#FFFFFF"
 

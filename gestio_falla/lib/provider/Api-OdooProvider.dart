@@ -76,6 +76,19 @@ class ApiOdooProvider with ChangeNotifier {
       _setLoading(false);
     }
   }
+  Future<void> getFaller(String id) async{
+    _setLoading(true);
+    _setStatus("Carregant faller...");
+    try{
+      final result = await _apiOdooRepository.getFaller(id);
+      _faller = result;
+      setFaller(_faller!);
+    } catch(e){
+      _setError(e.toString());
+    } finally {
+      _setLoading(false);
+    }
+  }
 
   Future<void> getMostraMembres(String idFamilia) async {
     _setLoading(true);

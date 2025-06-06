@@ -10,6 +10,7 @@ abstract class ApiOdooRepository {
   */
   //Fallers
   Future<List<dynamic>?> getFallers();
+  Future<Faller> getFaller(String id);
   Future<List<dynamic>?> getMostraMembres({required String idFamilia});
   Future<Faller?> getMembrePerValorPolsera(String valorPolsera);
   Future<Map<String,dynamic>> postFaller({required String nom, required String rol, required String valorPulsera});
