@@ -17,19 +17,26 @@ samples, guidance on mobile development, and a full API reference.
 ## Instal·lar flutter i com configurar-ho en VSCode
 Primerament instal·la el SDK de la [pàgina oficial de Flutter](https://docs.flutter.dev/get-started/install):
 <p align= "center">
-   <img src="../gestio_falla/assets/README/Instal·lar Flutter.png" alt="Lloc per a Instal·lar Flutter" width="400"/>
+   <img src="../gestio_falla/assets/README/Instal·lar Flutter.png" alt="Pàgina per a Instal·lar Flutter" width="400"/>
 </p>
 
+## Requeriments previs
+Aquest apartat serveix per a advertir que no tots els dispositius Android ni Apple són compatibles en aquest projecte, perque per exemple el lector de NFC requereix :
+- Android: API 19 (Android 4.4 o també conegut com KitKat)
+I per a iOS heu d'utilitzar mínim aquesta gamma de mòvils
+- iOS (iOS 13): 
+   - Mínim sense actualitzar: Tota la gamma dels iPhone 11
+   - Mínim amb totes les actualitzacions proporcionades per Apple: iPhone 6s / 6s Plus / SE (1ª) 
 ### Dependencies per a Flutter
-Per a provar les apps de flutter en Android has de tindre Android Studio segons els requisits de flutter Doctor, o simplement vols un emulador d'Android o veure el dispositiu físic en la pantalla del teu ordinador, Android Studio pot ajudar-te en este apartat.
-Per a veure si tens totes les ferramentes per a usar flutter pots saber-ho amb este comando:<p>
+Per a provar les apps de flutter en Android has de tindre Android Studio segons els requisits de **flutter Doctor**, o simplement vols un emulador d'Android o veure el dispositiu físic en la pantalla del teu ordinador, Android Studio pot ajudar-te en aquest apartat.
+Per a veure si tens totes les ferramentes per a usar flutter pots saber-ho amb aquest comando:<p>
  ```bash
  flutter doctor
  ```
 Ara que tenim el SDK instal·lat ara la pregunta és... On puc programar en Flutter?<p>
 Pots programar Flutter en VSCode si primerament instal·les les següents extensions (Fixat que per a instal·lar extensions en VSCode és en la següent icona)<p>
 <img src="../gestio_falla/assets/README/Extensions.png" alt="Icona d'extensions de Visual Studio Code" width="200"/><p>
-Estes són les extensions que has d'instal·lar:
+Aquestes són les extensions que has d'instal·lar:
 
 - Flutter
 
@@ -68,7 +75,7 @@ Quan premem la tecla *Enter* apareixerà el següent:
    <img src="../gestio_falla/assets/README/Creacio aplicació Flutter.png" alt="Creació de l'aplicació de Flutter" width="600"/>
 </p>
 
-Haureu d'prémer la primera opció (Application) esta generara tota l'estructura de directoris perquè pugueu executar l'aplicació de flutter en qualsevol dispositiu perquè genera les carpetes dels respectius sistemes operatius, ara hem d'assignar la carpeta a l'aplicació, en este cas la posaré dins de la carpeta *Projecte_Falla*:
+Haureu de prémer la primera opció (Application) esta generara tota l'estructura de directoris perquè pugueu executar l'aplicació de flutter en qualsevol dispositiu perquè genera les carpetes dels respectius sistemes operatius, ara hem d'assignar la carpeta a l'aplicació, en aquest cas la posaré dins de la carpeta *Projecte_Falla*:
 
 <p align= "center">
    <img src="../gestio_falla/assets/README/Assignar carpeta per a l&apos;aplicació.png" alt="Assignació de la carpeta per a la aplicació de Flutter" width="600"/>
@@ -80,9 +87,9 @@ I després poseu el nom que vulgueu, en el meu cas es dirà *prova*:
    <img src="../gestio_falla/assets/README/nom de l&apos;aplicació.png" alt="Assignació de la carpeta per a la aplicació de Flutter" width="600"/>
 </p>
 
-Al posar-li el nom premeu la tecla *Enter* i us generara de forma aproximada el següent:
+Al posar-li el nom, premeu la tecla *Enter* i se us generara de forma aproximada el següent:
 ```bash
-gestio_falla/
+prova/
 ├── .dart.tool/
 ├── .idea/
 │   ├── libraries/
@@ -147,8 +154,11 @@ gestio_falla/
 │   ├── gradlew
 │   ├── gradlew.bat
 │   ├── local.properties
-│   └── settings.gradle.kts
+│   ├── settings.gradle.kts
 ├── build/
+│   ├──reports
+│   │   ├──problems
+│   │   │   └── problems-report.html
 ├── ios/
 │   ├── Flutter/
 │   │   ├── .AppFrameworkinfo.plist 
@@ -181,9 +191,9 @@ gestio_falla/
 │   │   └──contents.xcworkspacedata    
 │   ├── RunnerTests/
 │   │   └── RunnerTests.swift
-│   └── .gitignore
+│   ├── .gitignore
 ├── lib/
-│   └── main.dart
+│   ├── main.dart
 ├── linux/
 │   ├── flutter/
 │   │   └── ephemeral/
@@ -194,7 +204,7 @@ gestio_falla/
 │   │   ├── my_application.cc
 │   │   ├── my_application.h       
 │   ├── .gitignore
-│   └── CMakeList.txt
+│   ├── CMakeList.txt
 ├── macos/ 
 │   ├── Flutter/
 │   │   ├── ephemeral/
@@ -291,7 +301,7 @@ Ara si voleu veure que és premeu **F5** o en el terminal escriviu:
 ```bash
 flutter run
 ```
-Tardara una estona en executar, no us preocupeu, que la primera vegada en Android ha d'instal·lar-se l'aplicació i afegir les dependències a l'aplicació, però quan acabe obrira automàticament l'aplicació.
+Tardara una estona en executar, però no us preocupeu, que la primera vegada en Android ha d'instal·lar-se l'aplicació i afegir les dependències a l'aplicació, però quan acabe obrira automàticament l'aplicació.
 Quan s'òbriga veureu el següent:
 
 <p align= "center">
@@ -304,7 +314,129 @@ Com veieu no és més que un simple comptador que al prémer al botó de *+* aug
    <img src="../gestio_falla/assets/README/Pantalla demo al apretar el boto +.jpg" alt="El que veus al premer el botó de '+'" width="200"/>
 </p>
 
-I amb això ja hem generat una aplicació de flutter molt senzilla i funcional.
+Amb això ja tens una aplicació Flutter bàsica en funcionament.
+## Tipus de widgets en Flutter
+Quan creem una pantalla en Flutter podem fer que el widget de la pantalla tinga les següents característiques.
+- Sense estat (StatelessWidget): Fa que la pantalla no s'actualitze davant els canvis.
+- Amb estat (StatefulWidget): Fa que la pantalla si s'actualitza davant els canvis amb (setState()).
+- Amb herència???(InheritedWidget):És una classe base que permet propagar informació cap avall en l'arbre de widgets de Flutter.<p>
+En general és recomanable que uses els widgets amb estat (*StatefulWidget*) perquè pots actualitzar dades, mentre que els widget sense estat (*StatelessWidget*) no actualitzen les dades.
+## Tipus de dades de Dart
+Dart compta amb els següents atrbuts per a assignar a variables:
+- Numèrics: enters (**int**) i decimals (**double**),
+- Cadenes de caràcters: **String**
+- Valors lògics: **bool**
+- Col·leccions d'objectes: Llistes (**List**), Conjunts (**Set**) i diccionaris (**Map**)
+- Constants i finals: ```dart const nom="Joel"```, ```final String nom="Joel"``` 
+- Null Safety i tractament de valors nuls: Dart és un llenguatge de tipat segur, el que significa que quan declarem una variable d'algun tipus, el compilador garanteix que els valors assignats siguen d'aquest tipus. Tot i que el tipat és obligatori, indicar el tipus d'una variable és opcional. En cas que no indiquem el tipus, aquest serà inferit a partir del valor amb què s'inicialitze. 
+  Des de la versió 2.12 (març de 2021), Dart suporta també Null Safety, de manera que per defecte, una variable no podrà contenir valors nuls a no ser que s'especifique el contrari, estalviant així els problemes derivats de valors nuls. 
+  Veiem els diferents operadors amb què podem tractar els nuls amb Dart:
+   - Declaració de valor nullable (?): Si volem indicar de manera explícita que una variable pot contenir valors nuls, fem ús de l'interrogant en la seua declaració, tal i com es fa en altres llenguatges com Kotlin, ex: ```dart int? variable1; // variable1 podrà contenir el valor null ```
+   - Operador d'asserció nul·la (null assertion operator) (!): S'utilitza quan volem assignar una variable que pot contenir nuls a variables que no en poden contenir, ex: ```dart int variable2=variable1!```.
+   ```dart
+   int? variable1;           // variable1 pot contenir nuls
+   print(variable1);         // Mostrem variable1 (null)
+   int variable2=variable1!; // variable2 no pot contenir nuls
+                             // Excepció: Null check operator used on a null value
+   print(variable2);         // Intentem mostrar variable2
+   ```
+   - Operador nul (??): Aquest operador retorna el valor resultant de l'expressió de la part esquera de l'operador, sempre que no siga nul. En cas contrari ens retornarà l'expressió de la dreta. Podem veure-ho com una mena d'operador condicional als valors nuls:
+   ```dart
+   var nom;
+   // Escriu el nom si no és nul, o escriu "Anònim"
+   print(nom ?? "Anònim");
+   ```
+   - Assignació conscient de nuls (null aware assignment) (??=): Assigna un valor a una variable si aquesta té valor nul. En cas que la variable tinga un valor prèviament diferent a null, no s'assignarà:
+   ```dart
+   int? variable1;   // Si no indiquem nullable donaría error
+   print(variable1); // Mostra null
+   variable1 ??= 10; 
+   print(variable1); // Mostra "10"
+   variable1 ??= 15; 
+   print(variable1); // Mostra "10", ja que variable1 tenia ja valor.
+   ```
+   - Accés conscient de nuls (null-aware access)(?.): Evita que es llance una excepció quan s'accedeix a una propietat o mètode d'un objecte que pot ser nul.
+   ```dart
+   String? cadena;
+   print (cadena?.length);
+   ```
+- Dynamic: (**dynamic**)<p>
+   Dart és un llenguatge que suporta tant tipat estàtic com dinàmic. Quan parlem de tipat estàtic fem referència a que els tipus s'assignen en temps de compilació, pel que s'ha d'indicar el tipus de variable en la pròpia declaració, tal i com hem vist fins ara. Ara bé, Dart també suporta tipat de dades dinàmic, de manera que fa la comprovació de tipus en temps d'execució.
+
+   Per a això, es fa ús del tipus dynamic, un tipus de dada subjacent a tots els objectes Dart, i que ens permet utilitzar tipat dinàmic de dades, de manera que la comprovació d'aquests tipus es realitza en temps d'execució en lloc de temps de compilació.
+
+   Tenim més detalls a l'article [Dart is a Static or Dynamic typed Programming Language](https://medium.com/@farhanaslam910/dart-is-a-static-or-dynamic-typed-programming-language-3d934c95b7b) 
+- Enumerats: (**enum**)<p>
+   Els tipus enumerats en Dart (enum), com en altres llenguatges, ens serveixen per a representar un nombre fix de valors constants.
+
+   Per exemple, podem definir un enumerat amb els dies de la setmana:
+
+   enum DiesSetmana { dilluns, dimarts, dimecres, dijous, divendres, dissabte, diumenge }
+
+   Internament, cadascun d'aquests valors es representa per l'índex que ocupa, sent el primer el 0.
+
+   Per tal d'accedir a aquests valors, ho farem a través de la notació punt. Per exemple:
+
+   DiesSetmana dia=DiesSetmana.dilluns;
+
+   Si volem obtenir una llista amb els valors de l'enumerat, farem ús de values:
+   ```dart
+   List<DiesSetmana> = DiesSetmana.values;   
+   ```
+
+## Construcció de pantalles en Flutter
+Per a construir una pantalla en Flutter ens basarem en el projecte de prova, aleshores el que hem de fer és el següent:
+Ens fixem en l'apartat on diu:
+
+```dart
+@override 
+Widget build(BuildContext context){
+
+}
+```
+Ací és el contingut on es mostrara per pantalla a l'executar l'aplicació, i no és com un fitxer normal, has d'utilitzar *widgets* per a desenvolupar com es veurà en pantalla, ací una xicoteta explicació d'alguns *widgets* del projecte de prova:
+- **Scaffold**: Aquest giny conté l'estructura d'un disseny típic d'una aplicació basada en *Material Design*. A més dels components ja tractats (*appBar*, *body* i *floatingActionButton*), compta amb la possibilitat d'incloure elements de navegació o elements emergents, com els snackbars. Veiem algunes d'aquestes propietats:
+   - **bottomNavigationBar**: Es tracta d'una barra de navegació (generalment un giny *BottomAppBar*) que s'afig a la part inferior de l'Scaffold.
+   - **drawer**: La traducció literal d'un *Drawer* és caixonera, i consistix en un panell vertical, que generalment es mostra a l'esquerra del body, i que sol desplegar-se mitjançant un botó ubicat a la mateixa *AppBar*
+- **AppBar**: El widget de la barra d'aplicació (*AppBar*) consistix principalment en una barra d'eines, amb un títol (de vegades precedit d'una icona *leading*) i diverses opcions, mitjançant icones en la mateixa barra (*IconButtons*) o un menú (*Overflow Menu*) generat amb *PopupMenuButton*. Pot contindre també altres ginys com una barra de pestanyes (*TabBar*) o barres d'espai flexible (*FlexibleSpaceBar*).
+- **Center**: Un widget de disposició, agafa a un fill (*widget*) amb el paràmetre *child* i el col·loca en el centre
+- **Column**: Un altre widget de disposició, agafa una llista de fills (*widgets*) amb el paràmetre *children*
+- **Text**: Un widget que permet crear textos amb estil. A més, recordem que una cadena de text pot incloure variables interpolades, fent ús del símbol **$** i si és necessari, també de les claus **{}**. En cas que fem ús d'interpolació, no haurem d'indicar que el text és constant. Veiem algunes propietats que ens poden ser d'utilitat:
+
+   - **overflow**: Es tracta d'una propietat de tipus *TextOverflow*, que servix per a determinar què fer quan el text no cap al contenidor on es troba. Aquest tipus *TextOverflow* és un enumerat (*enum*), amb els possibles valors clip (retalla el contingut sobrant), el·lipsis (afig punts suspensius), fade (retalla el contingut sobrant de forma difuminada) o visible (fa visible el contingut).
+   - **textAlign**: Per determinar l'alineació del text, mitjançant el tipus enumerat *TextAlign*, que admet els valors *center* (centrat), *end* (final), *start* (inici), *left* (esquerra), *right* (dreta) o *justified* (justificat). El fet de distingir entre *start/left* i *end/right* és per adaptar els textos als sistemes d'escriptura de dreta a esquerra.
+   - **style**: Per determinar l'estil del text, mitjançant un giny de tipus *TextStyle*. Aquest giny admet una gran quantitat d'atributs, entre els que podem destacar:
+   - **color**: Per establir el color del text. És un atribut del tipus *Color*, un valor de 32 bits expressat en format **ARGB** (Alpha-Red-Green-Blue). Podem expressar aquest color de diverses formes:
+   Directament, en format hexadecimal amb ***const Color(0xAARRGGBB)***, sent AA, RR, GG i BB, respectivament les quantitats de transparència (Alpha), Roig (Red), Verd (Green) i Blau (Blue). Per exemple, per a un color blau sense transparència: ***const Color(0xFF42A5F5)***.
+   Fent ús del constructor **fromARGB**, i especificant les quantitats en decimal (de 0 a 254). Per exemple, per al mateix blau: ***const Color.fromARGB(255, 66, 165, 245);***
+   Fent ús de l'enumerat Colors, definit en *Material*, i que conté colors predefinits, com ***Colors.amber***, ***Colors.blue***, etc.
+   - Color? **backgroundColor**: Amb el color de fons per al text, també amb un valor de tipus *Color*.
+   - double? **fontSize**: Amb la grandària de la lletra, expressada en píxels lògics.
+   - Fontweight? **fontWeight**: Amb el gruix de la lletra, i de tipus FontWeight, un enumerat amb els diferents gruixos.
+   - Fontsyle? **fontStyle**: Amb l'estil de la font, del tipus enumerat *FontStyle* (normal, cursiva).
+   - String? **fontFamily**: Per especificar la família tipogràfica a utilitzar. Prèviament a això, haurem d'incorporar les fonts al nostre projecte.
+   A banda d'aquests, disposem de moltes propietats més per tal de definir l'estil. Podeu consultar-les totes de manera detallada a la documentació de Flutter.
+- **Icon**: Permet posar una icona en l'aplicació, teniu tots els noms de les icones en la següent pàgina: [Pàgina d'icones de Flutter](https://api.flutter.dev/flutter/material/Icons-class.html)
+- **FloatingActionButton**: Un botó que li pots assignar una funció en l'objecte *onPressed* i definir el contingut d'aquest en el seu fill amb el text definit anteriorment ***child: Text("+")*** o en aquest cas: ***child: const Icon(Icons.add)***.
+
+## Creació de formularis
+Per a crear un formulari en Flutter necessitarem del widget ***TextField***, aquest ens permet posar text amb el teclat, usat per a fer formularis i per a pantalles de **inici de sessió** compta amb les següents funcions:
+
+   - bool **autofocus**: Per posar el focus de l'aplicació sobre aquest giny,
+   - int? **maxLength**: Ens permet establir el nombre màxim de caràcters.
+   - TextInputType? **keyboardType**: Estableix el tipus de teclat en funció de la informació a introduir. Per a això fa ús de la classe *TextInputType*, amb valors com *TextInputType.datetime*, *TextInputType.emailAddress*, *TextInputType.multiline*, *TextInputType.name*, *TextInputType.number* o *TextInputType.phone*.
+   - InputDecoration? **decoration**: Permet establir una decoració per a la caixa que envolta el giny.
+   - bool **obscureText**: Es tracta d'un valor booleà per tal d'ocultar els caràcters que escrivim, en camps que puguen contenir informació sensible, com una contrasenya.
+   - String **osbcuringCharanter**: Ens permet modificar el caràcter a utilitzar per ocultar camps sensibles.
+   - void Function(String)? **onChanged**: Es tracta d'una propietat que conté una funció de callback que es dispara quan el valor del text canvia.
+   - TextEditingController? **controller**: Ens permet controlar el text contingut al *TextView*.
+
+
+## Navegació entre pantalles
+Ací usarem l'aplicació del projecte per a veure la navegació entre pantalles, en la meua aplicació estan les següents formes de navegar entre pantalles:
+- **Navigator.push(context,MaterialPageRoute());**: Esta navegació permet avançar a la següent pantalla i pots retrocedir a la pantalla anterior quan vulgues.
+- **Navigator.of(context).pushReplacement(MaterialPageRoute());**: Esta navegació permet avançar a la següent pantalla, però no pots retrocedir a la pantalla anterior.
+- **Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(),(route) =>; false,);**: Esta navegació és pareguda al *pushReplacement*, però una diferència substancial és que esborra totes les altres pantalles que anaven darrere.
 
 ## Estructura de l'aplicació:
 L'aplicació flutter té la següent estructura de directoris:
@@ -370,7 +502,252 @@ lib/
 │   └── qrProvider.dart  
 └── main.dart
 ```
-Esta estructura de directoris seguix l'arquitectura *CLEAN* o també coneguda com *Clean Architecture*
+Esta estructura de directoris seguix l'arquitectura *CLEAN* o també coneguda com *Clean Architecture*, i ací ho explicare de forma resumida:
+### Presentation
+**UI**: Interfície de l’aplicació (el que es mostrara en l'app).
+
+### Domain	
+**Repository(implementació)**: Implementa les funcions del DataSource, hereta del Repository (sense implementació) i l’usa la interfície **(UI)**.
+**Entities**: Els objectes de l’aplicació que rebran els canvis.
+
+### Infrastructura	
+**Repository**: Capa intermèdia que connecta i implementa el DataSource i heretara a la implementació del Repositori en la capa de **Domain**.
+**DataSource**: Capa que fa peticions a **APIs** o a altres llocs per a arreplegar la informació i després mostrar-la en la interficie **(UI)**. 
+
+### Gestor d’estats
+**Provider**: Gestor d’estat per a saber l’estat de les peticions.
+
+Ací deixe una imatge que resumeix l'arquitectura CLEAN de forma simplificada.
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Arquitectura CLEAN.png" alt="Contingut del fitxer main.dart de l'aplicació" width="600"/>
+</p>
+
+## Com crear l'arquitectura CLEAN en l'aplicació de Flutter
+En el vostre projecte de Flutter per a seguir amb l’arquitectura CLEAN heu de seguir la següent cadena de directoris:
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Gestió de carpetes.png" alt="Gestió de les carpetes de l'aplicació" width="600"/>
+</p> 
+
+### Capa de Infraestructura
+Primerament creem la següent cadena de carpetes si no les teniu creades:
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Infraestructura/Creació de les carpetes de DataSource i Repositori.png" alt="Creació de les carpetes de DataSource i Repositori" width="600"/>
+</p> 
+
+#### DataSource
+Anem a la carpeta de **data_source** i creem un nou fitxer:
+ 
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Infraestructura/DataSource/Creació del fitxer DataSource.png" alt="Creació del fitxer DataSource" width="600"/>
+</p> 
+Ara en el fitxer inicialitzarem la classe si volem afegir alguna variable si volem, en aquest cas com no fa falta ho deixem buit.
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Infraestructura/DataSource/Inicialització del DataSource.png" alt="Inicialització del DataSource" width="600"/>
+</p> 
+<p align="center"><em>Inicialització de la classe</em></p>
+
+Quan ja hem inicialitzat el DataSource farem les funcions que faran falta, com en aquest cas sols és una i és molt senzilla sols torna el valor de forma asíncrona per a poder mostrar un QR que està en la pantalla, sols ens interessa el valor que tindrà el QR, així que la implementem:
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Infraestructura/DataSource/Funcions del DataSource.png" alt="Funcions del DataSource" width="600"/>
+</p> 
+<p align="center"><em>Funcions del DataSource</em></p>
+
+Quan implementem la funció hauria de quedar de la següent forma:
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Infraestructura/DataSource/DataSource complet.png" alt="Tot el contingut del DataSource" width="600"/>
+</p>
+
+<p align="center"><em>Classe completa del DataSource</em></p>
+
+#### Implementació del repositori
+Anem a la carpeta del **repositori** i creem un nou fitxer:
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Infraestructura/Repositori(implementació)/Carpeta repositori(implementacio).png" alt="Creació de la carpeta de la implementació del repositori" width="600"/>
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Infraestructura/Repositori(implementació)/Creació del fitxer repositori(implementacio).png" alt="Creació del fitxer de la implementació del repositori" width="600"/>
+</p> 
+Quan creem la classe és important que implemente al repositori (sense implementació) perquè herete totes les funcions del repositori (sense implementació) i les pugues implementar: 
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Infraestructura/Repositori(implementació)/implementació al repositori.png" alt="Inicialització de la implementació del repositori" width="600"/>
+</p>
+<p align="center"><em>Implementació del repositori (sense implementació)</em></p>
+
+Per a fer les funcions del repositori és important que s’inicialitze el DataSource, perquè gastarem aquest últim per a fer les funcions i estalviar-mon codi:
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Infraestructura/Repositori(implementació)/inicialització del DataSource.png" alt="Inicialització del DataSource" width="600"/>
+</p>
+<p align="center"><em>Inicialització del DataSource</em></p>
+
+Com he dit abans les funcions seran exactament les mateixes que el repositori (sense implementació) així que és important que dalt de la funció poseu “@override” perquè sobreescriurà la funció del repostitori (sense implementació) i cridarem a la instància de DataSource que havíem creat abans:
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Infraestructura/Repositori(implementació)/Funcions repositori(implementació).png" alt="Funcions de la implementació del repositori" width="600"/>
+</p> 
+<p align="center"><em>Funcions del repositori (implementació) amb @override del repositori (sense implementació)</em></p>
+
+Al final deuria quedar de la següent forma:
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Infraestructura/Repositori(implementació)/Repositori(implementació) complet.png" alt="Resultat de la implementació del repositori" width="600"/>
+</p> 
+
+### Capa de domini
+Primerament creem la següent cadena de carpetes si no les teniu creades:
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Domini/Creació de les carpetes Entities i repositori.png" alt="Creació de les carpetes de Domini i Repositori" width="600"/>
+</p> 
+
+#### Entitats
+En aquest cas l'entitat no forma part directament en esta funció, però com en la pantalla que implementem l'arquitectura parlaré un poc d’esta, així que anem a la carpeta d'entitats:
+ <p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Domini/Entitats/Carpeta entities.png" alt="Creació de la carpeta d'entitats" width="600"/>
+</p>
+
+#### Repositori
+Anem a la carpeta de repositoris i creem un nou fitxer:
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Domini/Repositori/Carpeta repositori.png" alt="Creació de la carpeta de Repositori" width="600"/>
+</p> 
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Domini/Repositori/Creació del fitxer repositori.png" alt="Creació del fitxer de Repositori" width="600"/>
+</p> 
+Ara per a crear la classe l'hem de fer abstracta perquè servixen per a definir una estructura comuna o un contracte que altres classes han de seguir, però sense implementar completament els detalls, aleshores implementem la classe abstracta:
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Domini/Repositori/implementació abstracta del repositori.png" alt="Implementació de la classe abstracta del repositori" width="600"/>
+</p> 
+<p align="center"><em>Implementació de la classe abstracta del repositori</em></p>
+
+I per últim fem les funcions que han de ser iguals al DataSource perquè el repositori amb implementació puga usar el DataSource: 
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Domini/Repositori/Funcions del repositori.png" alt="Funcions del repositori" width="600"/>
+</p>  
+Al final deuria quedar de la següent forma:
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Domini/Repositori/Repositori complet.png" alt="Resultat del repositori" width="600"/>
+</p>  
+
+### Capa de Presentació
+Creeu la següent cadena de carpetes si no les teniu creades:
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Presentació/Creació de les carpetes de screens, themes i widgets.png" alt="Creació de les carpetes de screens, themes i widgets" width="600"/>
+</p> 
+Sols tinc les pantalles perquè no me s’ha vingut al cap algun widget personalitzat o un tema en específic.
+
+#### Pantalles
+Ací és on ocorrerà la màgia que aparega en la pantalla, no n’hi ha molt més misteri, sols que ací podràs aplicar tant els DataSources, repositoris i/o gestors d’estats (BLOC,Provider, Riverpod..., etc).
+
+### Capa de gestor d’estats
+#### Provider
+Provider és un gestor d’estat més avançat i més senzill que BLOC, un altre gestor de l’estat, ara diré com podeu implementar provider en els vostres projectes:
+1. Tindre tant la capa de serveis tant la de repositori ja feta.
+
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Gestió de carpetes.png" alt="Gestió de les carpetes de l'aplicació" width="200"/>
+</p> 
+<p align="center"><em>
+   Fixeu-vos en les carpetes de:<br>
+   domain -> repository<br>
+   infrastructure -> repository i datasource</em></p>
+
+2. Crear la capa de provider en la carpeta anomenada “lib”. 
+
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Provider/Fitxer provider/Creació carpeta provider.png" alt="Creació de la carpeta de providers" width="600"/>
+</p>
+
+3. Crear el fitxer “nomdelafuncioProvider".dart i al crear la classe que implemente “ChangeNotifier”.
+ 
+ <p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Provider/Fitxer provider/Implementació ChangeNotifier.png" alt="Implementació de 'ChangeNotifier' en el provider" width="600"/>
+</p>
+ 
+4. Inicialitza el provider amb el repositori.
+ 
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Provider/Fitxer provider/Inicialitza Repositori.png" alt="Inicialització del repositori en el provider" width="600"/>
+</p>
+
+5. Completar el provider amb les funcions del repositori.
+ 
+
+ <p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Provider/Fitxer provider/Funció repository.png" alt="Funcions del provider amb el repositori" width="600"/>
+</p>
+<p align="center"><em>
+   Funcions bàsiques del provider que es veuran en la pantalla<br>
+   +<br>
+   Inicialització del repository al provider<br>
+   Funció que implementa el repositori i mostrarà o guardarà en una variable de provider perquè es puga veure per pantalla<br>
+   El fitxer provider deuria quedar de la següent forma:
+</em></p>
+
+
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Provider/Fitxer provider/Classe provider.png" alt="Resultat del provider" width="600"/>
+</p>
+
+6. Inicialitzar al fitxer “main.dart”.
+
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Provider/Fitxer main/Fitxer main.png" alt="Fitxer main.dart" width="600"/>
+</p> 
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Provider/Fitxer main/Inicialització repositori i datasource.png" alt="Inicialització del Repositori i del DataSource" width="600"/>
+</p>
+ 
+- Inicialització del datasource i el repositori (la implementació)
+
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Provider/Fitxer main/implementació repositori.png" alt="Implementació del repositori en 'MyApp'" width="600"/>
+</p>
+<p align="center"><em>
+   Implementem el repositori i fem que el fitxer main el requerisca per a funcionar
+</em></p>
+
+
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Provider/Fitxer main/implementació repositori.png" alt="Implementació del repositori en 'MyApp'" width="600"/>
+</p> 
+<p align="center"><em>
+   Per últim posem el repositori que havíem inicialitzat al principi
+</em></p>
+
+7. Fer que retorne “Multiprovider” per a tindre una llista de providers.
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Provider/Fitxer main/Implementció multiprovider.png" alt="Implementació del multiprovider" width="600"/>
+</p> 
+
+<p align="center"><em>
+   Fem que en lloc de retornar MaterialApp retorne el Multiprovider i el MaterialApp serà un fill de Multiprovider per a implementar la resta del main amb normalitat.
+</em></p>
+ 
+Al final el fitxer main deuria quedar de la següent forma:
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Provider/Fitxer main/Fitxer main complet.png" alt="Resultat del main.dart" width="600"/>
+</p>
+
+8. En la pantalla que vulgues, inicialitza la funció amb “Provider.of<nomdelafuncioProvider>;”.
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Provider/Implementació provider/Inicialització provider.png" alt="Inicialització del provider en la pantalla desitjada" width="600"/>
+</p>
+
+<p align="center"><em>
+  Inicialitzem el provider i li posem el valor de la funció que demanava (en aquest cas és un objecte de tipus String, però no n’hi haurà problema a l’hora de mostrar-lo).
+</em></p>
+
+Ara en la funció inicialitzada la implementem en la pantalla:
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Provider/Implementació provider/Implementació provider.png" alt="Implementació del provider en la pantalla desitjada" width="600"/>
+</p>
+<p align="center"><em>
+  En el widget Consumer posem el nom de la classe de Provider i en el seu constructor (builder) posem el provider i ja podem usar la funció de provider dins de la pantalla.
+</em></p>
+I amb això ja pots usar la teua provider en qualsevol lloc de l’aplicació.
+<p align= "center">
+   <img src="../Memòria del projecte/imatges/Exemples/Arquitectura/Arquitectura CLEAN/Capes/Provider/Implementació provider/Demostració pantalla.jpg" alt="Demostració en l'aplicació de Flutter" width="600"/>
+</p>
+<p align="center"><em>
+  En aquest exemple com és un codi QR no es veu molt bé el resultat, però com el codi és generat per un “String” es pot veure de forma clara com s’ha dibuixat en la pantalla.
+</em></p>
+
 ## Dependències en el fitxer pubspec.yaml i com implementar-les:
 ### Provider
  Gestor d'estat de flutter, cal posar el següent en el yaml en l'apartat de `dependencies`:
@@ -493,7 +870,7 @@ dependencies:
 dependencies:
    intl: ^11.0.0  #Versió de intl utilitzada 
  ```
- Més documentació em [la pàgina oficial](https://pub.dev/packages/permission_handler)
+ Més documentació en [la pàgina oficial](https://pub.dev/packages/permission_handler)
 ### Posar una imatge
 Per a posar una imatge ***que estiga definida en Flutter*** haurem de localitzar la imatge que volem que és vega i recomane posar-la en una carpeta **assets** perquè no es perda, després en el **pubspec.yaml** localitzem esta part:
 
@@ -542,6 +919,7 @@ flutter_launcher_icons:
   adaptive_icon_background: "#FFFFFF"
 ```
 ### Resultat final del pubsec.yaml
+
 Així quedaria el **pubspec.yaml** amb totes les modificacions:
 ```yaml
 name: 'nom de la vostra aplicació'
@@ -651,4 +1029,153 @@ flutter_launcher_icons:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+```
+## NFC
+Per a treballar amb NFC en flutter necessitarem la llibreria anteriorment esmentada **NfcManager**, després necessitarem importar nfc_manager a la pantalla que vulguem i necessitar saber certes coses d'esta llibreria que estan per l'aplicació
+### Com llegir NFC
+ - Future<bool> isAvailable(): Verifica sí el dispositiu és compatible amb NFC o no.
+ - Future<void> **startSession**({required Future<void> Function(NfcTag) onDiscovered, Set<NfcPollingOption>? pollingOptions, String? alertMessage, bool? invalidateAfterFirstRead = true, Future<void> Function(NfcError)? onError,}): Esta funció fa que active el lector de NFC del dispositiu i busque un altre dispositiu/etiqueta NFC per a intercanviar informació.
+ - Future<void> **stopSession**({String? alertMessage, String? errorMessage}): Para la lectura de NFC i pots mostrar missatges d'error i/o un missatge d'alerta.
+Ací teniu un exemple complet en l'aplicació real:
+ ```dart
+   String? valorLlegit; //Inicialitzem un valor que sera qui fara les operacions amb el NFC
+
+    Completer<String?> completer = Completer();
+
+    await NfcManager.instance.startSession(
+      onDiscovered: (NfcTag tag) async {
+        try {
+          final ndef = Ndef.from(tag);
+          if (ndef == null || ndef.cachedMessage == null) { //Verifica si l'etiqueta és compatible
+            await NfcManager.instance.stopSession(errorMessage: 'Etiqueta no compatible'); //Dona error si no
+            onError?.call();
+            completer.complete(null);
+            return;
+          }
+
+          final payload = ndef.cachedMessage!.records.first.payload;
+          valorLlegit = String.fromCharCodes(payload.skip(3));
+
+          if (valorLlegit == valorEsperat) { //Compara si son igual
+            onCoincidencia?.call();
+          } else {
+            onError?.call();
+          }
+
+          await NfcManager.instance.stopSession();
+          completer.complete(valorLlegit); //Passa el valor que hem llegit al completer 
+        } catch (e) {
+          await NfcManager.instance.stopSession(errorMessage: 'Error en la lectura');
+          onError?.call();
+          completer.complete(null);
+        }
+      },
+    );
+
+    return completer.future; // I tornem el completer de forma asincrona
+ ```
+### Com escriure NFC
+ - NdefRecord NdefRecord.createText(String text, {String languageCode = 'en'}): Permet canviar el valor del nfc quan s'escaneja.
+ - Future<void> write(NdefMessage message): Mostrara per pantalla el missatge que tu vulgues.
+Ací teniu un exemple complet en l'aplicació real:
+```dart
+bool isAvailable= await NfcManager.instance.isAvailable(); 
+    if(!isAvailable){ //Verifica si el dispositiu és compatible amb la tecnologia NFC
+      return "NFC no disponible en aquest dispositiu"; //Dona el següent error sí no és compatible
+    }
+    String resultat="Esperant etiqueta ...";
+    await NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async{
+      try{
+        final ndef= Ndef.from(tag);
+        if(ndef==null || !ndef.isWritable){ //Si no es llig l'etiqueta o no és pot modificar
+          resultat="Etiqueta no compatible o no es pot escriure";
+          NfcManager.instance.stopSession(errorMessage: "Error");
+          return;
+        }
+        final message= NdefMessage([
+          NdefRecord.createText("1234") //Ací modificara el valor de la pulsera a 1234
+        ]);
+        await ndef.write(message);
+        resultat="Etiqueta escrita amb èxit";
+        return;
+      }catch(e){
+        resultat="Error en escriure l'etiqueta";
+        return;
+      }
+    });
+    return resultat;
+```
+## QR
+Per a mostrar qr en la pantalla necessitem les llibreries anteriorment esmentades **qr_flutter** i per a mostrar qr i **MobileScanner** junt amb **permission_handler** per a llegir de codis QR i demanar permisos a l'usuari, necessitarem importar qr_flutter a la pantalla que vulguem i necessitarem saber algunes coses d'esta llibreria que es troben en l'aplicació:
+### Com llegir QR
+- Future<PermissionStatus> request():Demana permis a l'usuari per a obrir la càmara
+Ací teniu un exemple complet en l'aplicació real:
+```dart
+final status = await Permission.camera.request(); // Demana permís a la camara 
+
+if (!status.isGranted) { // Sí es negat l'aplicació donara el següent error
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(content: Text('Permís de càmera denegat')),
+  );
+  onError?.call();
+  return;
+}
+await showDialog(// Obri el dialeg
+      context: context,//Pasa el context
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return Scaffold(
+          appBar: AppBar(title: const Text('Escàner QR')),
+          body: MobileScanner(
+            controller: MobileScannerController(), //Obri la càmara
+            onDetect: (capture) {
+              if (isProcessing) return;
+              isProcessing = true;
+
+              final String? code = capture.barcodes.first.rawValue; //Agafa el valor llegit per la càmara
+              if (code == null) return;
+
+              Navigator.pop(dialogContext);
+
+              if (code == valorEsperat) { //Es compara per a vore si coincideix (en aquest  cas la pulsera de l'usuari)
+                onCoincidencia();
+              } else {
+                onDiferent?.call(code);
+              }
+            },
+          ),
+        );
+      },
+    );
+```
+### Com mostrar QR
+- **QRImageView**: Widget que usem per a vore el QR.
+- required String **data**: Encarregat d'assignar el valor que volem transformar en QR.
+- double? **size**: Tamany de la image per a veure el QR.
+- **eyeStyle**: instancia de la classe QrEyeStyle que dins ha de tindre el següent:
+- **QREyeStyle**: Widget per a donar-li estil al QR.
+   - QrEyeShape? **eyeShape**: Objecte que li dona forma al QR.
+   - Color? **color**: Objecte que li dona un color al QR.
+- **dataModuleStyle**: instancia de la classe QrDataModuleStyle que dins ha de tindre el següent:
+- **QRQrDataModuleStyle**: Widget per a donar-li estil al QR.
+   - QRQrDataModuleStyle? **dataModuleShape**: Objecte que li dona forma al QR.
+   - Color? **color**: Objecte que li dona un color al QR.  
+Ací teniu un exemple complet en l'aplicació real:
+```dart
+  @override
+  Widget build(BuildContext context) {
+   //Resta de la pantalla
+   QrImageView(
+     data: "8430001000017", //Rep el valor de la pulsera
+     size: 200.0, //Li assigna un tamany per a que no es desborde
+     eyeStyle: const QrEyeStyle( //Li assigna estil
+       eyeShape: QrEyeShape.square,
+       color: Colors.black,
+     ),
+     dataModuleStyle: const QrDataModuleStyle( //Li assigna estil
+       dataModuleShape: QrDataModuleShape.square,
+       color: Colors.black,
+     ),
+   ),
+  }
 ```
