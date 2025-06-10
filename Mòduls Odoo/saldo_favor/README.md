@@ -56,6 +56,7 @@ saldo_favor/
 │   ├── account_move.py
 │   ├── res_partner.py
 │   ├── saldo_favor_receipt.py
+│   ├── saldo_favor_transaction.py
 │   ├── saldo_favor_wizard.py
 │   └── sale_order.py
 ├── views/
@@ -68,13 +69,14 @@ saldo_favor/
 │   ├── saldo_favor_wizard_views.xml
 │   └── sale_order_views.xml
 ├── security/
-│   ├── saldo_favor_security.xml
 │   └── ir.model.access.csv
 ├── static/
 │   └── description/
 │       ├── icon.png
 ├── i18n/
-│   └── ca.po
+│   ├── ca.po
+│   └── ca.pot
+├── generate_translations.sh
 ├── README.md
 └── LICENSE
 =======

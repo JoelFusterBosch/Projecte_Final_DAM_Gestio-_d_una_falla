@@ -188,7 +188,8 @@ familia/
 │   ├── __init__.py
 │   ├── familia.py
 │   ├── miembro_familia.py
-│   ├── res_partner_familia.py
+│   ├── res_partner_faller.py
+│   └── res_partner_familia.py
 ├── migrations/
 │   └── 10.0.1.0/
 │       ├── post-migration.xml
@@ -196,7 +197,8 @@ familia/
 │   ├── familia_menu.xml
 │   ├── familia_views.xml
 │   ├── miembro_familia_views.xml
-
+│   ├── partner_server_action.xml
+│   └── res_partner_faller_view.xml
 ├── security/
 │   ├── familia_security.xml
 │   └── ir.model.access.csv
@@ -205,6 +207,8 @@ familia/
 │       ├── icon.png
 ├── i18n/
 │   └── ca.po
+├── models/
+│   └── partner_titles.xml
 ├── README.md
 └── LICENSE
 =======

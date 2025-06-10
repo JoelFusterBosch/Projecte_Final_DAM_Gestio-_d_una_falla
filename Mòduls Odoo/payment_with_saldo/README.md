@@ -25,32 +25,47 @@ payment_with_saldo/
 │   ├── payment_provider.py
 │   ├── payment_transaction_inherit.py
 │   ├── payment_transaction.py
-├── migrations/
-│   └── 10.0.1.0/
-│       ├── post-migration.xml
+│   ├── pos_payment.py
+│   └── sale_order.py
 ├── views/
 │   ├── account_payment_view.xml
+│   ├── assets.xml
 │   ├── payment_checkout_template.xml
 │   ├── payment_provider_view.xml
 │   ├── payment_success.xml
 │   ├── payment_templates.xml
+│   ├── qr_templates.xml
+│   ├── report_saleorder_document.xml
 │   ├── saldo_insufficient.xml
+│   └── sale_order_view.xml
 ├── security/
 │   └── ir.model.access.csv
 ├── controllers/
 │   ├── __init__.py
+│   ├── account_payment_controller.py
 │   ├── main.py
+│   ├── qr_scan.py
+│   └── sale_portal_extend.py
 ├── data/
 │   ├── account_journal_data.xml
-│   ├── payment_method_data.xml
-│   ├── payment_method_line_data.xml
+│   ├── pdefault_pos_config_payment_method.xml
+│   ├── payment_method_line.xml
+│   ├── apayment_method_line_data.xml
 │   ├── payment_provider.xml
+│   ├── pos_payment_method_cash.xml
+│   └── pos_payment_method.xml
 ├── static/
-│   └── description/
-│       ├── icon.png
+│   ├── description/
+│   │    └── icon.png
 │   └── src/
 │       └── js/
+│           ├── disable_native_redirect.js
+│           ├── override_native_payment.js
+│           ├── payment_saldo_error.js
 │           ├── payment_with_saldo.js
+│           └── remove_native_widget.js
+├── hooks.py
+├── payment_confirmation_summary.md
 ├── README.md
 └── LICENSE
 =======

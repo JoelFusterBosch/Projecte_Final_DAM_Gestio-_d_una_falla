@@ -20,29 +20,53 @@ event_family_registration/
 ├── __manifest__.py
 ├── models/
 │   ├── __init__.py
+│   ├── account_move_mass_delete.py
 │   ├── allow_family_registration.py
 │   ├── event_event_copia.py
 │   ├── event_event_ticket.py
 │   ├── event_event.py
+│   ├── event_mass_payment.py
 │   ├── event_registration.py
-│   ├── sale_order.py
+│   ├── sale_order_mass_cancel.py
+│   └── sale_order.py
 ├── views/
+│   ├── account_move_mass_delete.xml
+│   ├── assets.xml
 │   ├── event_event_ticket_views.xml
 │   ├── event_event_views.xml
+│   ├── event_mass_payment_view.xml
 │   ├── event_registration_views.xml
+│   ├── replace_accept_sign_button_in_portal.xml
+│   ├── replace_footer_accept_button.xml
+│   ├── sale_order_mass_cancel.xml
 │   ├── sale_portal_templates.xml
-│   ├── website_event_registration_templates.xml
+│   └── website_event_registration_templates.xml
 ├── security/
 │   └── ir.model.access.csv
 ├── controllers/
 │   ├── __init__.py
-│   ├── main.py
+│   └── main.py
 ├── static/
 │   └── description/
-│       ├── icon.png
+│       └── icon.png
 │   └── src/
-│       └── js/
-│           ├── custom_registration.js
+│       ├── css/
+│       │   ├── event_badges.css
+│       ├── js/
+│       │   ├── confirm_button_saldo.js
+│       │   ├── custom_registration.js
+│       │   ├── event_registration_status.js
+│       │   ├── event_status_ribbon.js
+│       │   └── payment_confirmation.js
+│       └── xml/
+│           ├── custom_family_registration_template.xml
+│           └── website_event_card_status.xml
+├── tests/
+│   ├── __init__.py
+│   ├── test_reuse_order_family.py
+│   ├── test_sale_order_expiration.py
+│   ├── test_ticket_refund.py
+│   └── test_update_paid_order.py
 ├── README.md
 └── LICENSE
 =======
