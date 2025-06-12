@@ -198,4 +198,14 @@ Aquest projecte ha suposat un repte personal i tècnic. He aplicat coneixements 
 
 Aquest projecte és una mostra del meu progrés durant els dos anys de cicle. M’he superat en molts aspectes i he consolidat la meua vocació per la programació. Independentment de la nota, estic orgullós del que he aconseguit.
 
+## Llicència
 
+Aquest projecte està disponible sota la llicència [MIT](LICENSE).
+
+## Contribucions
+
+Les contribucions són benvingudes. Si tens idees per a millores, suggerències o trobes errors, per favor, obri un `issue` o envia un `pull request` en GitHub.
+
+## Crèdits 
+
+Li done els crèdits a Juan Bautista Talens Felis (el meu tutor del projecte) pels mòduls personalitzats d'Odoo i els scripts de Docker per al projecte, ací teniu [el github de Juan](https://github.com/juatafe/)
